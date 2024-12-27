@@ -42,8 +42,8 @@ func checkInclusion(s1 string, s2 string) bool {
 				if windowCnt[lc] == targetCnt[lc] {
 					valid--
 				}
+				windowCnt[lc]--
 			}
-			windowCnt[lc]--
 			i++
 		}
 	}
