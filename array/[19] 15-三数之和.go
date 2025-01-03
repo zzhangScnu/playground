@@ -39,7 +39,7 @@ func threeSum(nums []int) [][]int {
 	var res [][]int
 	for i := 0; i < len(nums); {
 		num := nums[i]
-		for _, twoSumRes := range twoSumOfDuplicatedNumbers(nums, i+1, len(nums)-1, 0-num) {
+		for _, twoSumRes := range twoSumOfDuplicatedNumbers(nums, i+1, 0-num) {
 			res = append(res, append(twoSumRes, num))
 		}
 		for i < len(nums) && nums[i] == num {
@@ -49,9 +49,9 @@ func threeSum(nums []int) [][]int {
 	return res
 }
 
-func twoSumOfDuplicatedNumbers(nums []int, startIdx int, endIdx, target int) [][]int {
+func twoSumOfDuplicatedNumbers(nums []int, startIdx int, target int) [][]int {
 	var res [][]int
-	low, high := startIdx, endIdx
+	low, high := startIdx, len(nums)-1
 	for low < high {
 		lowVal, highVal := nums[low], nums[high]
 		if lowVal+highVal == target {
