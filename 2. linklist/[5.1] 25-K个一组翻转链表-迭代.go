@@ -55,3 +55,12 @@ func reverseBetweenNode(head *ListNode, tail *ListNode) (*ListNode, *ListNode) {
 	}
 	return tail, head
 }
+
+/**
+这种实现方式，本质就是模拟：
+1. 在主方法中，找到四个关键节点：
+- 需要反转的区间起点和终点，前闭后闭；
+- 该区间的前驱和后驱，为了将反转后的子链表跟原链表连接起来。
+2. to走k-1步，因为from占了一个位置，to再数k-1，才能凑齐k个节点；
+3. 需要在每次反转前，提前把next存下来，防止操作后导致的断链。
+*/

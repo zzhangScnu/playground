@@ -25,7 +25,7 @@ package linklist
 // 进阶：你可以设计一个只用 O(1) 额外内存空间的算法解决此问题吗？
 func reverseKGroupRecursively(head *ListNode, k int) *ListNode {
 	to := head
-	for i := 0; i < k-1; i++ {
+	for i := 0; i < k; i++ {
 		if to == nil {
 			return head
 		}
@@ -47,3 +47,13 @@ func reverseBetweenNodeRecursively(head *ListNode, tail *ListNode) *ListNode {
 	}
 	return pre
 }
+
+/**
+递归的方式，相比起迭代，
+1. 每次反转区间，都是左闭右开：
+- 否则在主方法里，需要额外找到本次操作子链表的前驱，比较麻烦；
+- 所以主方法的to，是需要走k步的；
+- 所以子方法的结束条件，是cur == tail；
+2. 主方法里，相比起迭代的前后都要连接上，这里只处理前驱的连接：
+- 所以子方法只返回子链表反转后的头节点，且是pre，而不是tail。
+*/
