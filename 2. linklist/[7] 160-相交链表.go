@@ -78,7 +78,7 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 		fast, slow = headB, headA
 	}
 	diff := int(math.Abs(float64(lenA - lenB)))
-	for i := 1; i < diff; i++ {
+	for i := 0; i < diff; i++ {
 		fast = fast.Next
 	}
 	for fast != nil && slow != nil {
@@ -90,3 +90,8 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
 	return nil
 }
+
+/**
+1. 暴力解法：遍历+哈希记录节点内存地址；
+2. 双指针法：将两条链表的遍历起点设置为【距离相交点同样长度】，同时前进，相等时即为相交点。
+*/

@@ -38,6 +38,23 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	}
 	for p != nil {
 		cur.Next = p
+		//cur = cur.Next
+		//p = p.Next
+	}
+	for q != nil {
+		cur.Next = q
+		//cur = cur.Next
+		//q = q.Next
+	}
+	return dummyHead.Next
+}
+
+/**
+双指针思路。链表题基本适用。
+唯一要注意的点是，当较短链表遍历完成后，将长链表剩余部分拼接到结果列表尾部，
+一开始是这么写的：
+	for p != nil {
+		cur.Next = p
 		cur = cur.Next
 		p = p.Next
 	}
@@ -46,5 +63,5 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 		cur = cur.Next
 		q = q.Next
 	}
-	return dummyHead.Next
-}
+但，	cur = cur.Next / p = p.Next这两句不要也罢……
+*/

@@ -38,3 +38,9 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	slow.Next = slow.Next.Next
 	return dummyHead.Next
 }
+
+/**
+倒数第n个节点，即为正数第len-n+1个节点。
+先让快指针数n个节点，再让快慢指针同时前进；
+i := 0; i < n+1 不是因为虚拟，是因为让slow指向被删节点的上一个节点。
+*/
