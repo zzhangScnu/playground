@@ -20,8 +20,8 @@ package linklist
 // -100 <= Node.val <= 100
 // -200 <= x <= 200
 func partition(head *ListNode, x int) *ListNode {
-	smallerDummyHead, biggerDummyHead, curDummyHead := &ListNode{Next: head}, &ListNode{Next: head}, &ListNode{Next: head}
-	s, b, cur := smallerDummyHead, biggerDummyHead, curDummyHead
+	smallerDummyHead, biggerDummyHead := &ListNode{Next: head}, &ListNode{Next: head}
+	s, b, cur := smallerDummyHead, biggerDummyHead, head
 	for cur != nil {
 		if cur.Val < x {
 			s.Next = cur
@@ -32,6 +32,16 @@ func partition(head *ListNode, x int) *ListNode {
 		}
 		cur = cur.Next
 	}
+	b.Next = nil
 	s.Next = biggerDummyHead.Next
 	return smallerDummyHead.Next
 }
+
+/**
+一开始想在原链表上就地移动节点，各种指针把自己绕晕了……
+这种做法比较直观，先分再合。
+唯一要注意的点是，因为在分链表的时候，是没有处理节点的下一个指针的指向的，
+所以当原链表遍历完成后，要将保存较大值的链表的末尾节点指向nil，
+否则它可能指向的还是某个较小值的节点。
+（较小值链表不需要的原因是，它的末尾直接指向较大值链表了
+*/
