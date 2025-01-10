@@ -30,15 +30,21 @@ func commonChars(words []string) []string {
 		for _, ch := range words[i] {
 			tmpCounts[ch-'a']++
 		}
-		for ch, count := range tmpCounts {
-			baseCounts[ch-'a'] = int(math.Min(float64(count), float64(baseCounts[ch-'a'])))
+		for idx, count := range tmpCounts {
+			baseCounts[idx] = int(math.Min(float64(count), float64(baseCounts[idx])))
 		}
 	}
 	var res []string
-	for ch, count := range baseCounts {
+	for idx, count := range baseCounts {
 		for i := 0; i < count; i++ {
-			res = append(res, string(rune(ch)))
+			res = append(res, string(rune(idx+'a')))
 		}
 	}
 	return res
 }
+
+/**
+字符串处理：
+如果是明确了字符串范围，不用记忆ASCII码，直接用【字符-'a'】即可得到各自的数组下标【0-25】。
+注意如果这时候将它们存入了数组，在遍历时拿出来就需要【下标+'a'】转换回字符(rune)。
+*/

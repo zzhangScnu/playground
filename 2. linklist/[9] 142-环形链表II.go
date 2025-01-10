@@ -33,8 +33,10 @@ package linklist
 //
 // 进阶：你是否可以使用 O(1) 空间解决此题？
 func detectCycle(head *ListNode) *ListNode {
-	dummyHead := &ListNode{Next: head}
-	slow, fast := dummyHead, dummyHead
+	if head == nil {
+		return nil
+	}
+	slow, fast := head, head
 	var joint *ListNode
 	for fast != nil && fast.Next != nil {
 		slow = slow.Next
@@ -47,10 +49,29 @@ func detectCycle(head *ListNode) *ListNode {
 	if joint == nil {
 		return nil
 	}
-	p, q := dummyHead.Next, joint
+	p, q := head, joint
 	for p != q {
 		p = p.Next
 		q = q.Next
 	}
 	return p
 }
+
+/**
+1. 复用141的思路，快慢指针相遇时，快指针一定比慢指针多走了几圈，设为k圈；
+2. 相遇的时候，快指针走的距离一定是慢指针的2倍；
+3. 相遇的时候，慢指针一定还没有走满一圈；
+4. 假设几个距离：
+	x: 起点 - 入环点
+	y: 入环点 - 相遇点
+	z: 相遇点 - 入环点
+则可以写出以下等式：
+环的长度 = y + z
+2 * (x + y) = x + y + k * (y + z)
+=> x + y = k * (y + z)
+=> x + y = (k - 1) * (y + z) + y + z
+=> x = (k - 1) * (y + z) + z
+当k = 1时，意味着快指针在环里多走了一圈，就能和慢指针相遇；当k > 1时，则意味着快指针多走了几圈。
+取k = 1，此时 x = z
+即，从链表头 / 相遇点开始，两个指针同时步进，最后再次相遇的节点，就是链表的入环点。
+*/
