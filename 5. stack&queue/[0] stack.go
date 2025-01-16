@@ -22,6 +22,9 @@ func (s *Stack) Pop() int {
 }
 
 func (s *Stack) Peek() int {
+	if len(s.data) == 0 {
+		return -1
+	}
 	return s.data[len(s.data)-1]
 }
 
