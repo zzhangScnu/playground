@@ -37,3 +37,8 @@ func partition(nums []int, beginIdx, endIdx int) int {
 合并排序算法：从下往上，先分解，再合并
 快速排序算法：从上往下，先分区，再分解
 */
+
+/**
+对pivot的移动，直接与slow交换，时间复杂度为O(1)，
+而不需要将slow及之后的元素逐个往后搬移一位，导致上升到O(n)
+*/
