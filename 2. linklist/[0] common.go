@@ -6,6 +6,7 @@ type ListNode struct {
 }
 
 type TwoWayListNode struct {
+	Key  int
 	Val  int
 	Next *TwoWayListNode
 	Pre  *TwoWayListNode

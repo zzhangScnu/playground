@@ -64,11 +64,23 @@ func (this *MyCircularTwoWayLinkedList) Get(index int) int {
 	return cur.Val
 }
 
-func (this *MyCircularTwoWayLinkedList) AddAtHead(val int) {
+func (this *MyCircularTwoWayLinkedList) GetNode(index int) *TwoWayListNode {
+	if this == nil || index < 0 || index >= this.Size {
+		return nil
+	}
+	cur := this.DummyHead
+	for i := 0; i < index+1; i++ {
+		cur = cur.Next
+	}
+	return cur
+}
+
+func (this *MyCircularTwoWayLinkedList) AddAtHead(key, val int) {
 	if this == nil {
 		return
 	}
 	newNode := &TwoWayListNode{
+		Key:  key,
 		Val:  val,
 		Next: this.DummyHead.Next,
 		Pre:  this.DummyHead,
@@ -78,11 +90,12 @@ func (this *MyCircularTwoWayLinkedList) AddAtHead(val int) {
 	this.Size++
 }
 
-func (this *MyCircularTwoWayLinkedList) AddAtTail(val int) {
+func (this *MyCircularTwoWayLinkedList) AddAtTail(key, val int) {
 	if this == nil {
 		return
 	}
 	newNode := &TwoWayListNode{
+		Key:  key,
 		Val:  val,
 		Pre:  this.DummyHead.Pre,
 		Next: this.DummyHead,
@@ -92,7 +105,7 @@ func (this *MyCircularTwoWayLinkedList) AddAtTail(val int) {
 	this.Size++
 }
 
-func (this *MyCircularTwoWayLinkedList) AddAtIndex(index int, val int) {
+func (this *MyCircularTwoWayLinkedList) AddAtIndex(index int, key, val int) {
 	if this == nil || index < 0 || index > this.Size {
 		return
 	}
@@ -101,6 +114,7 @@ func (this *MyCircularTwoWayLinkedList) AddAtIndex(index int, val int) {
 		cur = cur.Next
 	}
 	newNode := &TwoWayListNode{
+		Key:  key,
 		Val:  val,
 		Next: cur.Next,
 		Pre:  cur,
@@ -121,6 +135,18 @@ func (this *MyCircularTwoWayLinkedList) DeleteAtIndex(index int) {
 	cur.Next.Next.Pre = cur
 	cur.Next = cur.Next.Next
 	this.Size--
+}
+
+func (this *MyCircularTwoWayLinkedList) AddToTail(node *TwoWayListNode) {
+	node.Next = this.DummyHead
+	node.Pre = this.DummyHead.Pre
+	this.DummyHead.Pre.Next = node
+	this.DummyHead.Pre = node
+}
+
+func (this *MyCircularTwoWayLinkedList) RemoveNode(node *TwoWayListNode) {
+	node.Next.Pre = node.Pre
+	node.Pre.Next = node.Next
 }
 
 /**
