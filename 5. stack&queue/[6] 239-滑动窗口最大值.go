@@ -37,11 +37,11 @@ func maxSlidingWindow(nums []int, k int) []int {
 	for i := 0; i < k; i++ {
 		queue.Push(nums[i])
 	}
-	var res []int
+	res := []int{queue.GetMaxVal()}
 	for i := k; i < len(nums); i++ {
-		res = append(res, queue.GetMaxVal())
 		queue.Pop(nums[i-k])
 		queue.Push(nums[i])
+		res = append(res, queue.GetMaxVal())
 	}
 	return res
 }
@@ -51,28 +51,31 @@ type DescendingQueue struct {
 	capacity int
 }
 
-func (d DescendingQueue) GetMaxVal() int {
+func (d *DescendingQueue) GetMaxVal() int {
 	if len(d.data) == 0 {
 		return -1
 	}
 	return d.data[0]
 }
 
-func (d DescendingQueue) Pop(num int) {
+func (d *DescendingQueue) Pop(num int) {
 	if len(d.data) > 0 && d.data[0] == num {
 		d.data = d.data[1:]
 	}
 }
 
-func (d DescendingQueue) Push(num int) {
-	if len(d.data) < d.capacity {
-		d.data = append(d.data, num)
-		return
-	}
-	idx := len(d.data) - 1
-	for d.data[idx] <= num {
-		d.data = d.data[:idx]
-		idx--
+func (d *DescendingQueue) Push(num int) {
+	for len(d.data) > 0 && d.data[len(d.data)-1] < num {
+		d.data = d.data[:len(d.data)-1]
 	}
 	d.data = append(d.data, num)
 }
+
+/**
+维护一个单调队列，维护一组单调非递减的数据。队列方法自定义：
+1. GetMaxVal：获取队列中的最大值——通过窗口滑动+Pop+Push操作，队头即为最大元素；
+2. Push：放入新值——队列只维护在窗口中“可能成为最大值”的元素，所以在进入窗口的元素入列时，
+	要将前面所有比其【小】的元素都移除，因为它们在当前窗口内，不可能成为最大值；
+3. Pop：将头节点弹出——如果头节点值等于离开窗口的元素值，则真实操作弹出。
+	否则已经在之前被移除掉了，本次无需操作。
+*/
