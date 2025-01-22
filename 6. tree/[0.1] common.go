@@ -41,3 +41,39 @@ func (s *Stack) Size() int {
 func (s *Stack) IsEmpty() bool {
 	return len(s.nodes) == 0
 }
+
+type Queue struct {
+	nodes []*TreeNode
+}
+
+func NewQueue() *Queue {
+	return &Queue{[]*TreeNode{}}
+}
+
+func (q *Queue) Push(v *TreeNode) {
+	q.nodes = append(q.nodes, v)
+}
+
+func (q *Queue) Pop() *TreeNode {
+	if len(q.nodes) == 0 {
+		return nil
+	}
+	v := q.nodes[0]
+	q.nodes = q.nodes[1:]
+	return v
+}
+
+func (q *Queue) Peek() *TreeNode {
+	if len(q.nodes) == 0 {
+		return nil
+	}
+	return q.nodes[0]
+}
+
+func (q *Queue) Size() int {
+	return len(q.nodes)
+}
+
+func (q *Queue) IsEmpty() bool {
+	return len(q.nodes) == 0
+}
