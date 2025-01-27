@@ -61,5 +61,16 @@ func doCombinationSum3(beginIdx int, k int, remainTarget int) {
 }
 
 /**
-整体思路+剪枝
+候选集无重复，候选元素不可重复使用，结果集无重复。
+
+- 不重复选取候选元素：用beginIdx+1作为树枝深度生长的入参，从而在下一层中作为for循环选取元素的初始位置。即不包括本层处理的元素；
+- 全局变量：由于收集单条路径和收集所有结果集的变量都是全局变量，在每次主方法调用时都应清空；
+- 回溯操作：
+		combination = append(combination, i) // 考虑i，入i
+		doCombinationSum3(i+1, k, remainTarget-i) // remainTarget-i是隐形回溯，如果单独用变量承接，也需要先减再加
+		combination = combination[:len(combination)-1] // 不考虑i，弹出i，转而考虑i+1
+- 剪枝操作：
+  题目要求k个元素组合，所以当遍历到某些分支，单条路径的大小超过k，那就无需考虑了。
+  所以可以通过for循环结束选取元素的位置来控制，当单条路径大小为m时，最多还可以在长度为n的候选集中选取多少个元素，即候选集的扫描区间范围，
+  是[beginIdx, n-(k-m)+1]
 */

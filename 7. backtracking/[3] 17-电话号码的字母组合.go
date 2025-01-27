@@ -64,3 +64,7 @@ func doLetterCombinations(digitIdx int, digits string) {
 		letterPath = letterPath[:len(letterPath)-1]
 	}
 }
+
+/**
+用digitIdx控制树深，用i控制树宽。
+*/

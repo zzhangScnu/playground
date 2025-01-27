@@ -56,3 +56,12 @@ func doCombinationSum(beginIdx int, candidates []int, remainTarget int) {
 		combination = combination[:len(combination)-1]
 	}
 }
+
+/**
+无重复元素，候选元素可重复使用，结果集无重复。
+结果集没有长度限制。
+
+- 候选元素可重复使用：用doCombinationSum(i, ...) 来控制下一个元素的选取，仍然可以选到本元素；
+  这里好容易写成beginIdx，需要特别注意不要手滑；
+- 剪枝：可以先对候选元素进行整体排序，如果【单条路径当前的和 + 下一个候选元素 > 结果要求】，则无需考虑了。
+*/
