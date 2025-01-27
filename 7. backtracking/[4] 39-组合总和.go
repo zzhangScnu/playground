@@ -36,20 +36,23 @@ package backtracking
 func combinationSum(candidates []int, target int) [][]int {
 	combination = []int{}
 	combinations = [][]int{}
-	doCombinationSum(candidates, target)
+	doCombinationSum(0, candidates, target)
 	return combinations
 }
 
-func doCombinationSum(candidates []int, remainTarget int) {
+func doCombinationSum(beginIdx int, candidates []int, remainTarget int) {
+	if remainTarget < 0 {
+		return
+	}
 	if remainTarget == 0 {
 		res := make([]int, len(combination))
 		copy(res, combination)
 		combinations = append(combinations, res)
 		return
 	}
-	for i := 0; i < len(candidates); i++ {
+	for i := beginIdx; i < len(candidates); i++ {
 		combination = append(combination, candidates[i])
-		doCombinationSum(candidates, remainTarget-candidates[i])
+		doCombinationSum(i, candidates, remainTarget-candidates[i])
 		combination = combination[:len(combination)-1]
 	}
 }
