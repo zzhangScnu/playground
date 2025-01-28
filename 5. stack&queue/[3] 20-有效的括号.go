@@ -57,3 +57,26 @@ func isValid(s string) bool {
 	}
 	return rightCnt == 0 && stack.IsEmpty()
 }
+
+/*
+*
+在遇到左括号时，将对应的有括号入栈；
+那么在遇到右括号时，直接跟栈顶比较是否相等即可。
+*/
+func isValidII(s string) bool {
+	stack := Stack{}
+	for _, ch := range s {
+		if ch == '(' {
+			stack.Push(')')
+		} else if ch == '[' {
+			stack.Push(']')
+		} else if ch == '{' {
+			stack.Push('}')
+		} else if stack.IsEmpty() || int32(stack.Peek()) != ch {
+			return false
+		} else {
+			stack.Pop()
+		}
+	}
+	return stack.IsEmpty()
+}
