@@ -56,10 +56,38 @@ func maxDepth(root *TreeNode) int {
 */
 
 // 真·求最大深度-前序遍历法
+var maxDepthRes int
+
 func maxDepthPreorder(root *TreeNode) int {
+	maxDepthRes = 0
 	if root == nil {
-		return 0
+		return maxDepthRes
 	}
-	// todo: 需要结合回溯，先欠着后面再回来补
-	return -1
+	doMaxDepthPreorder(root, 1)
+	return maxDepthRes
 }
+
+func doMaxDepthPreorder(node *TreeNode, depth int) {
+	if node == nil {
+		return
+	}
+	if depth > maxDepthRes {
+		maxDepthRes = depth
+	}
+	if node.Left != nil {
+		doMaxDepthPreorder(node.Left, depth+1)
+	}
+	if node.Right != nil {
+		doMaxDepthPreorder(node.Right, depth+1)
+	}
+}
+
+/**
+体现回溯细节的完整写法：
+
+if node.Left != nil {
+	depth++
+	doMaxDepthPreorder(node.Left, depth)
+	depth--
+}
+*/
