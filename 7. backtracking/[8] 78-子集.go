@@ -31,16 +31,30 @@ func subsets(nums []int) [][]int {
 }
 
 func doSubsets(nums []int, beginIdx int) {
-	//tmp := make([]int, len(subset))
-	//copy(tmp, subset)
-	//subsetsRes = append(subsetsRes, tmp)
 	subsetsRes = append(subsetsRes, append([]int{}, subset...))
-	//if beginIdx >= len(nums) {
-	//	return
-	//}
 	for i := beginIdx; i < len(nums); i++ {
 		subset = append(subset, nums[i])
 		doSubsets(nums, i+1)
 		subset = subset[:len(subset)-1]
 	}
 }
+
+/**
+排列&分割问题：在叶子节点收割结果；
+子集问题：在每个节点都收割结果。
+*/
+
+/**
+- 由于子集不能出现重复，(1, 2)和(2, 1)相同，所以需要在for循环中用beginIdx控制起始位置；
+- 等价的拷贝数组写法：
+	tmp := make([]int, len(subset))
+	copy(tmp, subset)
+	subsetsRes = append(subsetsRes, tmp)
+	和
+	subsetsRes = append(subsetsRes, append([]int{}, subset...))
+- 结束条件：
+	if beginIdx >= len(nums) {
+		return
+	}
+  可以不写，因为本身i的范围就是[i, len(nums)-1]，不会发生数组越界情况。
+*/
