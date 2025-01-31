@@ -40,3 +40,10 @@ func subsetsWithDup(nums []int) [][]int {
 	doSubsetsWithDup(0)
 	return subsets
 }
+
+/**
+去重：均需提前排序
+方法1：i > beginIdx
+方法2：used局部变量-某节点下的同一层
+方法3：used全局变量-某节点下的子树
+*/
