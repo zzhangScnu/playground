@@ -67,3 +67,26 @@ func doBinaryTreePaths(node *TreeNode) {
 		}
 	  在处理完左孩子后，回到本层，需要将左孩子弹出。【递归-回溯】一定是成双成对的！
 */
+
+/**
+func doBinaryTreePaths(node *TreeNode) {
+	if node == nil {
+		return
+	}
+	path = append(path, strconv.Itoa(node.Val))
+	if node.Left == nil && node.Right == nil {
+		res = append(res, strings.Join(path, "->"))
+		// return
+	}
+	doBinaryTreePaths(node.Left)
+	doBinaryTreePaths(node.Right)
+	path = path[:len(path)-1]
+}
+
+两个特异点：
+1. 遇到叶子节点后，不return；
+2. 仅需处理一次回溯，弹出一次节点。
+因为这种写法是统一处理本层节点后，再分别处理左右孩子。
+不return是因为要在遍历左子树完成后，继续遍历右子树寻找结果。
+本层就是1个节点，自然只弹出一次元素。
+*/
