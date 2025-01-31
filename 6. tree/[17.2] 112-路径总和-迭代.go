@@ -1,5 +1,7 @@
 package tree
 
+import "container/list"
+
 // 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和
 // targetSum 。如果存在，返回 true ；否则，返回 false 。
 //
@@ -31,12 +33,33 @@ package tree
 // 树中节点的数目在范围 [0, 5000] 内
 // -1000 <= Node.val <= 1000
 // -1000 <= targetSum <= 1000
-func hasPathSum(root *TreeNode, targetSum int) bool {
+func hasPathSumIteratively(root *TreeNode, targetSum int) bool {
 	if root == nil {
 		return false
 	}
-	if root.Left == nil && root.Right == nil && targetSum == 0 {
-		return true
+	stack := list.New()
+	stack.PushBack(root)
+	for stack.Len() > 0 {
+		element := stack.Back()
+		stack.Remove(element)
+		node := element.Value.(*TreeNode)
+		if node.Left == nil && node.Right == nil && node.Val == targetSum {
+			return true
+		}
+		if node.Left != nil {
+			node.Left.Val += node.Val
+			stack.PushBack(node.Left)
+		}
+		if node.Right != nil {
+			node.Right.Val += node.Val
+			stack.PushBack(node.Right)
+		}
 	}
-	return hasPathSum(root.Left, targetSum-root.Val) || hasPathSum(root.Right, targetSum-root.Val)
+	return false
 }
+
+/**
+go标准库中的list提供了双向链表的实现，因其提供了双端的出/入方法，可作为栈使用。
+迭代的实现：手动模拟栈。
+在遍历树的过程中，将父节点的值累加到左右孩子节点上，从而通过判断叶子节点值和目标值的大小，就可以得出是否有路径存在。
+*/
