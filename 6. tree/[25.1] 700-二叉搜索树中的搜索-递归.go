@@ -32,3 +32,9 @@ func searchBST(root *TreeNode, val int) *TreeNode {
 	}
 	return searchBST(root.Right, val)
 }
+
+/**
+二叉搜索树性质：
+- 左子树最大值 < 根节点值 < 右节点最小值（而不是左、右孩子的值）；
+-【中序遍历】方式，遍历结果是单调递增的。
+*/

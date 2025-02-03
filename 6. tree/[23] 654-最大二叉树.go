@@ -34,8 +34,6 @@ package tree
 // 0 <= nums[i] <= 1000
 // nums 中的所有整数 互不相同
 
-var minVal = -1
-
 func constructMaximumBinaryTree(nums []int) *TreeNode {
 	return doConstructMaximumBinaryTree(nums, 0, len(nums)-1)
 }
@@ -44,7 +42,7 @@ func doConstructMaximumBinaryTree(nums []int, start, end int) *TreeNode {
 	if start > end {
 		return nil
 	}
-	var val int
+	val := -1
 	var pivot int
 	for i := start; i <= end; i++ {
 		if nums[i] > val {
@@ -57,3 +55,7 @@ func doConstructMaximumBinaryTree(nums []int, start, end int) *TreeNode {
 		Right: doConstructMaximumBinaryTree(nums, pivot+1, end),
 	}
 }
+
+/**
+最大值/最小值的记录，需要初始化为合适的值。
+*/

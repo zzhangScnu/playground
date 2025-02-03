@@ -1,4 +1,4 @@
-package tree
+package backtracking
 
 import "strings"
 
@@ -69,7 +69,7 @@ func convert(board [][]int) []string {
 
 func valid(row, col int, board [][]int) bool {
 	length := len(board)
-	for i := 0; i < length; i++ {
+	for i := 0; i < row; i++ {
 		if board[i][col] == 1 {
 			return false
 		}
@@ -86,3 +86,17 @@ func valid(row, col int, board [][]int) bool {
 	}
 	return true
 }
+
+/**
+- 棋盘初始化：
+  初始化一个int类型的二维数组，默认值就是0(没有放置皇后)，在收集结果时再转换为字符串。
+  而无需初始化[][]string并将每个单元格赋值为'.'。
+- 结束条件：
+  n皇后，即棋盘长宽均为n。游标从0-8行依次尝试放置。
+  当游标 == n时，意味着所有行已经尝试完成，故找到了一种放置方式。
+  且递归深度 == for循环嵌套数，假如解决4皇后问题，需要对每层都写一个for循环，即4层，所以递归深度应该也为4。
+- 合法性校验：
+  仅需判断当前尝试放置位置与已放置皇后是否冲突，即列、斜左上、斜右上，
+  因为单层逻辑中只选取同行中的某一个元素进行尝试，所以无需校验同行中放置多个导致冲突的情况。
+- strings.Builder重复使用：Reset()
+*/

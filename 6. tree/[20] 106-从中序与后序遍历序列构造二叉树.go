@@ -44,3 +44,21 @@ func doBuildTreeByInPost(inorder []int, inStart, inEnd int, postorder []int, pos
 		Right: doBuildTreeByInPost(inorder, pivot+1, inEnd, postorder, postEnd-(inEnd-pivot), postEnd-1),
 	}
 }
+
+/**
+划分子树：
+- 方法1：真实切割数组，参数中只传递inorder和postorder；
+  终止条件：postorder长度为1时，表示已到叶子节点，直接构造并返回；
+- 方法2：不更改数组，参数中需要传递数组及其起始&终止索引。
+  终止条件：postStart > postEnd，表示已到叶子节点下一层的空节点，直接返回nil。
+
+方法2细节：
+1. 用postorder不断取最后一个元素，确定子树根节点的值val；
+2. 用val在inorder中划分左右子树范围size；
+3. 用size在postorder中划分左右子树范围，从而可以回到1再次执行。
+*/
+
+/**
+pre+in / post+in都可以唯一确定一棵树，因为通过pre / post确定子树根节点后，可以用in来划分左右子树范围。
+而pre + post做不到。
+*/
