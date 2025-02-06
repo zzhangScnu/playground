@@ -43,3 +43,14 @@ func doMergeTrees(node1, node2 *TreeNode) *TreeNode {
 		Right: doMergeTrees(node1.Right, node2.Right),
 	}
 }
+
+/**
+前/中/后序都可以；
+base case：
+	if node1 == nil {
+		return node2 // node2为nil也可以
+	}
+	if node2 == nil {
+		return node1 // node1为nil也可以
+	}
+*/
