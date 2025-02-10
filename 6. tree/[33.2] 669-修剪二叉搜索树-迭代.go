@@ -22,25 +22,39 @@ package tree
 // 树中每个节点的值都是 唯一 的
 // 题目数据保证输入是一棵有效的二叉搜索树
 // 0 <= low <= high <= 10⁴
-func trimBST(root *TreeNode, low int, high int) *TreeNode {
-	if root == nil {
-		return nil
+func trimBSTIteratively(root *TreeNode, low int, high int) *TreeNode {
+	for root != nil && (root.Val < low || root.Val > high) {
+		if root.Val < low {
+			root = root.Right
+		} else {
+			root = root.Left
+		}
 	}
-	if root.Val < low {
-		return trimBST(root.Right, low, high)
-	} else if root.Val > high {
-		return trimBST(root.Left, low, high)
+	cur := root
+	for cur != nil {
+		for cur.Left != nil && cur.Left.Val < low {
+			cur.Left = cur.Left.Right
+		}
+		cur = cur.Left
 	}
-	root.Left = trimBST(root.Left, low, high)
-	root.Right = trimBST(root.Right, low, high)
+	cur = root
+	for cur != nil {
+		for cur.Right != nil && cur.Right.Val > high {
+			cur.Right = cur.Right.Left
+		}
+		cur = cur.Right
+	}
 	return root
 }
 
 /**
-单层处理逻辑：
-base case：叶子节点，直接返回；
-- 删除节点：
-  - 节点值 < 区间左侧：说明【左子树 + 本节点】都需要移除，直接返回处理后的符合要求的右子树；
-  - 节点值 > 区间左侧：说明【本节点 + 右子树】都需要移除，直接返回处理后的符合要求的左子树。
-处理本节点后，再递归处理左子树和右子树，接住处理后的孩子。
+将根节点先挪到区间内，再分别修改左右子树。
+
+cur := root
+for cur != nil {
+	for cur.Left != nil && cur.Left.Val < low { // 注意这里是for，需要将cur.Left调整到满足区间条件
+		cur.Left = cur.Left.Right
+	}
+	cur = cur.Left // 再进入左孩子，开始下一轮修剪循环
+}
 */
