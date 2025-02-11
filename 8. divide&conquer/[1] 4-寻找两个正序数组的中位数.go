@@ -27,22 +27,35 @@ import "math"
 // 1 <= m + n <= 2000
 // -10⁶ <= nums1[i], nums2[i] <= 10⁶
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	if len(nums1) == 0 && len(nums2) == 0 {
+		return 0
+	}
 	shorter, longer := nums1, nums2
 	if len(nums1) > len(nums2) {
 		shorter, longer = nums2, nums1
 	}
 	total := len(shorter) + len(longer)
 	half := (total + 1) / 2
+
+	// 处理 shorter 为空的边界条件
+	if len(shorter) == 0 {
+		if total%2 == 1 {
+			return float64(longer[half-1])
+		}
+		return float64(longer[half-1]+longer[half]) / 2.0
+	}
+
 	low, high := 0, len(shorter)-1
 	for {
 		mid := low + (high-low)/2
 		shorterIdx, longerIdx := mid, half-mid-2
 
+		// 处理 shorter 越界的情况（关键修正）
 		shorterLeft, shorterRight := math.MinInt, math.MaxInt
-		if shorterIdx >= 0 {
+		if shorterIdx >= 0 && shorterIdx < len(shorter) {
 			shorterLeft = shorter[shorterIdx]
 		}
-		if shorterIdx+1 < len(shorter) {
+		if shorterIdx+1 >= 0 && shorterIdx+1 < len(shorter) {
 			shorterRight = shorter[shorterIdx+1]
 		}
 
@@ -56,10 +69,9 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 
 		if shorterLeft <= longerRight && longerLeft <= shorterRight {
 			if total%2 == 1 {
-				return float64(max(shorterLeft, longerLeft)) // 修正点2：返回左半部分的最大值
-			} else {
-				return float64(max(shorterLeft, longerLeft)+min(shorterRight, longerRight)) / 2.0
+				return float64(max(shorterLeft, longerLeft))
 			}
+			return float64(max(shorterLeft, longerLeft)+min(shorterRight, longerRight)) / 2.0
 		} else if shorterLeft > longerRight {
 			high = mid - 1
 		} else {
