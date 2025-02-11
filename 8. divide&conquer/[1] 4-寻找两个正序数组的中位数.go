@@ -32,29 +32,33 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 		shorter, longer = nums2, nums1
 	}
 	total := len(shorter) + len(longer)
-	half := total / 2
+	half := (total + 1) / 2
 	low, high := 0, len(shorter)-1
-	for low <= high {
+	for {
 		mid := low + (high-low)/2
 		shorterIdx, longerIdx := mid, half-mid-2
-		shorterLeft, shorterRight, longerLeft, longerRight := math.MinInt, math.MaxInt, math.MinInt, math.MaxInt
+
+		shorterLeft, shorterRight := math.MinInt, math.MaxInt
 		if shorterIdx >= 0 {
 			shorterLeft = shorter[shorterIdx]
 		}
 		if shorterIdx+1 < len(shorter) {
 			shorterRight = shorter[shorterIdx+1]
 		}
+
+		longerLeft, longerRight := math.MinInt, math.MaxInt
 		if longerIdx >= 0 {
 			longerLeft = longer[longerIdx]
 		}
 		if longerIdx+1 < len(longer) {
 			longerRight = longer[longerIdx+1]
 		}
+
 		if shorterLeft <= longerRight && longerLeft <= shorterRight {
-			if total%2 == 0 {
-				return math.Min(float64(shorterRight), float64(longerRight))
+			if total%2 == 1 {
+				return float64(max(shorterLeft, longerLeft)) // 修正点2：返回左半部分的最大值
 			} else {
-				return (math.Max(float64(shorterLeft), float64(longerLeft)) + math.Min(float64(shorterRight), float64(longerRight))) / float64(2)
+				return float64(max(shorterLeft, longerLeft)+min(shorterRight, longerRight)) / 2.0
 			}
 		} else if shorterLeft > longerRight {
 			high = mid - 1
@@ -62,5 +66,4 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 			low = mid + 1
 		}
 	}
-	return -1
 }
