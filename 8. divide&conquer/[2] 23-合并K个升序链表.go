@@ -83,5 +83,6 @@ func merge2Lists(l1, l2 *ListNode) *ListNode {
 }
 
 /**
-
- */
+归并思想：
+不断两两合并，直到结果集仅剩一个链表。
+*/

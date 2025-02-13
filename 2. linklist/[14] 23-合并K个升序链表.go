@@ -87,3 +87,23 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	}
 	return dummyHead.Next
 }
+
+/**
+有几个注意点：
+
+container/heap接口的实现：
+1. Swap：应交换节点，而不是简单交换Val；
+2. Less：无需判断数组越界，底层实现保证入参索引合法；
+3. Pop：底层实现会先将堆头、堆尾交换，调用Pop后再重新堆化。所以Pop的实现返回堆尾数据并缩容即可。
+
+container/heap接口的使用：
+1. heap.Init：在使用前要调用，目的是堆的初始化；
+2. heap.Push：入堆并堆化。而不是直接调用minHeap的Pop；
+3. heap.Pop：出堆并堆化。而不是直接调用heap.Pop()。
+*/
+
+/**
+第一次实现：想将所有链表中的所有节点都入堆，再依次出堆组成新的链表；
+但更好的思路是，将【非空】的链表头节点入堆，
+再边出堆边将下一个非空节点入堆。
+*/
