@@ -48,3 +48,15 @@ func majorityElement(nums []int) int {
 	}
 	return res
 }
+
+/**
+思路1：
+使用map记录每个元素出现的频率，边计数边更新最大值。
+
+思路2：
+仅用2个常量，记录【最大值】res和【出现频率】cnt。
+cnt == 0：更新res；
+num == res：当前遍历的元素 == 记录的最大值，递增cnt；
+num != res：递减cnt。
+到最后记录的res，在加加减减的厮杀中存活下来的，一定是出现次数超过半数的。
+*/
