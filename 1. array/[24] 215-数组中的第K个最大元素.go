@@ -48,8 +48,6 @@ func partition(nums []int, beginIdx, endIdx int) int {
 	return slow
 }
 
-// 印象中以前的我貌似是用堆来做的额
-
 /**
 结合快排思想：本质又是抽象f(x)的二分查找
 */
