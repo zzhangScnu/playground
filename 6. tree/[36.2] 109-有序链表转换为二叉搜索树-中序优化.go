@@ -61,3 +61,29 @@ func doSortedListToBSTInorderByPointer(head **ListNode, start, end int) *TreeNod
 	node.Left, node.Right = left, right
 	return node
 }
+
+/**
+结合【二叉搜索树中序遍历 -> 有序序列】的特性，可以一遍进行中序遍历，一遍构建二叉搜索树。
+构造一个值为空的节点 -> 递归处理左子树 -> 回到根节点 -> 递归处理右子树，
+每处理一个节点，链表的指针就向前移动一位，那么在处理树的中节点的时候，链表指针一定指向有序序列中该中节点的值。
+
+注意：
+对于Go来说，参数的传递均为值传递。
+所以sortedListToBSTInorder(head *ListNode)，传入的head是链表指针head的地址的拷贝。在方法中修改head，实际上不会影响原本的head。
+解决方案：
+1. 全局变量：sortedListToBSTInorder
+2. 传入指针地址的地址：doSortedListToBSTInorderByPointer(head **ListNode, start, end int)
+*/
+
+/**
+结合【二叉搜索树中序遍历 -> 有序序列】的特性，可以一遍进行中序遍历，一遍构建二叉搜索树。
+构造一个值为空的节点 -> 递归处理左子树 -> 回到根节点 -> 递归处理右子树，
+每处理一个节点，链表的指针就向前移动一位，那么在处理树的中节点的时候，链表指针一定指向有序序列中该中节点的值。
+
+注意：
+对于Go来说，参数的传递均为值传递。
+所以sortedListToBSTInorder(head *ListNode)，传入的head是链表指针head的地址的拷贝。在方法中修改head，实际上不会影响原本的head。
+解决方案：
+1. 全局变量：sortedListToBSTInorder
+2. 传入指针地址的地址：doSortedListToBSTInorderByPointer(head **ListNode, start, end int)
+*/

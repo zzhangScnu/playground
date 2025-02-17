@@ -70,5 +70,23 @@ func largestSumAfterKNegations(nums []int, k int) int {
 }
 
 /**
-局部和全局最优分别是？
+局部最优：尽可能将【绝对值大的负数】和【绝对值小的正数】取反；
+全局最优：数组和最大。
+
+实现sort.Interface后，可以使用sort.Sort(Num(nums))按自定义规则排序。
+
+这种做法实际上无法更新num的值，因为for range会持有一个固定地址的局部遍历num，在每轮遍历开始的时候，将nums[i]赋值到num上。
+for _, num := range nums {
+	if num < 0 && k > 0 {
+		num *= -1
+		k--
+	}
+}
+
+如果处理完所有负数后，k的余额有剩，则反复操作最小的正数，nums[len(nums)-1]*(-1)*k 。
+若k -> 偶数：结果仍等于原值；
+若k -> 奇数：结果等于原值*(-1)。
+if k > 0 && k%2 == 1 {
+	nums[len(nums)-1] *= -1
+}
 */

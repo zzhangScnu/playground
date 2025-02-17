@@ -51,3 +51,8 @@ func findMiddle(head, tail *ListNode) *ListNode {
 	}
 	return slow
 }
+
+/**
+跟23一样，先切分直至剩余单个节点，触底回溯时再合并链表。
+注意当head.Next == tail时，需要将head.Next置为nil，否则在调用merge2Lists时会陷入无限循环。
+*/

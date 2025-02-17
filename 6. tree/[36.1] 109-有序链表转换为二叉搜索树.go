@@ -44,3 +44,13 @@ func findMiddle(head, tail *ListNode) *ListNode {
 	}
 	return slow
 }
+
+/**
+分治法。
+因为二叉搜索树的中序遍历结果就是有序序列，所以可以：
+每次先找到链路中点，作为根节点，再用[head, mid)和[mid+1, tail)递归构建左右子树。
+
+所以
+- 主方法中tail传入的是nil，表示链表结尾的后一个节点；
+- 构建子树时，当head == tail即返回nil，因为对于左开右闭区间来说，此时区间内没有可用元素。
+*/
