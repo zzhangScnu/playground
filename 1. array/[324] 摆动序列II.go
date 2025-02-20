@@ -30,3 +30,5 @@ func wiggleSort(nums []int) {
 		}
 	}
 }
+
+// 这个解法，仅能解决280，即nums[0] <= nums[1] >= nums[2] <= nums[3]... 的情况。
