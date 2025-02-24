@@ -43,13 +43,10 @@ func findTargetSumWays(nums []int, target int) int {
 		if target < 0 {
 			return
 		}
-		if start == len(nums) {
-			if target == 0 {
-				tmp := make([]int, len(path))
-				copy(tmp, path)
-				res = append(res, tmp)
-			}
-			return
+		if target == 0 {
+			tmp := make([]int, len(path))
+			copy(tmp, path)
+			res = append(res, tmp)
 		}
 		for i := start; i < len(nums); i++ {
 			path = append(path, nums[i])
@@ -71,5 +68,17 @@ func findTargetSumWays(nums []int, target int) int {
 }
 
 /**
+用等式处理一下要求的值，转换为组合总和题目。
 有重复元素，但不能重复选同一个。
+需要注意的是，一开始写的base case是：
+if start == len(nums) {
+	if target == 0 {
+		tmp := make([]int, len(path))
+		copy(tmp, path)
+		res = append(res, tmp)
+	}
+	return
+}
+是有问题的，因为索引不一定要遍历完候选集才能找到一组满足和为(sum + target) / 2的组合，后面有些元素也许不选也能满足条件。
+而且收集元素后也不能return，因为后面还有可能性，需要继续向后递归。
 */

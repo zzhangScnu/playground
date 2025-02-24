@@ -1,8 +1,6 @@
 package backtracking
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // 给你一个非负整数数组 nums 和一个整数 target 。
 //
@@ -35,14 +33,9 @@ import (
 // 0 <= sum(nums[i]) <= 1000
 // -1000 <= target <= 1000
 func findTargetSumWaysII(nums []int, target int) int {
-	memo := make(map[string]int)
 	var cnt int
 	var traverse func(nums []int, index, sum int)
 	traverse = func(nums []int, index, sum int) {
-		key := strconv.Itoa(index) + "/" + strconv.Itoa(sum)
-		if val, ok := memo[key]; ok {
-			return
-		}
 		if index == len(nums) {
 			if sum == target {
 				cnt++
@@ -56,6 +49,30 @@ func findTargetSumWaysII(nums []int, target int) int {
 	return cnt
 }
 
+func findTargetSumWaysWithMemo(nums []int, target int) int {
+	memo := make(map[string]int)
+	var traverse func(nums []int, index, sum int) int
+	traverse = func(nums []int, index, sum int) int {
+		key := strconv.Itoa(index) + "/" + strconv.Itoa(sum)
+		if val, ok := memo[key]; ok {
+			return val
+		}
+		if index == len(nums) {
+			if sum == target {
+				return 1
+			}
+			return 0
+		}
+		res := traverse(nums, index+1, sum+nums[index]) + traverse(nums, index+1, sum-nums[index])
+		memo[key] = res
+		return res
+	}
+	return traverse(nums, 0, 0)
+}
+
 /**
-备忘录怎么加？？
+这种解法跟16.1的解法不一样的是，真的在每个元素前面尝试加上"+"或"-"，再看表达式计算结果是否满足题目中给的target。
+所以需要索引遍历到候选集末尾，再来收集结果。且收集完后，后面已经没有可用元素了，需要直接返回，而不是继续向下递归。
+
+备忘录的解法，多数需要递归函数有返回值，通过查找备忘录来提前获取&返回此次计算结果。
 */

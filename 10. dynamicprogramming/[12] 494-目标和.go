@@ -89,6 +89,13 @@ DP数组及下标含义
 取当前元素i有几种方式：dp[i][j-nums[i]]
 dp[i][j] = dp[i-1][j] + dp[i][j-nums[i]]
 
+终止条件
+if (sum+target)%2 == 1 || sum < int(math.Abs(float64(target))) {
+	return 0
+}
+(sum+target)%2 == 1：无法整除，代入几个数字可验证无解；
+sum < int(math.Abs(float64(target)))：非负候选集的总和都凑不到target的绝对值，表示不可能有结果。
+
 遍历方向
 从左往右、由上至下。
 
