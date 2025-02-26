@@ -21,14 +21,14 @@ import "strings"
 // * 输出：2
 // * 解释：最大的子集是 {"0", "1"} ，所以答案是 2 。
 func findMaxForm(strs []string, m int, n int) int {
-	dp := make([][]int, m)
+	dp := make([][]int, m+1)
 	for i := 0; i < len(dp); i++ {
-		dp[i] = make([]int, n)
+		dp[i] = make([]int, n+1)
 	}
 	for _, str := range strs {
 		cnt0, cnt1 := strings.Count(str, "0"), strings.Count(str, "1")
-		for j := m; j >= cnt0; j++ {
-			for k := n; k >= cnt1; j++ {
+		for j := m; j >= cnt0; j-- {
+			for k := n; k >= cnt1; k-- {
 				dp[j][k] = max(dp[j][k], dp[j-cnt0][k-cnt1]+1)
 			}
 		}
