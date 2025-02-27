@@ -31,5 +31,31 @@ package dynamicprogramming
 // s 和 wordDict[i] 仅由小写英文字母组成
 // wordDict 中的所有字符串 互不相同
 func wordBreak(s string, wordDict []string) bool {
-
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+	for j := 1; j <= len(s); j++ {
+		for i := 0; i < len(wordDict); i++ {
+			if j >= len(wordDict[i]) {
+				dp[j] = dp[j] || dp[j-len(wordDict[i])] && wordDict[i] == s[j-len(wordDict[i]):j]
+			}
+		}
+	}
+	return dp[len(s)]
 }
+
+/**
+DP数组及下标含义
+- j：字符串长度为j，即背包容量为j；
+- dp[j]：对物品[0, i]取/不取时，目标字符串长度为j时，是否可以被字典中的子串凑成。
+
+递推公式
+dp[j] = dp[j-len(wordDict[i])] && wordDict[i] == s[j-len(wordDict[i]):j+1]
+
+初始化
+dp[0] = true
+实际没有意义，只是为了正确递推。
+
+推导方向
+背包和物品都是从小到大遍历；
+由于本题是求排列，顺序敏感，所以需要先遍历背包再遍历物品。
+*/
