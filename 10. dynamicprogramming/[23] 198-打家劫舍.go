@@ -26,6 +26,12 @@ package dynamicprogramming
 // 1 <= nums.length <= 100
 // 0 <= nums[i] <= 400
 func rob(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	if len(nums) == 1 {
+		return nums[0]
+	}
 	n := len(nums)
 	dp := make([]int, n)
 	dp[0], dp[1] = nums[0], max(nums[0], nums[1])
@@ -52,4 +58,6 @@ dp[i-1]：不偷当前房屋，考虑第i-1间房屋的偷盗金额。
 dp[0] = nums[0], dp[1] = max(dp[0], nums[1])
 
 推导方向：从左到右
+
+要注意因为递推公式有i-2的操作，所以需要保证输入数组长度>=2，防止越界。
 */
