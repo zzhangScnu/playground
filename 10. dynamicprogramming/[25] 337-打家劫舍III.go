@@ -35,7 +35,7 @@ func doRobIII(cur *TreeNode) (int, int) {
 	}
 	dpL0, dpL1 := doRobIII(cur.Left)
 	dpR0, dpR1 := doRobIII(cur.Right)
-	res0 := max(dpL0, dpL1) + max(dpL1, dpR1)
+	res0 := max(dpL0, dpL1) + max(dpR0, dpR1)
 	res1 := dpL0 + dpR0 + cur.Val
 	return res0, res1
 }
