@@ -34,7 +34,7 @@ package greedy
 func maxProfit(prices []int) int {
 	var profit int
 	for i := 1; i < len(prices); i++ {
-		profit = max(0, prices[i]-prices[i-1])
+		profit += max(0, prices[i]-prices[i-1])
 	}
 	return profit
 }
