@@ -35,10 +35,17 @@ func maxProfitVII(prices []int, fee int) int {
 	for i := 0; i < n; i++ {
 		dp[i] = make([]int, 2)
 	}
-	dp[0][0], dp[0][1] = -fee, -prices[0]
+	dp[0][0], dp[0][1] = 0, -prices[0]
 	for i := 1; i < n; i++ {
 		dp[i][0] = max(dp[i-1][1]+prices[i]-fee, dp[i-1][0])
 		dp[i][1] = max(dp[i-1][0]-prices[i], dp[i-1][1])
 	}
 	return dp[n-1][0]
 }
+
+/**
+跟多次买卖股票几乎一样，只是多了手续费。
+买入/卖出扣减手续费均可，只是要在初始化时关注赋为不同的值。
+
+一开始将dp[0][0]赋值为-fee，但是应将dp[0][0]理解为不持有状态，即尚未有交易发生，自然应初始化为0。
+*/

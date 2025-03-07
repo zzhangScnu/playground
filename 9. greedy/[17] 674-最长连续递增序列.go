@@ -1,4 +1,4 @@
-package dynamicprogramming
+package greedy
 
 // 给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
 //
@@ -23,27 +23,22 @@ package dynamicprogramming
 // 1 <= nums.length <= 10⁴
 // -10⁹ <= nums[i] <= 10⁹
 func findLengthOfLCIS(nums []int) int {
-	n := len(nums)
-	dp := make([]int, n)
-	for i := range dp {
-		dp[i] = 1
-	}
-	res := dp[0]
-	for i := 1; i < n; i++ {
+	res, count := 1, 1
+	for i := 1; i < len(nums); i++ {
 		if nums[i] > nums[i-1] {
-			dp[i] = dp[i-1] + 1
+			count++
+		} else {
+			count = 1
 		}
-		if dp[i] > res {
-			res = dp[i]
+		if count > res {
+			res = count
 		}
 	}
 	return res
 }
 
 /**
-因为这里是最长连续递增序列，所以只需要一个for循环，控制nums[i]和nums[i-1]的比较。
-且当nums[i] > nums[i-1]时，直接更新dp[i]即可，不需要取dp[i]和dp[i+1]+1的较大者。
-而在300-最长递增子序列中，由于不要求连续，[0, i]中的子序列可能有非常多种情况，需要取其中的最大值更新到dp[i]上，
-而本题只会有一种可能。
-本题中如果连续子序列中断了，会再次从1开始计数(dp[i]均初始化为1)，且不断尝试更新res。
+贪心解法：
+用一个count记录当前连续递增序列的长度，若是中断了就再次从1开始计数；
+在过程中不断尝试更新res。
 */
