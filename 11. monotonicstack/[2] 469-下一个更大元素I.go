@@ -43,17 +43,16 @@ func nextGreaterElement(nums1 []int, nums2 []int) []int {
 	for i := 0; i < len(nums1); i++ {
 		res[i] = -1
 	}
-	st := make([]int, len(nums2))
-	st[0] = 0
+	st := []int{0}
 	for i := 1; i < len(nums2); i++ {
 		if nums2[i] <= nums2[st[len(st)-1]] {
 			st = append(st, i)
 		} else {
 			for len(st) > 0 && nums2[i] > nums2[st[len(st)-1]] {
 				if posInNums1, ok := posMap[nums2[st[len(st)-1]]]; ok {
-					res[posInNums1] = i
+					res[posInNums1] = nums2[i]
 				}
-				st = st[:len(nums2)-1]
+				st = st[:len(st)-1]
 			}
 			st = append(st, i)
 		}

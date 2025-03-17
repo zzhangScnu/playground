@@ -29,15 +29,14 @@ func nextGreaterElements(nums []int) []int {
 	for i := 0; i < size; i++ {
 		res[i] = -1
 	}
-	var st []int
-	st[0] = 0
+	st := []int{0}
 	for i := 1; i < size*2; i++ {
 		if nums[i%size] <= nums[st[len(st)-1]] {
 			st = append(st, i%size)
 		} else {
 			for len(st) > 0 && nums[i%size] > nums[st[len(st)-1]] {
-				res[st[len(st)-1]] = i % size
-				st = st[:size-1]
+				res[st[len(st)-1]] = nums[i%size]
+				st = st[:len(st)-1]
 			}
 			st = append(st, i%size)
 		}
