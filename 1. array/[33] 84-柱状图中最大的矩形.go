@@ -20,5 +20,55 @@ package array
 // 1 <= heights.length <=10⁵
 // 0 <= heights[i] <= 10⁴
 func largestRectangleArea(heights []int) int {
-	return 0
+	n := len(heights)
+	left, right := make([]int, n), make([]int, n)
+	left[0], right[n-1] = -1, n
+	for i := 1; i < n; i++ {
+		j := i - 1
+		for j >= 0 && heights[j] >= heights[i] {
+			j = left[j]
+		}
+		left[i] = j
+	}
+	for i := n - 1; i >= 0; i-- {
+		j := i + 1
+		for j < n && heights[j] >= heights[i] {
+			j = right[j]
+		}
+		right[i] = j
+	}
+	var res int
+	for i := 0; i < n; i++ {
+		area := heights[i] * (right[i] - left[i] - 1)
+		res = max(res, area)
+	}
+	return res
 }
+
+/**
+思路：
+在暴力的思路上进行优化。
+暴力的思路是，对于每一根柱子，向两侧扩展。最先遇到的比其高度小的柱子 -> 左开右开区间的两端，区间围成矩形，进行计算。
+备忘录优化的思路是，对于每一根柱子，先进行预处理。用2个O(n)的for循环，分别计算出每根柱子左边和右边第一个比其高度小的柱子，并存储在两个O(n)的数组left、right中。
+最后再用一个O(n)的for循环，计算出每根柱子的面积。
+
+思路跟接雨水的双指针解法类似，但有些许不同。
+
+接雨水：对每个宽度为1的柱子求竖直方向上的雨水面积。无需考虑横向区间范围，所以left、right中仅需存储目标柱子的高度，即height数组中的元素。
+本题：不仅要求矩形的高(当前柱子的高度)，还要求矩形的宽(左右两侧柱子间的距离，左开右开)。所以left、right中需要存储的是柱子的位置，即height数组中的元素索引。
+
+接雨水：组成凹槽的区间是左闭右闭的——所以区间左右两端可以初始化为height[0]和height[n - 1]。
+	在遍历的过程中，【当前值】与【先前的最大值】比较并尝试更新。
+	即left和right维护着对于每一个i来说，左侧和右侧的全局最大值。
+	如当前为i，若left[i] = min(left[i - 1], height[i])，right[i] = min(right[i + 1], height[i])。
+本题：组成矩形的区间是左开右开的——如[5]，5的矩形区间为(-1, 1)，索引为0的柱子独立组成矩形。所以区间左右两端需要初始化为-1和n。
+	在遍历的过程中，不能直接用left[i - 1]和height[i]进行比较取值，因为目的不是求全局最小值，而是求【左侧第一个比当前柱子高度小的柱子】和【右侧第一个比当前柱子高度小的柱子】。
+	对于每一个i，都需要重新向左右两侧遍历来定位。
+
+寻找的优化：
+逐个遍历 -> 跳跃定位
+
+为什么right的预处理要从右到左？
+因为right[i]，即i右侧第一个比当前柱子高度小的柱子，可以通过right[i - 1]来跳跃定位。
+即依赖于[i+1, n-1]的值，所以需要从后往前处理。
+*/
