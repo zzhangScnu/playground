@@ -44,7 +44,7 @@ func validMountainArray(arr []int) bool {
 		}
 	}
 	return true
-} // todo: 简单的上升下降
+}
 
 func validMountainArrayTwoPointer(arr []int) bool {
 	n := len(arr)
@@ -56,4 +56,21 @@ func validMountainArrayTwoPointer(arr []int) bool {
 		right--
 	}
 	return left == right && left != 0 && right != n-1
-} // todo：   return (left-1 == right+1) && left != 1 && right != n-2
+}
+
+/**
+思路一：for循环从左到右
+其实可以在validMountainArray的基础上精简，仅使用一个游标，指定循环条件，遍历数组。
+如果循环结束时，游标到达尾部，说明满足上升&下降趋势。
+
+思路二：双指针从外向内
+如果左右指针在中间相遇，说明左指针走过的路径均为上升，右指针走过的路径均为下降。
+注意点：
+1. 如果左指针在最左，说明全为下降；右指针在最右，说明全为上升；
+2. 如果left = 0，left跟left+1比较，则left最终会停留在至高点；
+   同理，right = n-1，right跟right-1比较，则right最终会停留在至高点。
+   所以判断条件是left == right；
+   如果left = 1，left跟left-1比较，则left最终会停留在至高点+1，因为满足上升的最后一次循环中，left会+1；
+   同理，如果right = n-2，right跟right+1比较，则right最终会停留在至高点-1，因为满足下降的最后一次循环中，right会-1；
+   所以判断条件是left - 1 == right + 1。
+*/

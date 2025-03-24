@@ -41,7 +41,7 @@ func rotate(nums []int, k int) {
 		from = to
 		times++
 	}
-} // todo：循环
+}
 
 func rotateII(nums []int, k int) {
 	n := len(nums)
@@ -56,3 +56,19 @@ func rotateIII(nums []int, k int) {
 	slices.Reverse(nums[:k])
 	slices.Reverse(nums[k:])
 }
+
+/**
+思路一：
+将后半截数组拼接到前半截数组前面。
+
+思路二：
+转换为多次反转数组。
+
+为什么方法一rotate不行？
+有些case会导致在几个数字之间循环跳跃，无法处理其他元素。
+
+rotateII和III为什么一个用n-k，一个用k？
+本质上是数据移动方向的不同。
+截断&拼接的方式，是将后k个元素移动到左侧，将前n-k个元素移动到右侧；
+多次反转的方式，是分别反转k两侧的元素。
+*/

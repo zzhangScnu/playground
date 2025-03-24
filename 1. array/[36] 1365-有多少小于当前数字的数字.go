@@ -35,7 +35,7 @@ import "slices"
 // 0 <= nums[i] <= 100
 func smallerNumbersThanCurrent(nums []int) []int {
 	n := len(nums)
-	sorted := make([]int, n) // todo: 一定要指定长度初始化！
+	sorted := make([]int, n)
 	copy(sorted, nums)
 	slices.Sort(sorted)
 	numPosMap := make(map[int]int)
@@ -63,3 +63,17 @@ func smallerNumbersThanCurrentII(nums []int) []int {
 	}
 	return nums
 }
+
+/*
+思路一：排序 + HashMap
+1. 对原始数组进行升序排序；
+2. 倒序遍历排序后的数组，用map记录每个数字的下标。目的：
+  - 记录升序数组中的【元素：索引】映射，本质上是记录有多少元素小于当前元素；
+  - 倒序：最后一次出现的数字，一定相对位置最靠左的，满足了【小于】条件，即更左的元素都更小，而不是【小于等于】。
+注意对数组进行copy前，一定要记得初始化目标数组长度。
+其实本质也是一种前缀和的做法。
+
+思路二：前缀和数组
+1. 由于题目给定数据范围，可以初始化一个数组作为哈希表；
+2. 记录每个元素出现次数，由于前缀和数组下标有序，结果天然就是升序的。
+*/
