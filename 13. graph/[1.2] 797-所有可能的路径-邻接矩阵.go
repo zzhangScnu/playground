@@ -45,7 +45,7 @@ func allPathsSourceTargetByAdjacencyMatrix(graph [][]int) [][]int {
 		}
 	}
 	path = append(path, 0)
-	traverse(matrix, 1, len(graph)-1)
+	traverse(matrix, 0, len(graph)-1)
 	return result
 }
 

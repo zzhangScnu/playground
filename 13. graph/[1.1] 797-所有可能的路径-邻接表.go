@@ -26,8 +26,8 @@ package graph
 func allPathsSourceTargetByAdjacencyList(graph [][]int) [][]int {
 	var path []int
 	var result [][]int
-	var traverse func(matrix [][]int, from, to int)
-	traverse = func(matrix [][]int, from, to int) {
+	var traverse func(graph [][]int, from, to int)
+	traverse = func(graph [][]int, from, to int) {
 		if from == to {
 			tmp := make([]int, len(path))
 			copy(tmp, path)
@@ -36,11 +36,24 @@ func allPathsSourceTargetByAdjacencyList(graph [][]int) [][]int {
 		}
 		for _, next := range graph[from] {
 			path = append(path, next)
-			traverse(matrix, next, to)
+			traverse(graph, next, to)
 			path = path[:len(path)-1]
 		}
 	}
 	path = append(path, 0)
-	traverse(graph, 1, len(graph)-1)
+	traverse(graph, 0, len(graph)-1)
 	return result
 }
+
+/**
+邻接矩阵：Adjacency Matrix，用二维数组表示节点之间的可达性。空间复杂度为O(n^2)，适合存储稠密图；
+邻接表：Adjacency List，用数组+链表表示节点之间的可达性。空间复杂度为O(n+m)，适合存储稀疏图。
+
+寻找所有可达路径：
+本题中的图是有向无环图，没有重复访问的可能，因此不需要额外的visited数组来记录是否访问过某个节点。
+
+深度优先搜索：
+递归+回溯
+在for循环中选择不同的分岔路径，通过递归深入搜索。
+注意，因为路径总是由0开始的，最初就应将0加入path中，再通过0向不同节点发散。
+*/
