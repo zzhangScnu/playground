@@ -1,7 +1,9 @@
 package graph
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -70,15 +72,16 @@ func main() {
 }
 
 func initiateGraph() ([][]string, [][]bool) {
-	var size string
-	_, _ = fmt.Scan(&size)
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	size := scanner.Text()
 	arr := strings.Split(size, " ")
 	m, _ := strconv.Atoi(arr[0])
 	n, _ := strconv.Atoi(arr[1])
 	graph, visited := make([][]string, m), make([][]bool, m)
 	for i := 0; i < m; i++ {
-		var content string
-		_, _ = fmt.Scan(&content)
+		scanner.Scan()
+		content := scanner.Text()
 		values := strings.Split(content, " ")
 		graph[i] = make([]string, n)
 		for j := 0; j < n; j++ {
