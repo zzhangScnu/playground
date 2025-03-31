@@ -25,7 +25,7 @@ func isPalindrome(head *ListNode) bool {
 		fast = fast.Next.Next
 	}
 	p, q := head, reverse(slow)
-	for p != nil {
+	for q != nil {
 		if p.Val != q.Val {
 			return false
 		}

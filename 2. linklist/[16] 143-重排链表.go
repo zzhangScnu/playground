@@ -52,5 +52,4 @@ func reorderList(head *ListNode) {
 	}
 	q.Next = nil
 	head = newHead
-
 }

@@ -34,16 +34,10 @@ func searchInsert(nums []int, target int) int {
 		} else if nums[mid] < target {
 			left = mid + 1
 		} else if nums[mid] > target {
-			if mid > 0 && nums[mid-1] < target {
-				return mid
-			}
 			right = mid - 1
 		}
 	}
-	if left == len(nums)-1 {
-		return len(nums)
-	}
-	return -1
+	return left
 }
 
 // first greater
