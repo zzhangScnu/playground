@@ -2,8 +2,6 @@ package designpattern
 
 import "fmt"
 
-// todo：https://kamacoder.com/problempage.php?pid=1085
-
 /**
 题目描述
 小明购买了一台新电脑，该电脑使用 TypeC 接口，他已经有了一个USB接口的充电器和数据线，为了确保新电脑可以使用现有的USB接口充电器和数据线，他购买了一个TypeC到USB的扩展坞。
