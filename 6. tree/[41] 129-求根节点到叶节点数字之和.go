@@ -67,7 +67,7 @@ func slice2int(slice []int) int {
 
 func sumNumbersII(root *TreeNode) int {
 	var res int
-	var path []int
+	path := []int{root.Val}
 	var traverse func(node *TreeNode)
 	traverse = func(node *TreeNode) {
 		if node.Left == nil && node.Right == nil {
