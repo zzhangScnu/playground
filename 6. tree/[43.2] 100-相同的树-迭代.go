@@ -36,14 +36,14 @@ func isSameTreeIteratively(p *TreeNode, q *TreeNode) bool {
 	}
 	queue := []*TreeNode{p, q}
 	for len(queue) > 0 {
-		for i := 0; i < len(queue); i++ {
-			p = queue[0]
-			queue = queue[1:]
-			q = queue[0]
-			queue = queue[1:]
-			if !isSame(p, q) {
-				return false
-			}
+		p = queue[0]
+		queue = queue[1:]
+		q = queue[0]
+		queue = queue[1:]
+		if !isSame(p, q) {
+			return false
+		}
+		if p != nil && q != nil {
 			queue = append(queue, p.Left)
 			queue = append(queue, q.Left)
 			queue = append(queue, p.Right)
