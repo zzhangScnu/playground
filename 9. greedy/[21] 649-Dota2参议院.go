@@ -58,27 +58,26 @@ func predictPartyVictory(senate string) string {
 				if dc == 0 {
 					return "Radiant"
 				}
-				rc++
-				banAfter(senates, "D", i)
-				dc--
+				dc = banAfter(senates, "D", dc, i)
 			} else if senate == "D" {
 				if rc == 0 {
 					return "Dire"
 				}
-				dc++
-				banAfter(senates, "R", i)
-				rc--
+				rc = banAfter(senates, "R", rc, i)
 			}
 		}
 	}
 }
 
-func banAfter(senates []string, senate string, position int) {
+func banAfter(senates []string, senate string, senateCount int, position int) int {
 	n := len(senates)
-	for i := (position + 1) % n; i < n; i++ {
-		if senates[i] == senate {
-			senates[i] = ""
-			return
+	var index int
+	for offset := 1; offset <= n; offset++ {
+		index = (position + offset) % n
+		if senates[index] == senate {
+			senates[index] = ""
+			return senateCount - 1
 		}
 	}
+	return senateCount
 }
