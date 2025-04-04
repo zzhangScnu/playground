@@ -40,4 +40,16 @@ func searchInsert(nums []int, target int) int {
 	return left
 }
 
-// first greater
+/**
+思路：
+
+nums是无重复元素的升序数组，核心是寻找第一个比target大的位置。
+left最终指向的位置有3种情况：
+1. 找到target：直接返回；
+2. 通过[left, right]区间的中间位置元素与target比较，动态收缩left和right，最终：
+	- target < 所有元素：left指向0；
+	- target > 所有元素：left指向len(nums)；
+	- target插入元素中间：left指向第一个比target大的位置。
+
+可结合[4] 34-在排序数组中查找元素的第一个和最后一个位置.go 加深理解。
+*/

@@ -52,3 +52,11 @@ func isSameTreeIteratively(p *TreeNode, q *TreeNode) bool {
 	}
 	return true
 }
+
+/**
+通过队列进行对比。
+注意当节点是nil时也会入列，但需判断当前节点不为nil时，才会将子节点入列。
+
+本题对层序没有额外要求，只需将两棵树对等地入列，再出列进行比较。
+所以在for循环中，并没有定义levelSize := len(queue)，嵌套一个对levelSize的for循环。
+*/

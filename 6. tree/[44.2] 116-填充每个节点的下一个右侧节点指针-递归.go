@@ -52,3 +52,11 @@ func connectRecursively(root *Node) *Node {
 	traverse(root.Left, root.Right)
 	return root
 }
+
+/**
+传入两个兄弟节点p和q，单层逻辑中处理p指向q。
+并递归处理p、q左右孩子的指向。
+
+注意，因为题目给定的是完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点，
+所以不会存在p和q只有其一为nil的情况，只有同时为nil，此时表示遍历到叶子节点的下一层级了。
+*/

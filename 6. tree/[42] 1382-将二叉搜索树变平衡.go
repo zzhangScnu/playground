@@ -46,3 +46,9 @@ func balanceBST(root *TreeNode) *TreeNode {
 	}
 	return build(0, n-1)
 }
+
+/**
+结合二叉搜索树和平衡树的特性，
+中序遍历二叉搜索树 -> 获得梯度递增数组
+	-> 后序遍历有序数组 -> 构建二叉平衡搜索树
+*/

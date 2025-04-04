@@ -39,3 +39,26 @@ func isLongPressedName(name string, typed string) bool {
 }
 
 // 隐含 else if typed[ti] == lastMatch { continue }
+
+/**
+简单做法：
+遍历typed -> 入栈消除重复元素 -> 比较name和栈最终残存字符串是否相等
+
+双指针做法：
+遍历typed，不断推进typed指针
+	-> 若匹配，name指针推进，记录当前匹配的name中的字符至lastMatch
+	-> 若不匹配，对比typed当前字符和lastMatch
+		-> 若相等，则为"长键按入"的重复项，即else if typed[ti] == lastMatch { continue }
+		-> 若不相等，则直接返回false
+最后，判断name指针是否已扫遍name，
+否则对于name = nb，typed = nnn无法通过。
+
+需注意的细节：
+if ni < ln && name[ni] == typed[ti]
+ni < ln重要。若typed是长键按入，则len(name) <= len(typed)，且name一定比typed先遍历完，
+在typed遍历过程中，需判断name已到达末尾，防止数组越界。
+
+类似的双指针去重题，最好用一个变量做记录，简化处理。
+一开始的思路是，如果name和typed字符串匹配，
+则先推进name和typed指针，再不断推动typed指针来跳过重复字符，这样会引入一些边界条件，不好处理。
+*/

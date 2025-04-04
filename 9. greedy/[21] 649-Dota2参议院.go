@@ -81,3 +81,21 @@ func banAfter(senates []string, senate string, senateCount int, position int) in
 	}
 	return senateCount
 }
+
+/**
+思路：
+对每一个议员，模拟禁用其后对立阵营议员的权利。
+即对每一个R / D，消除其后的D / R。
+首先计算R和D的数量，如果轮到R / D时，发现对立阵营人数归零，则可宣布胜利；
+否则禁用对立阵营议员，且将对立阵营人数-1。
+注意这里应判断，如果禁用操作发动成功，才需减去对立阵营人数，
+否则可能会出现在场均为自己人，已经无人可禁，但还是做了减法，导致出现负数。
+
+注意存在环形场景，即遍历范围应为[0, i-1], [i+1, n)。
+可以写2个for循环来覆盖，
+也可以采用取模方式，偏移量范围为[1, n]，即从下一个开始，向后覆盖n个人，绕一圈回到自身。
+for offset := 1; offset <= n; offset++ {
+	index = (position + offset) % n
+	// ...
+}
+*/

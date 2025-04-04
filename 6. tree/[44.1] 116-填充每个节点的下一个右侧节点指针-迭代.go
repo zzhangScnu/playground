@@ -115,29 +115,56 @@ func connectII(root *Node) *Node {
 }
 
 /**
-在 Go 语言中， for range 循环的行为与标准 for 循环有本质区别。这是两种循环的关键差异：
+思路：
+将二叉树的节点入列，在每层中处理Next节点的指向。
+本题对层序有要求，所以需要在外层for循环中，嵌套一个层级循环：
+levelSize := len(queue)
+for i := 0; i < levelSize; i++ {
+	// ...
+}
 
-```go
-// for range 循环示例
+两种做法：
+第一种：cur.Next = next
+需控制if i < levelSize-1，才从队列中取next。
+即对于本层的最后一个节点，应保留默认赋值，即指向nil。
+否则会错误指向下一层的第一个节点。
+
+第二种：pre.Next = cur
+一开始pre为nil，随后滚动更新pre，且不断从队列中取cur。
+需控制if pre != nil，才将pre指向cur。
+好处是，cur始终指向本层级的节点，不会越级取到下一层节点。
+*/
+
+/**
+需要注意的细节：
+一开始写成了
+for len(queue) > 0 {
+	for i := 0; i < len(queue); i++ {
+		// ...
+	}
+}
+内层for循环的次数，会随着for循环中向队列添加元素的行为而不断变动，无法得到确切的值。
+*/
+
+/**
 slice := []int{1, 2, 3}
+
+// for range 循环
+// 循环开始前slice的长度已被捕获，即使修改slice也不会影响循环次数3
 for i, v := range slice {
-    // 循环开始前 slice 的长度 (3) 已被捕获
-    // 即使修改 slice 也不会影响循环次数
     slice = append(slice, 4) // 对循环次数无影响
     fmt.Println(v)          // 始终输出 3 次
 }
 
-// 对比标准 for 循环
+// 标准 for 循环
+// len(slice)每次循环都会重新计算
 for i := 0; i < len(slice); i++ {
-    // len(slice) 每次都会重新计算
     slice = append(slice, 4) // 会导致无限循环
     fmt.Println(slice[i])    // 索引可能越界
 }
- ```
 
 应用场景建议：
-
-- 需要 安全遍历动态集合 时用 for range
-- 需要 实时处理动态长度 时用标准 for + 长度判断
-- 需要 反向遍历 时用标准 for i := len(slice)-1; i >= 0; i--
+- 【安全遍历动态集合】：for range
+- 【实时处理动态长度】：标准for + 长度判断
+- 【反向遍历】：标准for + 索引递减
 */

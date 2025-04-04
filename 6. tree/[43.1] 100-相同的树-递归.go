@@ -34,3 +34,13 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 		return p.Val == q.Val && isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
 	}
 }
+
+/**
+思路跟对称的树相似，分别传入两棵子树的左右指针，
+在单层逻辑中进行相等判断。
+*/
+
+/**
+思路跟对称的树相似，分别传入两棵子树的左右指针，
+在单层逻辑中进行相等判断。
+*/
