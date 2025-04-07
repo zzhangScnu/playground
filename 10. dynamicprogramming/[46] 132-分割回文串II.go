@@ -25,22 +25,19 @@ package dynamicprogramming
 // 1 <= s.length <= 2000
 // s 仅由小写英文字母组成
 func minCut(s string) int {
-	isPalindrome := func(str string, start, end int) bool {
-		for i, j := start, end; i < j; i, j = i+1, j-1 {
-			if str[i] != str[j] {
-				return false
-			}
-		}
-		return true
-	}
 	n := len(s)
 	memo := make([][]bool, n)
 	for i := 0; i < n; i++ {
 		memo[i] = make([]bool, n)
+		memo[i][i] = true
+		if i > 0 && s[i-1] == s[i] {
+			memo[i-1][i] = true
+		}
 	}
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			memo[i][j] = isPalindrome(s, i, j)
+	for length := 3; length <= n; length++ {
+		for i := 0; i <= n-length; i++ {
+			j := i + length - 1
+			memo[i][j] = memo[i+1][j-1] && s[i] == s[j]
 		}
 	}
 	dp := make([]int, n)
@@ -53,7 +50,9 @@ func minCut(s string) int {
 			continue
 		}
 		for j := 0; j < i; j++ {
-			dp[i] = min(dp[i], dp[j]+1)
+			if memo[j+1][i] {
+				dp[i] = min(dp[i], dp[j]+1)
+			}
 		}
 	}
 	return dp[n-1]
