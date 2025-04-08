@@ -36,48 +36,60 @@ Bob 3
 第三次更新后，时钟变为3（3:00 AM），然后再次通知每个学生，输出学生名称和时钟点数。
 */
 
-type Clock interface {
-	Notify()
+type Subject interface {
+	Register(student Observer)
+	Remove(student Observer)
+	NotifyAll()
 }
 
-type ConcreteClock struct {
-	Times    int
-	Students []Student
+type Clock struct {
+	Hour      int
+	Observers []Observer
 }
 
-func (c ConcreteClock) Notify() {
-	for time := 1; time <= c.Times; time++ {
-		for _, student := range c.Students {
-			student.Display(time)
+func (c *Clock) Register(student Observer) {
+	c.Observers = append(c.Observers, student)
+}
+
+func (c *Clock) Remove(observer Observer) {
+	for i, o := range c.Observers {
+		if o == observer {
+			c.Observers = append(c.Observers[:i], c.Observers[i+1:]...)
+			break
 		}
 	}
 }
 
-type Student interface {
-	Display(time int)
+func (c *Clock) NotifyAll() {
+	for time := 0; time < c.Hour; time++ {
+		for _, observer := range c.Observers {
+			observer.Update((time + 1) % 24)
+		}
+	}
 }
 
-type ConcreteStudent struct {
+type Observer interface {
+	Update(hour int)
+}
+
+type Student struct {
 	Name string
 }
 
-func (c ConcreteStudent) Display(time int) {
-	fmt.Printf("%s %d\n", c.Name, time)
+func (c Student) Update(hour int) {
+	fmt.Printf("%s %d\n", c.Name, hour)
 }
 
 func main() {
 	var studentCount, clockTimes int
-	var studentName string
 	fmt.Scan(&studentCount)
-	var students []Student
+	clock := &Clock{}
 	for i := 0; i < studentCount; i++ {
+		var studentName string
 		fmt.Scan(&studentName)
-		students = append(students, ConcreteStudent{Name: studentName})
+		clock.Register(&Student{Name: studentName})
 	}
 	fmt.Scan(clockTimes)
-	clock := ConcreteClock{
-		Times:    clockTimes,
-		Students: students,
-	}
-	clock.Notify()
+	clock.Hour = clockTimes
+	clock.NotifyAll()
 }
