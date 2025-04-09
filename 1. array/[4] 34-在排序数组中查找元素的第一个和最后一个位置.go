@@ -41,7 +41,7 @@ func searchLeftRange(nums []int, target int) int {
 	for left <= right {
 		mid := (left + right) / 2
 		if nums[mid] == target {
-			right = mid - 1 // 说明第一个出现的target在[left, mid - 1]区间内
+			right = mid - 1
 		} else if nums[mid] < target {
 			left = mid + 1
 		} else if nums[mid] > target {
@@ -52,27 +52,6 @@ func searchLeftRange(nums []int, target int) int {
 		return -1
 	}
 	return left
-}
-
-func searchLeftRangeII(nums []int, target int) int {
-	if len(nums) == 0 {
-		return -1
-	}
-	left, right := 0, len(nums)-1
-	for left <= right {
-		mid := (left + right) / 2
-		if nums[mid] == target {
-			if mid == 0 || nums[mid-1] != target {
-				return mid
-			}
-			right = mid - 1
-		} else if nums[mid] < target {
-			left = mid + 1
-		} else if nums[mid] > target {
-			right = mid - 1
-		}
-	}
-	return -1
 }
 
 func searchRightRange(nums []int, target int) int {
@@ -96,27 +75,6 @@ func searchRightRange(nums []int, target int) int {
 	return right
 }
 
-func searchRightRangeII(nums []int, target int) int {
-	if len(nums) == 0 {
-		return -1
-	}
-	left, right := 0, len(nums)-1
-	for left <= right {
-		mid := (left + right) / 2
-		if nums[mid] == target {
-			if mid == len(nums)-1 || nums[mid+1] != target {
-				return mid
-			}
-			left = mid + 1
-		} else if nums[mid] < target {
-			left = mid + 1
-		} else if nums[mid] > target {
-			right = mid - 1
-		}
-	}
-	return -1
-}
-
 /**
 二分搜索的扩展：
 - 前提：数组有序
@@ -129,50 +87,3 @@ func searchRightRangeII(nums []int, target int) int {
 	- 当找到目标值时，缩小左指针，向右逼近。
 	- 其他的特性，相当于左边界的镜像。
 */
-
-func searchFirstGE(nums []int, target int) int { // searchLeftRangeII
-	n := len(nums)
-	low, high := 0, n-1
-	for low <= high {
-		mid := low + (high-low)>>1
-		if nums[mid] >= target {
-			if mid == 0 || nums[mid-1] < target {
-				return mid
-			}
-			high = mid - 1
-		} else {
-			low = mid + 1
-		}
-	}
-	return -1
-}
-
-func searchFirstGEII(nums []int, num int) int {
-	low, high := 0, len(nums)-1
-	for low <= high {
-		mid := low + (high-low)/2
-		if nums[mid] >= num {
-			high = mid - 1
-		} else {
-			low = mid + 1
-		}
-	}
-	return low
-}
-
-func searchLastLE(nums []int, target int) int {
-	n := len(nums)
-	low, high := 0, n-1
-	for low <= high {
-		mid := low + (high-low)>>1
-		if nums[mid] <= target {
-			if mid == n-1 || nums[mid+1] > target {
-				return mid
-			}
-			low = mid + 1
-		} else {
-			high = mid - 1
-		}
-	}
-	return -1
-}

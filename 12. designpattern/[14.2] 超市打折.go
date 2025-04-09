@@ -96,3 +96,22 @@ func main() {
 		context.Do(strategyType, cost)
 	}
 }
+
+/**
+原本的实现是hardcode：
+func (s SpendAndSaveStrategy) Do(cost int) {
+	if cost >= 100 && cost < 150 {
+		cost -= 5
+	} else if cost >= 150 && cost < 200 {
+		cost -= 15
+	} else if cost >= 200 && cost < 300 {
+		cost -= 25
+	} else if cost >= 300 {
+		cost -= 40
+	}
+	fmt.Println(cost)
+}
+
+可以改为用2个数组巧妙实现。
+注意需从后往前遍历，使用贪心思想，先满足慢减金额大的情况，再向下降级匹配。
+*/

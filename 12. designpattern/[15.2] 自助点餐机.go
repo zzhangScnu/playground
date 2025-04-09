@@ -37,23 +37,26 @@ type OrderCommand struct {
 }
 
 func (o OrderCommand) execute() {
-	o.drinkMaker.make(o.drink)
+	o.drinkMaker.action(o.drink)
 }
 
 // OrderMachine 调用者
+// 可以同时维护一个undo队列，Command定义Undo()接口，实现撤销操作
 type OrderMachine struct {
-	command Command
+	commands []Command
 }
 
 func (o OrderMachine) order() {
-	o.command.execute()
+	for _, command := range o.commands {
+		command.execute()
+	}
 }
 
 // DrinkMaker 接收者
 type DrinkMaker struct {
 }
 
-func (d DrinkMaker) make(drink string) {
+func (d DrinkMaker) action(drink string) {
 	fmt.Printf("%s is ready\n", drink)
 }
 
@@ -68,7 +71,7 @@ func main() {
 			drink:      drink,
 			drinkMaker: DrinkMaker{},
 		}
-		orderMachine.command = command
+		orderMachine.commands = append(orderMachine.commands, command)
 		orderMachine.order()
 	}
 }
