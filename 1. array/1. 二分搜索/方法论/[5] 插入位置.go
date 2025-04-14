@@ -1,4 +1,4 @@
-package 二分搜索
+package 方法论
 
 /*
 在target元素可能不存在的nums中的场景下，

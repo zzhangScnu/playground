@@ -1,4 +1,4 @@
-package 二分搜索
+package 方法论
 
 /*
 *

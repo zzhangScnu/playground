@@ -1,4 +1,4 @@
-package array
+package ___二分搜索
 
 // 传送带上的包裹必须在 days 天内从一个港口运送到另一个港口。
 //

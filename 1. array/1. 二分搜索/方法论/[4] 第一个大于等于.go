@@ -1,4 +1,4 @@
-package 二分搜索
+package 方法论
 
 /*
 nums = [5, 5, 7, 8, 8, 10]，target = 6，res = 2

@@ -1,4 +1,4 @@
-package array
+package ___二分搜索
 
 import "sort"
 

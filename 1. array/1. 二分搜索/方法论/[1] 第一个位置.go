@@ -1,4 +1,4 @@
-package 二分搜索
+package 方法论
 
 /*
 在基本框架的基础上，处理nums[mid] == target分支时不是直接返回索引，

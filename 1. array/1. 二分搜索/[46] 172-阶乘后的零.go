@@ -1,4 +1,4 @@
-package array
+package ___二分搜索
 
 // 给定一个整数 n ，返回 n! 结果中尾随零的数量。
 //
