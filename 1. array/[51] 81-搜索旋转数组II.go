@@ -58,3 +58,25 @@ func searchY(nums []int, target int) bool {
 	}
 	return false
 }
+
+/**
+跟33的区别在于，数组中存在重复元素。
+这样会导致nums[mid]跟nums[0]及nums[n - 1]对比时，如果值相等，无法判断nums[mid]处于左侧数组还是右侧数组。
+所以如果遇到这种场景且nums[mid]不是目标值，需要同时跳过nums[0]和nums[n - 1]，
+即不断向内收缩left和right指针，跳过重复元素，创造可以识别左 / 右侧数组的条件。
+
+注意：
+if nums[left] <= nums[mid] { // 这里是nums[left]不是nums[0]，左侧边界元素可能被跳过了
+	if nums[mid] < target || target < nums[left] { // 这里是nums[left]不是nums[0]，左侧边界元素可能被跳过了
+		left = mid + 1
+	} else if nums[mid] > target {
+		right = mid - 1
+	}
+} else {
+	if nums[mid] > target || target > nums[right] { 这里是nums[right]不是nums[len(nums)-1]，右侧边界元素可能被跳过了
+		right = mid - 1
+	} else if nums[mid] < target {
+		left = mid + 1
+	}
+}
+*/

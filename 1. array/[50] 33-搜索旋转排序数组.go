@@ -55,3 +55,37 @@ func searchX(nums []int, target int) int {
 	}
 	return -1
 }
+
+/**
+思路：
+
+ ^              子数组A
+ |             /
+ |          /
+ |       /
+｜   /
+｜/_ _ _ _ _ _ 子数组B
+｜                  /
+｜               /
+————————————>
+   0                    n-1
+
+有序数组旋转后，右半部分桥接到左半部分前面，如上图所示，存在
+若nums长度为n，
+nums[0] > nums[n - 1]，即原本nums[n - 1]和nums[0]是相邻且递增的两个元素，经旋转后被分裂到A / B两个递增的子数组中。
+
+所以本题需要分情况讨论：
+- 若nums[mid]落在左侧子数组中，即nums[mid] >= nums[0]，
+	- left = mid + 1，即需要往右搜索的场景：
+		- 当target > nums[mid]，即目标值出现在坐标轴靠右；
+		- 当需要搜索子数组B时，即target < nums[0]时；
+ 	- right = mid - 1，即需要往左搜索的场景：
+		- 当target < nums[mid]，即目标值出现在坐标轴靠左；
+
+- 若nums[mid]落在右侧子数组中，即nums[mid] < nums[0]，等价于nums[mid] <= nums[n - 1]，
+	- right = mid - 1，即需要往左搜索的场景：
+		- 当target < nums[mid]，即目标值出现在坐标轴靠左；
+		- 当需要搜索子数组A时，当target > nums[n - 1]，等价于target >= nums[0]；
+	- left = mid + 1，即需要往右搜索的场景：
+		- 当target > nums[mid]，即目标值出现在坐标轴靠右。
+*/
