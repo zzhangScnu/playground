@@ -37,3 +37,8 @@ func twoSumLessThanK(nums []int, k int) int {
 	}
 	return res
 }
+
+/**
+先排序，再使用双向指针，通过指向的两数之和的与k的关系，来推动左 / 右指针的移动。
+同时在满足sum < k约束时，收集结果。
+*/
