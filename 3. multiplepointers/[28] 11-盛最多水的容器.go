@@ -25,5 +25,16 @@ package multiplepointers
 // 2 <= n <= 10⁵
 // 0 <= height[i] <= 10⁴
 func maxArea(height []int) int {
-
+	var res int
+	left, right := 0, len(height)-1
+	for left < right {
+		if height[left] < height[right] {
+			res = max(res, height[left]*(right-left))
+			left++
+		} else {
+			res = max(res, height[right]*(right-left))
+			right--
+		}
+	}
+	return res
 }
