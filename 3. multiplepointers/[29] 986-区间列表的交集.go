@@ -53,3 +53,16 @@ func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
 	}
 	return res
 }
+
+/**
+思路：双指针
+用两个指针指向不同区间：
+1. 判断两个区间是否有交集。若有交集，获取交集区间，即[max(左边界), min(右边界)]；
+2. 推进区间。将身位靠后的区间进行推进。
+    举例，若firstList[f][1] < secondList[s][1]，则f++，secondList不动，
+    以便下一个firstList可以再和当前的secondList进行比对，寻求剩余可能的交集。
+	注意，判断条件是firstList[f][1] < secondList[s][1]，而不是f < s。
+
+为什么不需要排序？
+——注意，输入已经有序，否则需要提前排序。
+*/
