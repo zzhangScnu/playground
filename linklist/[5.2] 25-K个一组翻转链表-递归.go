@@ -49,6 +49,11 @@ func reverseBetweenNodeRecursively(head *ListNode, tail *ListNode) *ListNode {
 }
 
 /**
+思路：
+1. 反转以head为头节点的长度为k的子链表；
+2. 将k+1个节点作为头节点，递归调用，反转剩余的子链表；
+3. 将上述两个子链表连接起来。
+
 递归的方式，相比起迭代，
 1. 每次反转区间，都是左闭右开：
 - 否则在主方法里，需要额外找到本次操作子链表的前驱，比较麻烦；
