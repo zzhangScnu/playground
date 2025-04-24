@@ -1,4 +1,4 @@
-package array
+package prefixsum
 
 // NumMatrix 给定一个二维矩阵 matrix，以下类型的多个请求：
 //

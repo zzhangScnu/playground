@@ -1,8 +1,11 @@
 package linklist
 
-import "code.byted.org/zhanglihua.river/playground/linklist"
+import . "code.byted.org/zhanglihua.river/playground/linklist"
 
-func deleteDuplicates(head *linklist.ListNode) {
+func deleteDuplicates(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
 	slow, fast := head, head
 	for fast != nil {
 		if slow.Val != fast.Val {
@@ -12,6 +15,7 @@ func deleteDuplicates(head *linklist.ListNode) {
 		fast = fast.Next
 	}
 	slow.Next = nil
+	return head
 }
 
 /**
