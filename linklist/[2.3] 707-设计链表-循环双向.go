@@ -142,11 +142,13 @@ func (this *MyCircularTwoWayLinkedList) AddToTail(node *TwoWayListNode) {
 	node.Pre = this.DummyHead.Pre
 	this.DummyHead.Pre.Next = node
 	this.DummyHead.Pre = node
+	this.Size++
 }
 
 func (this *MyCircularTwoWayLinkedList) RemoveNode(node *TwoWayListNode) {
 	node.Next.Pre = node.Pre
 	node.Pre.Next = node.Next
+	this.Size--
 }
 
 /**
