@@ -78,3 +78,23 @@ func mergeInCountRangeSum(preSum []int, lower, upper int, low, mid, high int) {
 		}
 	}
 }
+
+/**
+思路：归并排序
+在归并排序的两个阶段：分治 - 合并之间，
+可以夹带私货，利用2个已经各自有序的左数组nums[low, mid]和右数组nums[mid + 1, high]，实现目标。
+
+对于本题，可以先基于原数组nums计算出前缀和数组preSum，再对preSum进行归并排序。
+对于preSum的右数组来说，物理位置整体位于左数组的右侧。即左数组的每一个元素i和右数组的每一个元素j构成的preSum[j] - preSum[i]，都是原数组中的合法区间和。
+
+则对于左数组preSum[low, mid]的每一个cur，寻找右数组preSum[mid + 1, high]中的j，使得lower <= preSum[j] - preSum[cur] <= upper。
+如果此时用两层for循环依次检查，则时间复杂度O(n^2)。
+但因为子数组的有序性，可以利用类滑动窗口思想，
+对于preSum[low, mid]的每一个cur，在preSum[mid + 1, high]中找到一个尽可能大的窗口[left, right]，使得窗口内的元素与cur的差值落在[lower, upper]区间内：
+- 如果preSum[left] - preSum[cur] < lower，则增大left，使差值落入左边界lower的右侧，即满足preSum[left] - preSum[cur] >= lower；
+- 如果preSum[right] - preSum[cur] > upper，则缩小right，使差值落入右边界upper的左侧，即满足preSum[right] - preSum[cur] <= upper。
+对下一个元素cur，因为子数组有序，preSum[cur]增大。
+所以preSum[left]也需要增大，即left不动或向右查找，才能满足preSum[left] - preSum[cur] >= lower；
+而preSum[mid + 1, right]肯定都满足preSum[right] - preSum[cur] <= upper，此时不动或向右推进right，寻找更多可能性。
+即当cur右移时，相应的窗口也需在有序数组中整体右移。
+*/
