@@ -141,3 +141,34 @@ func (this *LFUCache) AddNodeToFK(frequency int, node *TwoWayListNode) {
  * param_1 := obj.Get(key);
  * obj.Put(key,value);
  */
+
+/**
+思路：
+在LRU缓存的基础上，增加访问频次的管理。
+跟LRU相似，首先需要的数据结构：
+1. KV：与LRU相同。key -> 链表节点node，便于通过key快速定位到链表的某个位置；
+2. FK：与LRU相似。在LRU中，缓存中的数据使用双向链表进行维护；
+		   在LFU中，因为有访问频次维度，将双向链表根据节点访问频次的不同，分割为不同的子链表，维护在哈希表中。
+		   即frequency -> 双向链表doubleLinkedList，便于定位到某个node后，获取其前驱和后继节点，对该node进行删除。
+3. KF：比LRU新增。key -> frequency，需要通过key获取访问频次，从而对其进行管理；
+4. MinFrequency：比LRU新增。维护一个全局最小的访问频次，便于缓存满时快速定位到需处理的子链表，避免遍历寻找。
+
+LFU要求：
+1. O(1)时间复杂度通过key获取value；
+2. 当缓存满，需要淘汰访问频次最小 + 访问时间最旧的数据。
+
+实现：
+1. Get方法：
+- KV：O(1)地通过key获取链表节点node及其value，若不存在返回-1；
+- KF：累加key对应的frequency；
+- FK：根据KF获取oldFrequency，自增得到updatedFrequency，将node从oldFrequency子链表移动到updatedFrequency子链表尾部（注意不存在时需初始化）；
+- MinFrequency：如果MinFrequency恰好等于oldFrequency，且对应的子链表长度为0，即该访问频次下已经没有节点了，则更新MinFrequency为updatedFrequency。
+
+2. Put方法：
+- 若key已存在，则更新对应node的value，并增加访问频次；
+- 若key不存在，
+	- 若缓存已满：通过MinFrequency + FK获取最小频次的子链表，获取头节点，并将其在KV、KF和FK中移除；
+						  注意，从FK中移除时，因为是对子链表进行操作，需要前置判空。
+						  避免MinFrequency == math.MaxInt及初始值时，此时子链表为空。
+	- 新建node，插入KV、KF和FK，同时将MinFrequency置为1。
+*/
