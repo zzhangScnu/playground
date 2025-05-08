@@ -1,4 +1,4 @@
-package main
+package diffarray
 
 /**
 假设你有一个长度为n的数组，初始情况下所有的数字匀为0，你将会被给出k个更新的操作。
@@ -19,3 +19,30 @@ A[startIndex... endIndex] (包括 startIndex和 endIndex)增加inc。
 进行了操作[0，2，-2]后的状态：
 [-2，0，3，5，3]
 */
+
+type Difference struct {
+	diff []int
+}
+
+func NewDifference(n int) *Difference {
+	return &Difference{
+		diff: make([]int, n+1),
+	}
+}
+
+func (d *Difference) Update(i, j, val int) {
+	if i < 0 || j > len(d.diff)-1 || i > j {
+		return
+	}
+	d.diff[i] += val
+	d.diff[j+1] -= val
+}
+
+func (d *Difference) GetResult() []int {
+	res := make([]int, len(d.diff)-1)
+	res[0] = d.diff[0]
+	for i := 1; i < len(res); i++ {
+		res[i] = res[i-1] + d.diff[i]
+	}
+	return res
+}
