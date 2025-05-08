@@ -40,7 +40,11 @@ package diffarray
 func corpFlightBookings(bookings [][]int, n int) []int {
 	difference := NewDifference(n)
 	for _, booking := range bookings {
-		difference.Update(booking[0], booking[1], booking[2])
+		difference.Update(booking[0]-1, booking[1]-1, booking[2])
 	}
 	return difference.GetResult()
 }
+
+/**
+注意，因为1 <= firsti <= lasti <= n，所以作为数组索引入参时，需要减去1。
+*/

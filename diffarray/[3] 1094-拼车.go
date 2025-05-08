@@ -25,10 +25,10 @@ package diffarray
 // 0 <= fromi < toi <= 1000
 // 1 <= capacity <= 10⁵
 func carPooling(trips [][]int, capacity int) bool {
-	tripsLen := 1000
+	tripsLen := 1001
 	difference := NewDifference(tripsLen)
 	for _, trip := range trips {
-		difference.Update(trip[1], trip[2], trip[0])
+		difference.Update(trip[1], trip[2]-1, trip[0])
 	}
 	sizes := difference.GetResult()
 	for _, size := range sizes {
@@ -43,4 +43,7 @@ func carPooling(trips [][]int, capacity int) bool {
 思路：
 利用差分数组，将每段路程期望携带的乘客数进行累加，最终通过差分数组还原出每个站点期望携带的乘客数。
 再判断每个站点是否超员，即超出空座位大小capacity。
+
+注意，因为trip[i] = [numPassengersi, fromi, toi]，toi表示乘客的下车站点，即numPassengersi在数组索引fromi增加，在toi减少。
+即numPassengersi影响的数组索引区间为[fromi, toi)。
 */
