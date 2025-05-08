@@ -46,3 +46,9 @@ func (d *Difference) GetResult() []int {
 	}
 	return res
 }
+
+/**
+定义一个差分数组diff。
+初始化：长度 == len(原始数组) + 1，因为会令diff[0] = 原始数组[0]，方便后续计算原始数组元素之差，即：
+diff[i] = nums[i] - nums[i - 1]，无需兼容i = 0导致nums数组访问越界情况。
+*/
