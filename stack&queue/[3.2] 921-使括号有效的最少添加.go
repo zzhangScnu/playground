@@ -30,14 +30,47 @@ func minAddToMakeValid(s string) int {
 	var left, right int
 	for _, ch := range s {
 		if ch == '(' {
-			left++
-		} else {
-			if left > 0 {
-				left--
+			right++
+		}
+		if ch == ')' {
+			if right > 0 {
+				right--
 			} else {
-				right++
+				left++
 			}
 		}
 	}
 	return left + right
 }
+
+/**
+思路：
+left、right分别为需补充的左括号、右括号的需求数量。
+从左到右遍历字符串。
+- 当遇到左括号时，right++，即需要多一个右括号与其组成一对；
+- 当遇到右括号时，如果此时right > 0，表示可以抵消掉一个右括号的需求；否则，需要补充一个左括号与其组成一对。
+*/
+
+/**
+另一种做法：通过栈来维护括号，判断有效性。
+func minAddToMakeValid(s string) int {
+	stack := Stack{}
+	mapping := map[int]int{
+		')': '(',
+		']': '[',
+		'}': '{',
+	}
+	for _, ch := range s {
+		ch := int(ch)
+		left, ok := mapping[ch]
+		if !ok {
+			stack.Push(ch)
+		} else {
+			if !stack.IsEmpty() && stack.Peek() == left {
+				stack.Pop()
+			}
+		}
+	}
+	return stack.Size()
+}
+*/
