@@ -40,7 +40,7 @@ func largestIsland(grid [][]int) int {
 		if x < 0 || x >= n || y < 0 || y >= n {
 			return 0
 		}
-		if grid[x][y] > 0 {
+		if grid[x][y] != 1 {
 			return 0
 		}
 		grid[x][y] = index
@@ -50,11 +50,20 @@ func largestIsland(grid [][]int) int {
 		}
 		return area
 	}
+	allIsland := true
 	for i := 0; i < n; i++ {
 		for j := 0; j < n; j++ {
-			islandArea[index] = traverse(grid, i, j)
-			index++
+			if grid[i][j] == 0 {
+				allIsland = false
+			}
+			if grid[i][j] == 1 {
+				islandArea[index] = traverse(grid, i, j)
+				index++
+			}
 		}
+	}
+	if allIsland {
+		return n * n
 	}
 	var maxArea int
 	for i := 0; i < n; i++ {
