@@ -57,21 +57,22 @@ func largestIsland(grid [][]int) int {
 		}
 	}
 	var maxArea int
-	used := make(map[int]bool)
 	for i := 0; i < n; i++ {
-		for j := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
 			if grid[i][j] != 0 {
 				continue
 			}
+			used := make(map[int]bool)
+			area := 1
 			for _, movement := range movements {
 				x, y := i+movement[0], j+movement[1]
-				if grid[x][y] == 0 || used[grid[x][y]] {
+				if x < 0 || x >= n || y < 0 || y >= n || grid[x][y] == 0 || used[grid[x][y]] {
 					continue
 				}
-				maxArea = max(maxArea, maxArea+islandArea[grid[x][y]])
+				area += islandArea[grid[x][y]]
 				used[grid[x][y]] = true
 			}
-			used = make(map[int]bool)
+			maxArea = max(maxArea, area)
 		}
 	}
 	return maxArea
