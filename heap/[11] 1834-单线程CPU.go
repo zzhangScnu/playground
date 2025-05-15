@@ -81,15 +81,16 @@ func (h *TaskHeap) Pop() any {
 func getOrder(tasks [][]int) []int {
 	taskHeap := &TaskHeap{}
 	heap.Init(taskHeap)
-	for _, task := range tasks {
-		heap.Push(taskHeap, task)
+	for index, task := range tasks {
+		heap.Push(taskHeap, append(task, index))
 	}
 	var res []int
 	for currentTime := 1; currentTime <= 1_000_000_000; {
-		task := heap.Pop(taskHeap).([]int)
+		task := (*taskHeap)[0]
 		if currentTime >= task[0] {
-			res = append(res, task)
-			currentTime += tasks[1]
+			res = append(res, task[2])
+			currentTime += task[1]
+			heap.Pop(taskHeap)
 		} else {
 			currentTime++
 		}
