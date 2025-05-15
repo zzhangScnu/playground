@@ -2,7 +2,7 @@ package heap
 
 import "container/heap"
 
-// 中位数是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。
+// MedianFinder 中位数是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。
 //
 // 例如 arr = [2,3,4] 的中位数是 3 。
 // 例如 arr = [2,3] 的中位数是 (2 + 3) / 2 = 2.5 。
@@ -34,57 +34,6 @@ import "container/heap"
 // -10⁵ <= num <= 10⁵
 // 在调用 findMedian 之前，数据结构中至少有一个元素
 // 最多 5 * 10⁴ 次调用 addNum 和 findMedian
-
-type MinHeap []int
-
-func (h MinHeap) Less(i, j int) bool {
-	return h[i] < h[j]
-}
-
-func (h MinHeap) Len() int {
-	return len(h)
-}
-
-func (h MinHeap) Swap(i, j int) {
-	h[i], h[j] = h[j], h[i]
-}
-
-func (h *MinHeap) Push(x any) { *h = append(*h, x.(int)) }
-
-func (h *MinHeap) Pop() any {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
-}
-
-type MaxHeap []int
-
-func (h MaxHeap) Less(i, j int) bool {
-	return h[i] > h[j]
-}
-
-func (h MaxHeap) Len() int {
-	return len(h)
-}
-
-func (h MaxHeap) Swap(i, j int) {
-	h[i], h[j] = h[j], h[i]
-}
-
-func (h *MaxHeap) Push(x any) {
-	*h = append(*h, x.(int))
-}
-
-func (h *MaxHeap) Pop() any {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
-}
-
 type MedianFinder struct {
 	bigger  *MinHeap
 	smaller *MaxHeap
