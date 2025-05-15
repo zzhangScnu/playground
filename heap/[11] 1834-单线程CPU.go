@@ -55,10 +55,7 @@ import (
 type TaskHeap [][]int // 进入时间，执行时间，索引
 
 func (h TaskHeap) Less(i, j int) bool {
-	if h[i][0] == h[j][0] {
-		return h[i][1] < h[j][1]
-	}
-	return h[i][0] < h[j][0]
+	return h[i][1] == h[j][1] && h[i][2] < h[j][2] || h[i][1] < h[j][1]
 }
 
 func (h TaskHeap) Len() int {
@@ -101,6 +98,8 @@ func getOrder(tasks [][]int) []int {
 				currentTime += task[1]
 				heap.Pop(taskHeap)
 			}
+		} else {
+			currentTime = enTimeAscTasks[currentTaskIndex][0]
 		}
 		for currentTaskIndex < len(enTimeAscTasks) && enTimeAscTasks[currentTaskIndex][0] <= currentTime {
 			heap.Push(taskHeap, enTimeAscTasks[currentTaskIndex])
