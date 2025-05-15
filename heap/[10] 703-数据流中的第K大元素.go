@@ -50,19 +50,18 @@ type KthLargest struct {
 func KthLargestConstructor(k int, nums []int) *KthLargest {
 	maxHeap := &KthLargest{Capacity: k}
 	heap.Init(maxHeap)
-	for i := 0; i < k; i++ {
-		heap.Push(maxHeap, nums[i])
-	}
-	for i := k; i < len(nums); i++ {
-		heap.Push(maxHeap, nums[i])
-		heap.Pop(maxHeap)
+	for _, num := range nums {
+		heap.Push(maxHeap, num)
+		if maxHeap.Len() > k {
+			heap.Pop(maxHeap)
+		}
 	}
 	return maxHeap
 }
 
 func (this *KthLargest) Add(val int) int {
 	heap.Push(this.MaxHeap, val)
-	if this.MaxHeap.Len() == this.Capacity {
+	if this.MaxHeap.Len() > this.Capacity {
 		heap.Pop(this.MaxHeap)
 	}
 	return (*this.MaxHeap)[0]
