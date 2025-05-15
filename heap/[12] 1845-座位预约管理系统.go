@@ -45,6 +45,9 @@ type SeatManager struct {
 func SeatManagerConstructor(n int) *SeatManager {
 	minHeap := &SeatManager{}
 	heap.Init(minHeap)
+	for i := 1; i <= n; i++ {
+		heap.Push(minHeap, i)
+	}
 	return minHeap
 }
 
