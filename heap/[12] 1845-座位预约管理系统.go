@@ -42,21 +42,21 @@ type SeatManager struct {
 	*MinHeap
 }
 
-func SeatManagerConstructor(n int) *SeatManager {
-	minHeap := &SeatManager{}
+func SeatManagerConstructor(n int) SeatManager {
+	minHeap := &MinHeap{}
 	heap.Init(minHeap)
 	for i := 1; i <= n; i++ {
 		heap.Push(minHeap, i)
 	}
-	return minHeap
+	return SeatManager{MinHeap: minHeap}
 }
 
 func (this *SeatManager) Reserve() int {
-	return heap.Pop(this.MinHeap).(int)
+	return heap.Pop(this).(int)
 }
 
 func (this *SeatManager) Unreserve(seatNumber int) {
-	heap.Push(this.MinHeap, seatNumber)
+	heap.Push(this, seatNumber)
 }
 
 /**
