@@ -55,23 +55,23 @@ type NestedInteger struct {
 }
 
 // IsInteger Return true if this NestedInteger holds a single integer, rather than a nested list.
-func (this NestedInteger) IsInteger() bool { return false }
+func (this *NestedInteger) IsInteger() bool { return false }
 
 // GetInteger Return the single integer that this NestedInteger holds, if it holds a single integer
 // The result is undefined if this NestedInteger holds a nested list
 // So before calling this method, you should have a check
-func (this NestedInteger) GetInteger() int {}
+func (this *NestedInteger) GetInteger() int { return 0 }
 
 // SetInteger Set this NestedInteger to hold a single integer.
-func (n NestedInteger) SetInteger(value int) {}
+func (n *NestedInteger) SetInteger(value int) {}
 
 // Add Set this NestedInteger to hold a nested list and adds a nested integer to it.
-func (this NestedInteger) Add(elem NestedInteger) {}
+func (this *NestedInteger) Add(elem *NestedInteger) {}
 
 // GetList Return the nested list that this NestedInteger holds, if it holds a nested list
 // The list length is zero if this NestedInteger holds a single integer
 // You can access NestedInteger's List element directly if you want to modify it
-func (this NestedInteger) GetList() []NestedInteger { return nil }
+func (this *NestedInteger) GetList() []*NestedInteger { return nil }
 
 type NestedIterator struct {
 	data  []int
@@ -80,8 +80,8 @@ type NestedIterator struct {
 
 func NestedIteratorConstructor(nestedList []*NestedInteger) *NestedIterator {
 	nestedIterator := &NestedIterator{}
-	nestedIterator.Flatten(nestedIterator)
-	return &nestedIterator
+	nestedIterator.Flatten(nestedList)
+	return nestedIterator
 }
 
 func (this *NestedIterator) Flatten(nestedList []*NestedInteger) {
@@ -95,7 +95,7 @@ func (this *NestedIterator) Flatten(nestedList []*NestedInteger) {
 }
 
 func (this *NestedIterator) Next() int {
-	val := (*this)[this.index].GetInteger()
+	val := this.data[this.index]
 	this.index++
 	return val
 }
