@@ -1,6 +1,9 @@
 package heap
 
-import "container/heap"
+import (
+	"container/heap"
+	"sort"
+)
 
 // 给你一个二维数组 tasks ，用于表示 n 项从 0 到 n - 1 编号的任务。其中 tasks[i] = [enqueueTimei,
 // processingTimei] 意味着第 i 项任务将会于 enqueueTimei 时进入任务队列，需要 processingTimei 的时长完成执行。
@@ -49,7 +52,7 @@ import "container/heap"
 // 1 <= n <= 10⁵
 // 1 <= enqueueTimei, processingTimei <= 10⁹
 
-type TaskHeap [][]int
+type TaskHeap [][]int // 进入时间，执行时间，索引
 
 func (h TaskHeap) Less(i, j int) bool {
 	if h[i][0] == h[j][0] {
@@ -79,20 +82,29 @@ func (h *TaskHeap) Pop() any {
 }
 
 func getOrder(tasks [][]int) []int {
+	var enTimeAscTasks [][]int
+	for index, task := range tasks {
+		enTimeAscTasks = append(enTimeAscTasks, append(task, index))
+	}
+	sort.Slice(enTimeAscTasks, func(i, j int) bool {
+		return enTimeAscTasks[i][0] < enTimeAscTasks[j][0]
+	})
 	taskHeap := &TaskHeap{}
 	heap.Init(taskHeap)
-	for index, task := range tasks {
-		heap.Push(taskHeap, append(task, index))
-	}
+	currentTime, currentTaskIndex := 0, 0
 	var res []int
-	for currentTime := 1; currentTime <= 1_000_000_000; {
-		task := (*taskHeap)[0]
-		if currentTime >= task[0] {
-			res = append(res, task[2])
-			currentTime += task[1]
-			heap.Pop(taskHeap)
-		} else {
-			currentTime++
+	for taskHeap.Len() > 0 || currentTaskIndex < len(enTimeAscTasks) {
+		if taskHeap.Len() > 0 {
+			task := (*taskHeap)[0]
+			if currentTime >= task[0] {
+				res = append(res, task[2])
+				currentTime += task[1]
+				heap.Pop(taskHeap)
+			}
+		}
+		for currentTaskIndex < len(enTimeAscTasks) && enTimeAscTasks[currentTaskIndex][0] <= currentTime {
+			heap.Push(taskHeap, enTimeAscTasks[currentTaskIndex])
+			currentTaskIndex++
 		}
 	}
 	return res
