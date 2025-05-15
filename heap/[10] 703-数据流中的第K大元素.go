@@ -44,27 +44,30 @@ import "container/heap"
 // 最多调用 add 方法 10⁴ 次
 type KthLargest struct {
 	Capacity int
-	*MaxHeap
+	*MinHeap
 }
 
-func KthLargestConstructor(k int, nums []int) *KthLargest {
-	maxHeap := &KthLargest{Capacity: k}
-	heap.Init(maxHeap)
+func KthLargestConstructor(k int, nums []int) KthLargest {
+	minHeap := &MinHeap{}
+	heap.Init(minHeap)
 	for _, num := range nums {
-		heap.Push(maxHeap, num)
-		if maxHeap.Len() > k {
-			heap.Pop(maxHeap)
+		heap.Push(minHeap, num)
+		if minHeap.Len() > k {
+			heap.Pop(minHeap)
 		}
 	}
-	return maxHeap
+	return KthLargest{
+		Capacity: k,
+		MinHeap:  minHeap,
+	}
 }
 
 func (this *KthLargest) Add(val int) int {
-	heap.Push(this.MaxHeap, val)
-	if this.MaxHeap.Len() > this.Capacity {
-		heap.Pop(this.MaxHeap)
+	heap.Push(this, val)
+	if this.MinHeap.Len() > this.Capacity {
+		heap.Pop(this)
 	}
-	return (*this.MaxHeap)[0]
+	return (*this.MinHeap)[0]
 }
 
 /**
