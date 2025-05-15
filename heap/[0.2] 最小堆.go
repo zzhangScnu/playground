@@ -14,7 +14,9 @@ func (h MinHeap) Swap(i, j int) {
 	h[i], h[j] = h[j], h[i]
 }
 
-func (h *MinHeap) Push(x any) { *h = append(*h, x.(int)) }
+func (h *MinHeap) Push(x any) {
+	*h = append(*h, x.(int))
+}
 
 func (h *MinHeap) Pop() any {
 	old := *h
