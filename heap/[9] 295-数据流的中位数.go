@@ -102,11 +102,11 @@ func MedianFinderConstructor() MedianFinder {
 
 func (this *MedianFinder) AddNum(num int) {
 	if this.bigger.Len() > this.smaller.Len() {
-		this.bigger.Push(num)
-		this.smaller.Push(this.bigger.Pop())
+		heap.Push(this.bigger, num)
+		heap.Push(this.smaller, this.bigger.Pop())
 	} else {
-		this.smaller.Push(num)
-		this.bigger.Push(this.smaller.Pop())
+		heap.Push(this.smaller, num)
+		heap.Push(this.bigger, this.smaller.Pop())
 	}
 }
 
