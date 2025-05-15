@@ -91,20 +91,17 @@ func getOrder(tasks [][]int) []int {
 	currentTime, currentTaskIndex := 0, 0
 	var res []int
 	for taskHeap.Len() > 0 || currentTaskIndex < len(enTimeAscTasks) {
-		if taskHeap.Len() > 0 {
-			task := (*taskHeap)[0]
-			if currentTime >= task[0] {
-				res = append(res, task[2])
-				currentTime += task[1]
-				heap.Pop(taskHeap)
-			}
-		} else {
-			currentTime = enTimeAscTasks[currentTaskIndex][0]
-		}
 		for currentTaskIndex < len(enTimeAscTasks) && enTimeAscTasks[currentTaskIndex][0] <= currentTime {
 			heap.Push(taskHeap, enTimeAscTasks[currentTaskIndex])
 			currentTaskIndex++
 		}
+		if taskHeap.Len() == 0 {
+			currentTime = enTimeAscTasks[currentTaskIndex][0]
+			continue
+		}
+		task := heap.Pop(taskHeap).([]int)
+		res = append(res, task[2])
+		currentTime += task[1]
 	}
 	return res
 }
