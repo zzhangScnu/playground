@@ -58,6 +58,7 @@ type RandomizedSet struct {
 }
 
 func RandomizedSetConstructor() RandomizedSet {
+	rand.Seed(time.Now().UnixNano())
 	return RandomizedSet{
 		data:     make([]int, 0),
 		location: make(map[int]int),
@@ -86,8 +87,7 @@ func (this *RandomizedSet) Remove(val int) bool {
 }
 
 func (this *RandomizedSet) GetRandom() int {
-	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	index := generator.Intn(len(this.data) - 1)
+	index := rand.Intn(len(this.data))
 	return this.data[index]
 }
 
