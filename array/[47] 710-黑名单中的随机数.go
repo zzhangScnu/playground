@@ -62,7 +62,7 @@ func SolutionConstructor(n int, blacklist []int) Solution {
 		blackNumLocation[blackNum] = true
 	}
 	var data []int
-	for num := 1; num < n; num++ {
+	for num := 0; num < n; num++ {
 		if _, ok := blackNumLocation[num]; ok {
 			continue
 		}
