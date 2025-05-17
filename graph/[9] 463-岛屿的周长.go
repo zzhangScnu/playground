@@ -57,3 +57,21 @@ func islandPerimeter(grid [][]int) int {
 	traverse(grid, 0, 0)
 	return perimeter
 }
+
+func islandPerimeterII(grid [][]int) int {
+	var perimeter int
+	movements := [][]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+	row, col := len(grid), len(grid[0])
+	for i := 0; i < row; i++ {
+		for j := 0; j < col; j++ {
+			for _, movement := range movements {
+				nx, ny := i+movement[0], j+movement[1]
+				if nx < 0 || nx >= row || ny < 0 || ny >= col ||
+					grid[nx][ny] == 0 {
+					perimeter++
+				}
+			}
+		}
+	}
+	return perimeter
+}
