@@ -45,13 +45,15 @@ func islandPerimeter(grid [][]int) int {
 		visited[x][y] = true
 		for _, movement := range movements {
 			nx, ny := x+movement[0], y+movement[1]
-			if nx < 0 || nx >= row || ny < 0 || ny >= col {
+			if nx < 0 || nx >= row || ny < 0 || ny >= col || grid[x][y] == 0 {
 				perimeter++
-				continue
+				traverse(grid, nx, ny)
 			}
-			if grid[x][y] == 0 {
-				perimeter++
-			}
+		}
+	}
+	for i := 0; i < row; i++ {
+		for j := 0; j < col; j++ {
+			traverse(grid, i, j)
 		}
 	}
 	traverse(grid, 0, 0)
