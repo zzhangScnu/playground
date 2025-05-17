@@ -52,8 +52,7 @@ import (
 // pick 最多被调用 2 * 10⁴ 次
 
 type Solution struct {
-	data         []int
-	validNumSize int
+	data []int
 }
 
 func SolutionConstructor(n int, blacklist []int) Solution {
@@ -69,18 +68,12 @@ func SolutionConstructor(n int, blacklist []int) Solution {
 		}
 		data = append(data, num)
 	}
-	validNumSize := len(data)
-	for _, blackNum := range blacklist {
-		data = append(data, blackNum)
-	}
-	return Solution{
-		data:         data,
-		validNumSize: validNumSize,
-	}
+	return Solution{data: data}
 }
 
 func (this *Solution) Pick() int {
-	index := rand.Intn(this.validNumSize)
+	index := rand.Intn(len(this.data))
+	return this.data[index]
 }
 
 /**
