@@ -66,6 +66,9 @@ func islandPerimeterII(grid [][]int) int {
 	row, col := len(grid), len(grid[0])
 	for i := 0; i < row; i++ {
 		for j := 0; j < col; j++ {
+			if grid[i][j] == 0 {
+				continue
+			}
 			for _, movement := range movements {
 				nx, ny := i+movement[0], j+movement[1]
 				if nx < 0 || nx >= row || ny < 0 || ny >= col ||
