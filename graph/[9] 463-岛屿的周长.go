@@ -39,13 +39,13 @@ func islandPerimeter(grid [][]int) int {
 	}
 	var traverse func(grid [][]int, x, y int)
 	traverse = func(grid [][]int, x, y int) {
-		if grid[x][y] == 0 || visited[x][y] {
+		if x < 0 || x >= row || y < 0 || y >= col || grid[x][y] == 0 || visited[x][y] {
 			return
 		}
 		visited[x][y] = true
 		for _, movement := range movements {
 			nx, ny := x+movement[0], y+movement[1]
-			if nx < 0 || nx >= row || ny < 0 || ny >= col || grid[x][y] == 0 {
+			if nx < 0 || nx >= row || ny < 0 || ny >= col || grid[nx][ny] == 0 {
 				perimeter++
 				traverse(grid, nx, ny)
 			}
