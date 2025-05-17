@@ -1,5 +1,10 @@
 package array
 
+import (
+	"math/rand"
+	"time"
+)
+
 //实现RandomizedSet 类：
 //
 //
@@ -48,22 +53,42 @@ package array
 // 在调用 getRandom 方法时，数据结构中 至少存在一个 元素。
 
 type RandomizedSet struct {
+	data     []int
+	location map[int]int
 }
 
-func Constructor() RandomizedSet {
-
+func RandomizedSetConstructor() RandomizedSet {
+	return RandomizedSet{
+		data:     make([]int, 0),
+		location: make(map[int]int),
+	}
 }
 
 func (this *RandomizedSet) Insert(val int) bool {
-
+	if _, ok := this.location[val]; ok {
+		return false
+	}
+	this.location[val] = len(this.data)
+	this.data = append(this.data, val)
+	return true
 }
 
 func (this *RandomizedSet) Remove(val int) bool {
-
+	index, ok := this.location[val]
+	if !ok {
+		return false
+	}
+	delete(this.location, val)
+	lastIndex := len(this.data) - 1
+	this.data[index], this.data[lastIndex] = this.data[lastIndex], this.data[index]
+	this.data = this.data[:lastIndex]
+	return true
 }
 
 func (this *RandomizedSet) GetRandom() int {
-
+	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
+	index := generator.Intn(len(this.data) - 1)
+	return this.data[index]
 }
 
 /**
