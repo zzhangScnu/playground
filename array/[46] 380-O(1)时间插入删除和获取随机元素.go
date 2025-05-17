@@ -79,9 +79,10 @@ func (this *RandomizedSet) Remove(val int) bool {
 	if !ok {
 		return false
 	}
-	delete(this.location, val)
 	lastIndex := len(this.data) - 1
+	this.location[this.data[index]], this.location[this.data[lastIndex]] = lastIndex, index
 	this.data[index], this.data[lastIndex] = this.data[lastIndex], this.data[index]
+	delete(this.location, val)
 	this.data = this.data[:lastIndex]
 	return true
 }
