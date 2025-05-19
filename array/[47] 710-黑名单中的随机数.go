@@ -53,30 +53,31 @@ import (
 
 type Solution struct {
 	blackNumRelocation map[int]int
-	size               int
+	blackNumThreshold  int
 }
 
 func SolutionConstructor(n int, blacklist []int) Solution {
 	rand.Seed(time.Now().UnixNano())
 	blackNumThreshold, blackNumRelocation := n-len(blacklist), make(map[int]int)
+	whiteNum := n - 1
 	for _, blackNum := range blacklist {
-		if blackNum > blackNumThreshold {
+		if blackNum >= blackNumThreshold {
 			continue
 		}
-		whiteNum := n - 1
 		for _, ok := blackNumRelocation[whiteNum]; ok && whiteNum >= 0; {
 			whiteNum--
 		}
 		blackNumRelocation[blackNum] = whiteNum
+		whiteNum--
 	}
 	return Solution{
 		blackNumRelocation: blackNumRelocation,
-		size:               n,
+		blackNumThreshold:  blackNumThreshold,
 	}
 }
 
 func (this *Solution) Pick() int {
-	num := rand.Intn(this.size)
+	num := rand.Intn(this.blackNumThreshold)
 	if whiteNum, ok := this.blackNumRelocation[num]; ok {
 		return whiteNum
 	}
