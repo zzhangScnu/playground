@@ -35,12 +35,12 @@ import "container/heap"
 // 在调用 findMedian 之前，数据结构中至少有一个元素
 // 最多 5 * 10⁴ 次调用 addNum 和 findMedian
 type MedianFinder struct {
-	bigger  *MinHeap
-	smaller *MaxHeap
+	bigger  *GoMinHeap
+	smaller *GoMaxHeap
 }
 
 func MedianFinderConstructor() MedianFinder {
-	bigger, smaller := &MinHeap{}, &MaxHeap{}
+	bigger, smaller := &GoMinHeap{}, &GoMaxHeap{}
 	heap.Init(bigger)
 	heap.Init(smaller)
 	return MedianFinder{

@@ -1,4 +1,4 @@
-package tree
+package heap
 
 // 给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
 //
