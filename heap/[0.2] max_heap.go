@@ -1,4 +1,4 @@
-package tree
+package heap
 
 const nonExistedVal = -1
 

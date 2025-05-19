@@ -1,4 +1,4 @@
-package tree
+package heap
 
 type Item struct {
 	Num int
