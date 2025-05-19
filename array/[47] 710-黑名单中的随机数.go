@@ -58,14 +58,15 @@ type Solution struct {
 func SolutionConstructor(n int, blacklist []int) Solution {
 	blackNumThreshold, blackNumRelocation := n-len(blacklist), make(map[int]int)
 	for _, blackNum := range blacklist {
-		blackNumRelocation[blackNum] = blackNum
+		blackNumRelocation[blackNum] = -1
 	}
 	relocation := n - 1
 	for _, blackNum := range blacklist {
 		if blackNum >= blackNumThreshold {
 			continue
 		}
-		for _, ok := blackNumRelocation[relocation]; ok && relocation >= blackNumThreshold; relocation-- {
+		for blackNumRelocation[relocation] == -1 {
+			relocation--
 		}
 		blackNumRelocation[blackNum] = relocation
 		relocation--
@@ -116,3 +117,5 @@ func (this *Solution) Pick() int {
 	return this.data[index]
 }
 */
+
+// todo：for blackNumRelocation[relocation] == -1 {
