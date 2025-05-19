@@ -2,7 +2,6 @@ package array
 
 import (
 	"math/rand"
-	"time"
 )
 
 //给定一个整数 n 和一个 无重复 黑名单整数数组 blacklist 。设计一种算法，从 [0, n - 1] 范围内的任意整数中选取一个 未加入 黑名单
@@ -57,18 +56,19 @@ type Solution struct {
 }
 
 func SolutionConstructor(n int, blacklist []int) Solution {
-	rand.Seed(time.Now().UnixNano())
 	blackNumThreshold, blackNumRelocation := n-len(blacklist), make(map[int]int)
-	whiteNum := n - 1
+	for _, blackNum := range blacklist {
+		blackNumRelocation[blackNum] = blackNum
+	}
+	relocation := n - 1
 	for _, blackNum := range blacklist {
 		if blackNum >= blackNumThreshold {
 			continue
 		}
-		for _, ok := blackNumRelocation[whiteNum]; ok && whiteNum >= 0; {
-			whiteNum--
+		for _, ok := blackNumRelocation[relocation]; ok && relocation >= blackNumThreshold; relocation-- {
 		}
-		blackNumRelocation[blackNum] = whiteNum
-		whiteNum--
+		blackNumRelocation[blackNum] = relocation
+		relocation--
 	}
 	return Solution{
 		blackNumRelocation: blackNumRelocation,
