@@ -52,6 +52,45 @@ import (
 // pick 最多被调用 2 * 10⁴ 次
 
 type Solution struct {
+	blackNumRelocation map[int]int
+	size               int
+}
+
+func SolutionConstructor(n int, blacklist []int) Solution {
+	rand.Seed(time.Now().UnixNano())
+	blackNumThreshold, blackNumRelocation := n-len(blacklist), make(map[int]int)
+	for _, blackNum := range blacklist {
+		if blackNum > blackNumThreshold {
+			continue
+		}
+		whiteNum := n - 1
+		for _, ok := blackNumRelocation[whiteNum]; ok && whiteNum >= 0; {
+			whiteNum--
+		}
+		blackNumRelocation[blackNum] = whiteNum
+	}
+	return Solution{
+		blackNumRelocation: blackNumRelocation,
+		size:               n,
+	}
+}
+
+func (this *Solution) Pick() int {
+	num := rand.Intn(this.size)
+	if whiteNum, ok := this.blackNumRelocation[num]; ok {
+		return whiteNum
+	}
+	return num
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(n, blacklist);
+ * param_1 := obj.Pick();
+ */
+
+/**
+type Solution struct {
 	data []int
 }
 
@@ -75,9 +114,4 @@ func (this *Solution) Pick() int {
 	index := rand.Intn(len(this.data))
 	return this.data[index]
 }
-
-/**
- * Your Solution object will be instantiated and called as such:
- * obj := Constructor(n, blacklist);
- * param_1 := obj.Pick();
- */
+*/
