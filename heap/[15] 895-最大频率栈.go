@@ -64,7 +64,7 @@ func FreqStackConstructor() FreqStack {
 	}
 }
 
-func (m FreqStack) Push(val int) {
+func (m *FreqStack) Push(val int) {
 	m.KF[val]++
 	if m.FK[m.KF[val]] == nil {
 		m.FK[m.KF[val]] = list.New()
@@ -75,9 +75,9 @@ func (m FreqStack) Push(val int) {
 	}
 }
 
-func (m FreqStack) Pop() int {
+func (m *FreqStack) Pop() int {
 	val := m.FK[m.MaxFrequency].Back().Value.(int)
-	m.FK[m.MaxFrequency].Remove(m.FK[m.MaxFrequency].Front())
+	m.FK[m.MaxFrequency].Remove(m.FK[m.MaxFrequency].Back())
 	m.KF[val]--
 	if m.FK[m.MaxFrequency].Len() == 0 {
 		m.MaxFrequency--
