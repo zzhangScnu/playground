@@ -28,7 +28,7 @@ func (m MaxFrequencyStack) Push(x int) {
 }
 
 func (m MaxFrequencyStack) Pop() int {
-	x := m.FK[m.MaxFrequency].Front().Value.(int)
+	x := m.FK[m.MaxFrequency].Back().Value.(int)
 	m.FK[m.MaxFrequency].Remove(m.FK[m.MaxFrequency].Front())
 	m.KF[x]--
 	if m.FK[m.MaxFrequency].Len() == 0 {
