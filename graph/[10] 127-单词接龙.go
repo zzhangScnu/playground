@@ -41,25 +41,28 @@ import "container/list"
 // beginWord != endWord
 // wordList 中的所有字符串 互不相同
 func ladderLength(beginWord string, endWord string, wordList []string) int {
-	wordSet := make(map[string]int)
+	wordSet := make(map[string]interface{})
 	for _, word := range wordList {
-		wordSet[word] = 1
+		wordSet[word] = true
 	}
 	stack := list.New()
 	stack.PushBack(beginWord)
+	visited := make(map[string]int)
+	visited[beginWord] = 1
 	for stack.Len() > 0 {
 		element := stack.Front()
 		stack.Remove(element)
-		from, to := element.Value.(string), []byte(element.Value.(string))
+		from := element.Value.(string)
 		if from == endWord {
-			return wordSet[from]
+			return visited[from]
 		}
 		for i := 0; i < len(from); i++ {
+			to := []byte(element.Value.(string))
 			for j := 0; j < 26; j++ {
 				to[i] = byte('a' + j)
-				if wordSet[string(to)] > 0 {
+				if _, ok := wordSet[string(to)]; ok {
 					stack.PushBack(string(to))
-					wordSet[string(to)] = wordSet[from] + 1
+					visited[string(to)] = visited[from] + 1
 				}
 			}
 		}
