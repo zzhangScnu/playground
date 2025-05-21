@@ -1,5 +1,7 @@
 package graph
 
+import "container/list"
+
 // 字典 wordList 中从单词 beginWord 到 endWord 的 转换序列 是一个按下述规格形成的序列
 // beginWord -> s1 -> s2 -> ... -> sk：
 //
@@ -39,5 +41,28 @@ package graph
 // beginWord != endWord
 // wordList 中的所有字符串 互不相同
 func ladderLength(beginWord string, endWord string, wordList []string) int {
-
+	wordSet := make(map[string]int)
+	for _, word := range wordList {
+		wordSet[word] = 1
+	}
+	stack := list.New()
+	stack.PushBack(beginWord)
+	for stack.Len() > 0 {
+		element := stack.Front()
+		stack.Remove(element)
+		from, to := element.Value.(string), []byte(element.Value.(string))
+		if from == endWord {
+			return wordSet[from]
+		}
+		for i := 0; i < len(from); i++ {
+			for j := 0; j < 26; j++ {
+				to[i] = byte('a' + j)
+				if wordSet[string(to)] > 0 {
+					stack.PushBack(string(to))
+					wordSet[string(to)] = wordSet[from] + 1
+				}
+			}
+		}
+	}
+	return 0
 }
