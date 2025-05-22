@@ -36,19 +36,15 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 			queue = queue[1:]
 			levelRes = append(levelRes, node.Val)
 			if flag {
-				if node.Left != nil {
-					queue = append(queue, node.Left)
-				}
-				if node.Right != nil {
-					queue = append(queue, node.Right)
-				}
+				levelRes = append(levelRes, node.Val)
 			} else {
-				if node.Right != nil {
-					queue = append(queue, node.Right)
-				}
-				if node.Left != nil {
-					queue = append(queue, node.Left)
-				}
+				levelRes = append([]int{node.Val}, levelRes...)
+			}
+			if node.Left != nil {
+				queue = append(queue, node.Left)
+			}
+			if node.Right != nil {
+				queue = append(queue, node.Right)
 			}
 		}
 		res = append(res, levelRes)
