@@ -45,13 +45,16 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 	for _, word := range wordList {
 		wordSet[word] = struct{}{}
 	}
-	stack := list.New()
-	stack.PushBack(beginWord)
+	if _, ok := wordSet[endWord]; !ok {
+		return 0
+	}
+	queue := list.New()
+	queue.PushBack(beginWord)
 	visited := make(map[string]int)
 	visited[beginWord] = 1
-	for stack.Len() > 0 {
-		element := stack.Front()
-		stack.Remove(element)
+	for queue.Len() > 0 {
+		element := queue.Front()
+		queue.Remove(element)
 		from := element.Value.(string)
 		if from == endWord {
 			return visited[from]
@@ -60,8 +63,8 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 			to := []byte(element.Value.(string))
 			for ch := 'a'; ch <= 'z'; ch++ {
 				to[i] = byte(ch)
-				if _, ok := wordSet[string(to)]; ok && visited[string(to[i])] == 0 {
-					stack.PushBack(string(to))
+				if _, ok := wordSet[string(to)]; ok && visited[string(to)] == 0 {
+					queue.PushBack(string(to))
 					visited[string(to)] = visited[from] + 1
 				}
 			}
