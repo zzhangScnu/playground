@@ -11,6 +11,11 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+type NTreeNode struct {
+	Val      int
+	Children []*NTreeNode
+}
+
 type Stack struct {
 	nodes []*TreeNode
 }
