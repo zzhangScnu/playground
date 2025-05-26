@@ -73,9 +73,9 @@ func (this *IterativeCodec) serialize(root *TreeNode) string {
 			res = append(res, NULL)
 		} else {
 			res = append(res, strconv.Itoa(cur.Val))
+			queue = append(queue, cur.Left)
+			queue = append(queue, cur.Right)
 		}
-		queue = append(queue, cur.Left)
-		queue = append(queue, cur.Right)
 	}
 	return strings.Join(res, SEP)
 }
@@ -85,20 +85,23 @@ func (this *IterativeCodec) deserialize(data string) *TreeNode {
 	if data == NULL {
 		return nil
 	}
-	nodes := strings.Split(data, SEP)
 	index := 0
-	val, _ := strconv.Atoi(nodes[index])
+	nodes := strings.Split(data, SEP)
+	root := buildNode(index, nodes)
 	index++
-	root := &TreeNode{Val: val}
 	queue := []*TreeNode{root}
-	for len(queue) > 0 {
+	for len(queue) > 0 && index < len(nodes) {
 		cur := queue[0]
-		left, right := buildNode(nodes[index]), buildNode(nodes[index+1])
-		cur.Left, cur.Right = left, right
-		index += 2
+		queue = queue[1:]
+		left := buildNode(index, nodes)
+		cur.Left = left
+		index++
 		if left != nil {
 			queue = append(queue, left)
 		}
+		right := buildNode(index, nodes)
+		cur.Right = right
+		index++
 		if right != nil {
 			queue = append(queue, right)
 		}
@@ -106,7 +109,11 @@ func (this *IterativeCodec) deserialize(data string) *TreeNode {
 	return root
 }
 
-func buildNode(val string) *TreeNode {
+func buildNode(index int, nodes []string) *TreeNode {
+	if index >= len(nodes) {
+		return nil
+	}
+	val := nodes[index]
 	if val == NULL {
 		return nil
 	}

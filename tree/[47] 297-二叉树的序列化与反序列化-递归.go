@@ -79,16 +79,23 @@ func (this *Codec) deserialize(data string) *TreeNode {
 		return nil
 	}
 	nodes := strings.Split(data, SEP)
-	node := nodes[0]
+	return this.buildTree(&nodes)
+}
+
+func (this *Codec) buildTree(nodes *[]string) *TreeNode {
+	if len(*nodes) == 0 {
+		return nil
+	}
+	node := (*nodes)[0]
+	*nodes = (*nodes)[1:]
 	if node == NULL {
 		return nil
 	}
 	val, _ := strconv.Atoi(node)
-	remain := strings.Join(nodes[1:], SEP)
 	return &TreeNode{
 		Val:   val,
-		Left:  this.deserialize(remain),
-		Right: this.deserialize(remain),
+		Left:  this.buildTree(nodes),
+		Right: this.buildTree(nodes),
 	}
 }
 
@@ -99,3 +106,7 @@ func (this *Codec) deserialize(data string) *TreeNode {
  * data := ser.serialize(root);
  * ans := deser.deserialize(data);
  */
+
+// todo：在递归过程中，节点的消费顺序决定了后续处理的nodes切片的状态。每一步的消费都会改变全局（或通过指针传递的切片），后续的递归调用依赖这个状态。如果消费不及时，后续处理会使用未更新的状态，导致数据错乱。
+//
+//总结起来，调整消费顺序是为了确保每次递归调用处理的是正确的剩余节点，从而正确构建树的左右子树结构。否则，节点指针的位置不正确，导致子树的数据来源错误，进而生成错误的树结构。
