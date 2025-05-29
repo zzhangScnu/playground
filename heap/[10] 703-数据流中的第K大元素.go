@@ -44,11 +44,11 @@ import "container/heap"
 // 最多调用 add 方法 10⁴ 次
 type KthLargest struct {
 	Capacity int
-	*MinHeap
+	*GoMinHeap
 }
 
 func KthLargestConstructor(k int, nums []int) KthLargest {
-	minHeap := &MinHeap{}
+	minHeap := &GoMinHeap{}
 	heap.Init(minHeap)
 	for _, num := range nums {
 		heap.Push(minHeap, num)
@@ -57,17 +57,17 @@ func KthLargestConstructor(k int, nums []int) KthLargest {
 		}
 	}
 	return KthLargest{
-		Capacity: k,
-		MinHeap:  minHeap,
+		Capacity:  k,
+		GoMinHeap: minHeap,
 	}
 }
 
 func (this *KthLargest) Add(val int) int {
 	heap.Push(this, val)
-	if this.MinHeap.Len() > this.Capacity {
+	if this.GoMinHeap.Len() > this.Capacity {
 		heap.Pop(this)
 	}
-	return (*this.MinHeap)[0]
+	return (*this.GoMinHeap)[0]
 }
 
 /**
@@ -75,3 +75,14 @@ func (this *KthLargest) Add(val int) int {
  * obj := Constructor(k, nums);
  * param_1 := obj.Add(val);
  */
+
+/**
+最开始初始化堆的时候是这样写的，不够优雅：
+for i := 0; i < k; i++ {
+	heap.Push(maxHeap, nums[i])
+}
+for i := k; i < len(nums); i++ {
+	heap.Push(maxHeap, nums[i])
+	heap.Pop(maxHeap)
+}
+*/

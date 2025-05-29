@@ -39,16 +39,16 @@ import "container/heap"
 // 对 reserve 和 unreserve 的调用 总共 不超过 10⁵ 次。
 
 type SeatManager struct {
-	*MinHeap
+	*GoMinHeap
 }
 
 func SeatManagerConstructor(n int) SeatManager {
-	minHeap := &MinHeap{}
+	minHeap := &GoMinHeap{}
 	heap.Init(minHeap)
 	for i := 1; i <= n; i++ {
 		heap.Push(minHeap, i)
 	}
-	return SeatManager{MinHeap: minHeap}
+	return SeatManager{GoMinHeap: minHeap}
 }
 
 func (this *SeatManager) Reserve() int {
@@ -65,3 +65,7 @@ func (this *SeatManager) Unreserve(seatNumber int) {
  * param_1 := obj.Reserve();
  * obj.Unreserve(seatNumber);
  */
+
+/**
+注意Go的结构体嵌套用法，嵌套结果类似于Java接口的继承和实现。
+*/

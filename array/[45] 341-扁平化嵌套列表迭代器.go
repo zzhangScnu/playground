@@ -103,3 +103,9 @@ func (this *NestedIterator) Next() int {
 func (this *NestedIterator) HasNext() bool {
 	return this.index < len(this.data)
 }
+
+/**
+本质上是将一颗树转换为一个列表，
+所以在构造结构体时就递归地遍历树，将其"扁平化"，
+在后续读取时直接操作转换后结果即可。
+*/

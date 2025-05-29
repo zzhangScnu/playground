@@ -51,3 +51,10 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 	}
 	return res
 }
+
+/**
+本质是层序遍历，只是收集结果时通过flag来控制放置的位置。
+
+之前写的第一版，试图控制节点入列的顺序来实现。
+但这样会导致后续孩子节点的遍历有误。
+*/
