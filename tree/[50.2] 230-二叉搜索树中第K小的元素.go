@@ -40,6 +40,10 @@ func NewBinarySearchTreeOptimizer(val int) *BinarySearchTreeOptimizer {
 	}
 }
 
+func BinarySearchTreeOptimizerConstructor(root *SizedTreeNode) {
+	UpdateSize(root)
+}
+
 func (b *BinarySearchTreeOptimizer) findK(k int) int {
 	if b.root == nil {
 		return -1
@@ -52,13 +56,14 @@ func doFindK(node *SizedTreeNode, k int) int {
 		return -1
 	}
 	leftSize := getTreeSize(node)
-	if leftSize == k-1 {
+	switch {
+	case leftSize == k-1:
 		return node.Val
-	}
-	if leftSize >= k {
+	case leftSize >= k:
 		return doFindK(node.Left, k)
+	default:
+		return doFindK(node.Right, k-leftSize-1)
 	}
-	return doFindK(node.Right, k-leftSize-1)
 }
 
 func getTreeSize(node *SizedTreeNode) int {
@@ -81,7 +86,7 @@ func doAdd(node *SizedTreeNode, val int) *SizedTreeNode {
 	} else {
 		node.Right = doAdd(node.Right, val)
 	}
-	node.Size += 1
+	node.Size = 1 + getTreeSize(node.Left) + getTreeSize(node.Right)
 	return node
 }
 
@@ -94,14 +99,31 @@ func doDelete(node *SizedTreeNode, val int) *SizedTreeNode {
 		return nil
 	}
 	if node.Val > val {
-		return doDelete(node.Left, val)
+		node.Left = doDelete(node.Left, val)
 	} else if node.Val < val {
-		return doDelete(node.Right, val)
+		node.Right = doDelete(node.Right, val)
+	} else {
+		if node.Left == nil {
+			return node.Right
+		}
+		if node.Right == nil {
+			return node.Left
+		}
+		cur := node.Right
+		for cur != nil && cur.Left != nil {
+			cur = cur.Left
+		}
+		node.Val = cur.Val
+		node.Right = doDelete(node.Right, cur.Val)
 	}
-	cur := node.Right
-	for cur != nil && cur.Left != nil {
-		cur = cur.Left
+	node.Size = 1 + getTreeSize(node.Left) + getTreeSize(node.Right)
+	return node
+}
+
+func UpdateSize(node *SizedTreeNode) int {
+	if node == nil {
+		return 0
 	}
-	node.Val = cur.Val
-	return doDelete(node.Right, val)
+	node.Size = 1 + UpdateSize(node.Left) + UpdateSize(node.Right)
+	return node.Size
 }
