@@ -51,6 +51,7 @@ func (b *BinarySearchTreeOptimizer) findK(k int) int {
 	return doFindK(b.root, k)
 }
 
+// todo：如果是第k大，则需要从右边开始算起，用右子树大小做比较
 func doFindK(node *SizedTreeNode, k int) int {
 	if node == nil {
 		return -1
