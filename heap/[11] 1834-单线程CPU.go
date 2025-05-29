@@ -52,7 +52,7 @@ import (
 // 1 <= n <= 10⁵
 // 1 <= enqueueTimei, processingTimei <= 10⁹
 
-type TaskHeap [][]int // 进入时间，执行时间，索引
+type TaskHeap [][]int
 
 func (h TaskHeap) Less(i, j int) bool {
 	return h[i][1] == h[j][1] && h[i][2] < h[j][2] || h[i][1] < h[j][1]
@@ -105,3 +105,48 @@ func getOrder(tasks [][]int) []int {
 	}
 	return res
 }
+
+/**
+思路：
+任务有多个变量决定处理优先级：
+1. 进入任务队列的先后；
+2. 执行时间的长短；
+3. 任务下标的大小。
+
+因为时间跨度为[1, 10⁹]，如果以时间维度遍历，检查此时是否有可执行的任务，再按优先级依次处理，
+在任务较少但时间跨度较长的情况下容易超时。
+
+所以应该先将任务按照进入任务队列的时间进行排序，得到任务列表enTimeAscTasks。依次遍历可执行任务。
+
+
+维护当前时间currentTime，当前等待执行任务队列taskHeap。
+
+情况1-若当前时间taskHeap中有任务：
+1. 按照【执行时间&任务下标】规则排序且处理taskHeap中最高优的【一个】任务；
+2. 在该任务处理完成后跳转至相应时间，即currentTime拨到任务的结束时间，即开始时间+执行时长；
+3. 将截至目前已进入队列的任务丢进优先级队列中等待处理；
+循环往复，直到所有任务处理完毕。
+
+情况2-若当前时间taskHeap中无任务：
+1. 从enTimeAscTasks中取最先发生的任务，将currentTime拨到该任务发生时间；
+2. 对于此时发生的所有任务，丢进优先级队列taskHeap中进行二次排序；
+回到情况1。
+
+注意：
+因为返回的结果是任务的执行顺序，需要在任务详情中额外维护其索引，故需要预处理。
+最终优先级队列taskHeap中的任务详情是一个数组，内容如：[进入时间，执行时间，索引]。
+*/
+
+/**
+func (h TaskHeap) Less(i, j int) bool {
+	if h[i][0] == h[j][0] {
+		return h[i][1] < h[j][1]
+	}
+	return h[i][0] < h[j][0]
+}
+简化为：
+func (h TaskHeap) Less(i, j int) bool {
+	return h[i][1] == h[j][1] && h[i][2] < h[j][2] || h[i][1] < h[j][1]
+}
+通过运算符优先级代替if-else进行分支控制。
+*/

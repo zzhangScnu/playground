@@ -128,3 +128,7 @@ func buildNode(index int, nodes []string) *TreeNode {
  * data := ser.serialize(root);
  * ans := deser.deserialize(data);
  */
+
+/**
+使用队列作为辅助，层序遍历序列化二叉树、再层序反序列化二叉树。
+*/

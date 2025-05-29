@@ -107,6 +107,51 @@ func (this *Codec) buildTree(nodes *[]string) *TreeNode {
  * ans := deser.deserialize(data);
  */
 
-// todo：在递归过程中，节点的消费顺序决定了后续处理的nodes切片的状态。每一步的消费都会改变全局（或通过指针传递的切片），后续的递归调用依赖这个状态。如果消费不及时，后续处理会使用未更新的状态，导致数据错乱。
-//
-//总结起来，调整消费顺序是为了确保每次递归调用处理的是正确的剩余节点，从而正确构建树的左右子树结构。否则，节点指针的位置不正确，导致子树的数据来源错误，进而生成错误的树结构。
+/**
+思路：
+序列化&反序列化均使用同样的顺序、同样的处理逻辑。
+【中、左、右】
+
+为什么构建节点时，入参需要使用引用类型*[]string？
+在构建当前节点时：
+	return &TreeNode{
+		Val:   val,
+		Left:  this.buildTree(nodes),
+		Right: this.buildTree(nodes),
+	}
+对于左子树和右子树，使用同一个地址指向的数组。所以需要进行状态共享，
+在左子树使用某些元素后及时出列，避免右子树重复使用。
+
+这里有个问题，这两种相似的写法会导致截然不同的结果：
+func (this *Codec) buildTree(nodes *[]string) *TreeNode {
+	node := (*nodes)[0]
+	if node == NULL {
+		return nil
+	}
+	val, _ := strconv.Atoi(node)
+	*nodes = (*nodes)[1:] // 在这里消费元素
+	return &TreeNode{
+		Val:   val,
+		Left:  this.buildTree(nodes),
+		Right: this.buildTree(nodes),
+	}
+}
+这种写法，会导致元素被根节点使用后，没有及时消费、及时出列，导致被递归this.buildTree(nodes)的左子树构造使用。
+func (this *Codec) buildTree(nodes *[]string) *TreeNode {
+	if len(*nodes) == 0 {
+		return nil
+	}
+	node := (*nodes)[0]
+	*nodes = (*nodes)[1:] // 在这里消费元素
+	if node == NULL {
+		return nil
+	}
+	val, _ := strconv.Atoi(node)
+	return &TreeNode{
+		Val:   val,
+		Left:  this.buildTree(nodes),
+		Right: this.buildTree(nodes),
+	}
+}
+这种写法，保证每次递归调用处理的是正常的剩余节点，从而正确构建左右子树。
+*/

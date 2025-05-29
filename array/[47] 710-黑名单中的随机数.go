@@ -92,6 +92,11 @@ func (this *Solution) Pick() int {
  */
 
 /**
+最暴力的方法：
+生成[0, n - 1]随机数，如果其在blacklist中，重新生成并检查，直到获取非黑名单元素。
+
+
+最直接的想法：
 type Solution struct {
 	data []int
 }
@@ -116,6 +121,20 @@ func (this *Solution) Pick() int {
 	index := rand.Intn(len(this.data))
 	return this.data[index]
 }
-*/
+维护一个合法元素列表，初始化时，若元素在黑名单中，则跳过不处理。
+这种方法会在数据量大时超时。
 
-// todo：for blackNumRelocation[relocation] == -1 {
+
+最终解决思路：
+虚拟一个元素全集列表，其中有一条分界线blackNumThreshold，前面是合法元素，后面是黑名单元素。
+随机取数时，从前面部分获取即可。
+
+在实际实现时，无需真实维护列表，也无需将黑名单元素搬移到列表末尾，而是：
+维护一个【黑名单元素 -> 合法元素】映射blackNumRelocation，如果随机到黑名单元素，直接返回其对应的合法元素即可。
+处理步骤：
+1. 如果黑名单元素本身就在blackNumThreshold之后，即处于虚拟列表的黑名单区域中，则无需额外维护其映射关系；
+2. 如果黑名单元素在blackNumThreshold之前，即处于虚拟列表的合法区域中，则从黑名单区域中寻找一个合法元素，与其建联。
+	这个合法元素，可以从虚拟列表末尾开始往前找，并在被使用后动态更新。
+    如何表明这个元素是合法元素呢？：
+	将blackNumRelocation的值初始化为-1，如果寻找合法元素时，检查其在blackNumRelocation中的值为-1，则表示是黑名单元素，需要继续往前找。
+*/

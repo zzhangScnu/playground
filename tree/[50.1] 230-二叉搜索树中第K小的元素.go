@@ -38,5 +38,7 @@ func kthSmallest(root *TreeNode, k int) int {
 }
 
 /**
+二叉搜索树的中序遍历就是单调递增的结果，所以在中序遍历时维护序号，就能找到第K小的元素。
+
 进阶做法：节点增加size，记录子树大小，避免O(n)遍历
 */

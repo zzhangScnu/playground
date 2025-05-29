@@ -51,7 +51,6 @@ func (b *BinarySearchTreeOptimizer) findK(k int) int {
 	return doFindK(b.root, k)
 }
 
-// todo：如果是第k大，则需要从右边开始算起，用右子树大小做比较
 func doFindK(node *SizedTreeNode, k int) int {
 	if node == nil {
 		return -1
@@ -128,3 +127,16 @@ func UpdateSize(node *SizedTreeNode) int {
 	node.Size = 1 + UpdateSize(node.Left) + UpdateSize(node.Right)
 	return node.Size
 }
+
+/**
+若需对二叉搜索树进行频繁删除、插入和检索，可以通过在节点添加额外信息，记录以自身为根节点的树的大小，
+从而快速计算出当前节点在整棵树中的位置，从而使用类二分搜索的思路，将定位时间减半。
+
+- 增/删：与二叉搜索树相同，只是在递归操作中、每层结束后，需更新当前节点记录的树的大小；
+- 查：通过K与当前节点为根节点的树的大小的比较，判断目标节点在左子树还是右子树，递归查找。
+
+注意：
+- 抽出辅助方法，用节点作为入参，供结构体的方法调用；
+- 这样的实现是查找第K小的元素，即顺序查找，所以与左子树的大小进行比较；若需查找第K大的元素，则为逆序查找，与右子树的大小进行比较；
+- 可以用switch-case+表达式代替if-else分支。
+*/
