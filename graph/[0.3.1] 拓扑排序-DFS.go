@@ -11,6 +11,9 @@ func topologicalSort(graph [][]int) []int {
 	visited, res = make([]bool, n), make([]int, n)
 	for v := 0; v < n; v++ {
 		traverseInTopologicalSort(graph, v)
+		if hasCircle {
+			return []int{}
+		}
 	}
 	slices.Reverse(res)
 	return res
