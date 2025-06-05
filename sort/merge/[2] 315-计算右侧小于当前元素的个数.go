@@ -1,4 +1,4 @@
-package array
+package merge
 
 // 给你一个整数数组 nums ，按要求返回一个新数组 counts 。数组 counts 有该性质： counts[i] 的值是 nums[i] 右侧小于
 // nums[i] 的元素的数量。
@@ -28,7 +28,7 @@ package array
 // 1 <= nums.length <= 10⁵
 // -10⁴ <= nums[i] <= 10⁴
 
-var temp [][]int
+var tempInCountSmaller [][]int
 
 var count []int
 
@@ -38,41 +38,41 @@ func countSmallerII(nums []int) []int {
 		arr = append(arr, []int{i, num})
 	}
 	n := len(nums)
-	temp = make([][]int, n)
+	tempInCountSmaller = make([][]int, n)
 	count = make([]int, n)
-	sort(arr, 0, n-1)
+	sortInCountSmaller(arr, 0, n-1)
 	return count
 }
 
-func sort(arr [][]int, lo, hi int) {
+func sortInCountSmaller(arr [][]int, lo, hi int) {
 	if lo == hi {
 		return
 	}
 	mid := lo + (hi-lo)>>1
-	sort(arr, lo, mid)
-	sort(arr, mid+1, hi)
+	sortInCountSmaller(arr, lo, mid)
+	sortInCountSmaller(arr, mid+1, hi)
 	mergeInCountSmaller(arr, lo, mid, hi)
 }
 
 func mergeInCountSmaller(arr [][]int, lo, mid, hi int) {
 	for i := lo; i <= hi; i++ {
-		temp[i] = arr[i]
+		tempInCountSmaller[i] = arr[i]
 	}
 	i, j := lo, mid+1
 	for cur := lo; cur <= hi; cur++ {
 		if i == mid+1 {
-			arr[cur] = temp[j]
+			arr[cur] = tempInCountSmaller[j]
 			j++
 		} else if j == hi+1 {
-			arr[cur] = temp[i]
-			count[temp[i][0]] += j - mid - 1
+			arr[cur] = tempInCountSmaller[i]
+			count[tempInCountSmaller[i][0]] += j - mid - 1
 			i++
-		} else if temp[i][1] <= temp[j][1] {
-			arr[cur] = temp[i]
-			count[temp[i][0]] += j - mid - 1
+		} else if tempInCountSmaller[i][1] <= tempInCountSmaller[j][1] {
+			arr[cur] = tempInCountSmaller[i]
+			count[tempInCountSmaller[i][0]] += j - mid - 1
 			i++
 		} else {
-			arr[cur] = temp[j]
+			arr[cur] = tempInCountSmaller[j]
 			j++
 		}
 	}

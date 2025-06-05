@@ -1,4 +1,4 @@
-package array
+package quick
 
 // 给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
 //
@@ -35,19 +35,8 @@ func findKthLargest(nums []int, k int) int {
 	}
 }
 
-func partition(nums []int, beginIdx, endIdx int) int {
-	pivot := nums[endIdx]
-	slow, fast := beginIdx, beginIdx
-	for ; fast < endIdx; fast++ {
-		if nums[fast] > pivot {
-			nums[slow], nums[fast] = nums[fast], nums[slow]
-			slow++
-		}
-	}
-	nums[slow], nums[endIdx] = nums[endIdx], nums[slow]
-	return slow
-}
-
 /**
-结合快排思想：本质又是抽象f(x)的二分查找
+结合快排思想：本质又是抽象f(x)的二分查找。
+通过每次定位基准元素pivot，令左侧元素 < nums[pivot]，
+再根据pivot跟k的大小关系，决策向左或向右继续深入搜索。
 */

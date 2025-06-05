@@ -1,6 +1,9 @@
 package sort
 
-import "math"
+import (
+	"code.byted.org/zhanglihua.river/playground/sort/quick"
+	"math"
+)
 
 func bucketSort(nums []int, bucketNum int) []int {
 	buckets := make([][]int, bucketNum)
@@ -26,7 +29,7 @@ func bucketSort(nums []int, bucketNum int) []int {
 	}
 	var res []int
 	for _, bucket := range buckets {
-		quickSort(bucket)
+		quick.quickSort(bucket)
 		res = append(res, bucket...)
 	}
 	return res

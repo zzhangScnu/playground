@@ -29,7 +29,7 @@ func detectCircleBFS(graph [][]int) bool {
 			}
 		}
 	}
-	return count == n
+	return count != n
 }
 
 /**
@@ -49,4 +49,6 @@ BFS的做法像是在图中找到起点，从起点开始抽丝剥茧，顺藤�
 
 本题无需维护visited数组，因为BFS向外层层扩展的特性，且限制了只有入度为0的节点才能入列，
 天然不会走回头路，不存在重复访问节点的情况。
+
+注意，本方法是检测是否有环，所以最终返回的结果是count != n。
 */
