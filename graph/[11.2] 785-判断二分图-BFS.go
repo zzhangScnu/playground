@@ -44,6 +44,7 @@ func isBipartiteBFS(graph [][]int) bool {
 		queue := []int{vertex}
 		for len(queue) > 0 {
 			cur := queue[0]
+			visited[cur] = true
 			queue = queue[1:]
 			for _, neighbor := range graph[cur] {
 				if !visited[neighbor] {
@@ -63,3 +64,8 @@ func isBipartiteBFS(graph [][]int) bool {
 	}
 	return isBipartite
 }
+
+/**
+和DFS解法类似，借助队列进行层序遍历，在遍历中染色和判断相邻节点是否满足不同色要求。
+注意在队列中获取队头元素后，立即要写入visited数组，避免遗漏。
+*/

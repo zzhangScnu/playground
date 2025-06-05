@@ -29,14 +29,14 @@ func isValidBSTII(root *TreeNode) bool {
 	var doIsValidBST func(node *TreeNode) (int, int, bool)
 	doIsValidBST = func(node *TreeNode) (int, int, bool) {
 		if node == nil {
-			return math.MaxInt32, math.MinInt32, true
+			return math.MaxInt64, math.MinInt64, true
 		}
 		lmin, lmax, lflag := doIsValidBST(node.Left)
 		rmin, rmax, rflag := doIsValidBST(node.Right)
 		if lflag && rflag && lmax < node.Val && node.Val < rmin {
 			return min(node.Val, lmin), max(node.Val, rmax), true
 		}
-		return math.MaxInt32, math.MinInt32, false
+		return math.MaxInt64, math.MinInt64, false
 	}
 	_, _, flag := doIsValidBST(root)
 	return flag
@@ -48,10 +48,10 @@ func isValidBSTIII(root *TreeNode) bool {
 		if node == nil {
 			return true
 		}
-		if min != nil && node.Val < min.Val {
+		if min != nil && node.Val <= min.Val {
 			return false
 		}
-		if max != nil && node.Val > max.Val {
+		if max != nil && node.Val >= max.Val {
 			return false
 		}
 		return doIsValidBST(node.Left, min, node) && doIsValidBST(node.Right, node, max)
@@ -66,4 +66,16 @@ func isValidBSTIII(root *TreeNode) bool {
 所以有两种方式可以通过参数传递实现：
 1. 后序遍历：通过函数返回值，令父节点感知左右子树中的极值，从而与自身值进行比对；
 2. 先序遍历：通过函数参数值，限定左右子树各自的合法大小范围。
+*/
+
+/**
+注意：
+在后序遍历解法中，返回极值的大小需注意边界。
+由题意可知，节点元素的大小范围为[-2³¹, 2³¹ - 1]，
+而	MaxInt32  = 1<<31 - 1           // 2147483647
+	MinInt32  = -1 << 31            // -2147483648
+所以极小值和极大值都应取int64下的。
+
+在先序遍历解法中，二叉搜索树的严格定义是左子树最大值 < 根节点 < 右子树最小值，
+所以在判断条件中应带上 = 号。即node.Val <= min.Val和node.Val >= max.Val。
 */

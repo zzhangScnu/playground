@@ -56,13 +56,29 @@ func possibleBipartition(n int, dislikes [][]int) bool {
 
 func buildUpGraph(n int, dislikes [][]int) [][]int {
 	graph := make([][]int, n+1)
-	for i := 1; i <= n; i++ {
-		graph[i] = make([]int, n)
-	}
 	for _, dislike := range dislikes {
 		v, w := dislike[0], dislike[1]
-		graph[v] = graph[w]
-		graph[w] = graph[v]
+		graph[v] = append(graph[v], w)
+		graph[w] = append(graph[w], v)
 	}
 	return graph
 }
+
+/**
+思路：
+先将dislikes数组，即需要分进两个组的元素作为节点构建图，再基于该图运行二分图判定。
+
+注意：
+构建的是邻接表，而不是邻接矩阵，
+所以需要用：
+v, w := dislike[0], dislike[1]
+graph[v] = append(graph[v], w)
+graph[w] = append(graph[w], v)
+对每个vertex做相邻节点的映射和拉链。
+
+而不是：
+v, w := dislike[0], dislike[1]
+graph[v] = graph[w]
+graph[w] = graph[v]
+其实这种写法也不是邻接矩阵，真实的邻接矩阵写法是graph[v][w] = 1，表示v -> w存在一条有向边。
+*/
