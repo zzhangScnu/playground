@@ -23,6 +23,8 @@ func traverse(graph [][]int, vertex int) {
 		return
 	}
 	path[vertex] = true
-	traverse(graph, graph[vertex][0])
+	for _, neighbor := range graph[vertex] {
+		traverse(graph, neighbor)
+	}
 	path[vertex] = false
 }
