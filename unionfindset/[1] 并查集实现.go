@@ -5,14 +5,14 @@ type UnionFindSet struct {
 	count  int
 }
 
-func NewUnionFindSet(nodes []int) *UnionFindSet {
-	parent := make([]int, len(nodes))
-	for _, node := range nodes {
+func NewUnionFindSet(n int) *UnionFindSet {
+	parent := make([]int, n)
+	for node := 0; node < n; node++ {
 		parent[node] = node
 	}
 	return &UnionFindSet{
 		parent: parent,
-		count:  len(nodes),
+		count:  n,
 	}
 }
 
