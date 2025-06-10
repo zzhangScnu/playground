@@ -31,8 +31,16 @@ func (u *UnionFindSet) isConnected(x, y int) bool {
 }
 
 func (u *UnionFindSet) find(x int) int {
-	for x != u.parent[x] {
+	if x != u.parent[x] {
 		u.parent[x] = u.find(u.parent[x])
 	}
 	return u.parent[x]
+}
+
+func (u *UnionFindSet) findIteratively(x int) int {
+	for x != u.parent[x] {
+		u.parent[x] = u.parent[u.parent[x]]
+		x = u.parent[x]
+	}
+	return x
 }
