@@ -57,7 +57,7 @@ func minCostConnectPoints(points [][]int) int {
 		return connections[i][2] < connections[j][2]
 	})
 	var cost int
-	unionFindSet := NewUnionFindSet(len(connections))
+	unionFindSet := NewUnionFindSet(len(points))
 	for _, connection := range connections {
 		if unionFindSet.isConnected(connection[0], connection[1]) {
 			continue
