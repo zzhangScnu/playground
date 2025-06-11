@@ -70,5 +70,5 @@ func minCostConnectPoints(points [][]int) int {
 
 func calculateCost(points [][]int, i, j int) int {
 	a, b := points[i], points[j]
-	return int(math.Abs(float64(a[0]-a[1])) + math.Abs(float64(b[0]-b[1])))
+	return int(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
 }
