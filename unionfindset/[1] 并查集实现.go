@@ -44,3 +44,7 @@ func (u *UnionFindSet) findIteratively(x int) int {
 	}
 	return x
 }
+
+func (u *UnionFindSet) size() int {
+	return u.count
+}
