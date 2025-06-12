@@ -38,6 +38,7 @@ import (
 // columns == heights[i].length
 // 1 <= rows, columns <= 100
 // 1 <= heights[i][j] <= 10⁶
+
 type Vertex2D struct {
 	x, y   int
 	effort int
@@ -81,7 +82,7 @@ func minimumEffortPath(heights [][]int) int {
 		}
 	}
 	efforts[0][0] = 0
-	minHeap := &MinHeap{}
+	minHeap := &Vertex2DMinHeap{}
 	heap.Init(minHeap)
 	heap.Push(minHeap, &Vertex2D{
 		x:      0,
