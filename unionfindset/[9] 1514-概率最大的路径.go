@@ -82,12 +82,12 @@ func maxProbability(n int, edges [][]int, succProb []float64, startNode int, end
 	probabilities[startNode] = 1
 	maxHeap := &MaxHeap{}
 	heap.Init(maxHeap)
-	maxHeap.Push(&Vertex{
+	heap.Push(maxHeap, &Vertex{
 		node:        startNode,
 		probability: 1,
 	})
 	for maxHeap.Len() > 0 {
-		cur := maxHeap.Pop().(*Vertex)
+		cur := heap.Pop(maxHeap).(*Vertex)
 		if cur.node == endNode {
 			return cur.probability
 		}
@@ -97,7 +97,7 @@ func maxProbability(n int, edges [][]int, succProb []float64, startNode int, end
 		for _, to := range graph[cur.node] {
 			if cur.probability*to[1] > probabilities[int(to[0])] {
 				probabilities[int(to[0])] = cur.probability * to[1]
-				maxHeap.Push(&Vertex{
+				heap.Push(maxHeap, &Vertex{
 					node:        int(to[0]),
 					probability: probabilities[int(to[0])],
 				})

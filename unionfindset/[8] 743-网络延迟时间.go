@@ -48,12 +48,12 @@ func networkDelayTime(times [][]int, n int, k int) int {
 	distance[k] = 0
 	minHeap := &MinHeap{}
 	heap.Init(minHeap)
-	minHeap.Push(&Node{
+	heap.Push(minHeap, &Node{
 		node:     k,
 		distance: 0,
 	})
 	for minHeap.Len() > 0 {
-		cur := minHeap.Pop().(*Node)
+		cur := heap.Pop(minHeap).(*Node)
 		if cur.distance > distance[cur.node] {
 			continue
 		}
@@ -62,7 +62,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 				continue
 			}
 			distance[to[0]] = distance[cur.node] + to[1]
-			minHeap.Push(&Node{
+			heap.Push(minHeap, &Node{
 				node:     to[0],
 				distance: distance[to[0]],
 			})
