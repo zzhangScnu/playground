@@ -45,7 +45,7 @@ type Dijkstra struct {
 func NewDijkstra(n int, adjacent [][]int, start int) *Dijkstra {
 	distance := make([]int, n)
 	for i := 0; i < n; i++ {
-		distance = math.MaxInt
+		distance[i] = math.MaxInt
 	}
 	distance[start] = 0
 	return &Dijkstra{
