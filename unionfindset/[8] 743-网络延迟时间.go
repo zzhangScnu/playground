@@ -70,10 +70,10 @@ func networkDelayTime(times [][]int, n int, k int) int {
 	}
 	res := -1
 	for _, d := range distance {
+		if d == math.MaxInt {
+			return -1
+		}
 		res = max(res, d)
-	}
-	if res == math.MaxInt {
-		return -1
 	}
 	return res
 }
