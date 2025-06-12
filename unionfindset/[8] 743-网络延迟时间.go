@@ -43,7 +43,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 	}
 	distance := make([]int, n)
 	for i := 0; i < n; i++ {
-		distance = math.MaxInt
+		distance[i] = math.MaxInt
 	}
 	distance[k] = 0
 	minHeap := &MinHeap{}
