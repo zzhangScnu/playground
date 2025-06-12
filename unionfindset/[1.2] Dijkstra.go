@@ -1,6 +1,9 @@
 package unionfindset
 
-import "container/heap"
+import (
+	"container/heap"
+	"math"
+)
 import h "code.byted.org/zhanglihua.river/playground/heap"
 
 type Dijkstra struct {
@@ -11,6 +14,10 @@ type Dijkstra struct {
 
 func NewDijkstra(n int, adjacent [][]int, start int) *Dijkstra {
 	distance := make([]int, n)
+	for i := 0; i < n; i++ {
+		distance = math.MaxInt
+	}
+	distance[start] = 0
 	return &Dijkstra{
 		adjacent: adjacent,
 		distance: distance,
