@@ -62,12 +62,10 @@ func (d *Dijkstra) weight(x, y int) int {
 func (d *Dijkstra) calculateDistance() {
 	minHeap := &MinHeap{}
 	heap.Init(minHeap)
-	for _, to := range d.adjacent[d.start] {
-		minHeap.Push(&Node{
-			node:     to,
-			distance: d.weight(d.start, to),
-		})
-	}
+	minHeap.Push(&Node{
+		node:     d.start,
+		distance: 0,
+	})
 	for minHeap.Len() > 0 {
 		cur := minHeap.Pop().(*Node)
 		if cur.distance > d.distance[cur.node] {
