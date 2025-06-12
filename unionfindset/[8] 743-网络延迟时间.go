@@ -37,12 +37,12 @@ import (
 // 0 <= wi <= 100
 // 所有 (ui, vi) 对都 互不相同（即，不含重复边）
 func networkDelayTime(times [][]int, n int, k int) int {
-	graph := make([][][]int, n)
+	graph := make([][][]int, n+1)
 	for _, time := range times {
 		graph[time[0]] = append(graph[time[0]], []int{time[1], time[2]})
 	}
-	distance := make([]int, n)
-	for i := 0; i < n; i++ {
+	distance := make([]int, n+1)
+	for i := 0; i <= n; i++ {
 		distance[i] = math.MaxInt
 	}
 	distance[k] = 0
@@ -58,7 +58,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 			continue
 		}
 		for _, to := range graph[cur.node] {
-			if distance[cur.node]+to[1] > distance[to[0]] {
+			if distance[cur.node]+to[1] >= distance[to[0]] {
 				continue
 			}
 			distance[to[0]] = distance[cur.node] + to[1]
@@ -69,11 +69,11 @@ func networkDelayTime(times [][]int, n int, k int) int {
 		}
 	}
 	res := -1
-	for _, d := range distance {
-		if d == math.MaxInt {
+	for i := 1; i <= n; i++ {
+		if distance[i] == math.MaxInt {
 			return -1
 		}
-		res = max(res, d)
+		res = max(res, distance[i])
 	}
 	return res
 }
