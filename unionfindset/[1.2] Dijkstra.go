@@ -4,7 +4,37 @@ import (
 	"container/heap"
 	"math"
 )
-import h "code.byted.org/zhanglihua.river/playground/heap"
+
+type Node struct {
+	node     int
+	distance int
+}
+
+type MinHeap []*Node
+
+func (h MinHeap) Less(i, j int) bool {
+	return h[i].distance < h[j].distance
+}
+
+func (h MinHeap) Len() int {
+	return len(h)
+}
+
+func (h MinHeap) Swap(i, j int) {
+	h[i], h[j] = h[j], h[i]
+}
+
+func (h *MinHeap) Push(x any) {
+	*h = append(*h, x.(*Node))
+}
+
+func (h *MinHeap) Pop() any {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
 
 type Dijkstra struct {
 	adjacent [][]int
@@ -30,19 +60,28 @@ func (d *Dijkstra) weight(x, y int) int {
 }
 
 func (d *Dijkstra) calculateDistance() {
-	minHeap := &h.GoMinHeap{}
+	minHeap := &MinHeap{}
 	heap.Init(minHeap)
 	for _, to := range d.adjacent[d.start] {
-		minHeap.Push(to)
+		minHeap.Push(&Node{
+			node:     to,
+			distance: d.weight(d.start, to),
+		})
 	}
 	for minHeap.Len() > 0 {
-		cur := minHeap.Pop().(int)
-		for _, to := range d.adjacent[cur] {
-			if d.distance[cur]+d.weight(cur, to) > d.distance[to] {
+		cur := minHeap.Pop().(*Node)
+		if cur.distance > d.distance[cur.node] {
+			continue
+		}
+		for _, to := range d.adjacent[cur.node] {
+			if d.distance[cur.node]+d.weight(cur.node, to) > d.distance[to] {
 				continue
 			}
-			d.distance[to] = d.distance[cur] + d.weight(cur, to)
-			minHeap.Push(to)
+			d.distance[to] = d.distance[cur.node] + d.weight(cur.node, to)
+			minHeap.Push(&Node{
+				node:     to,
+				distance: d.distance[to],
+			})
 		}
 	}
 }
