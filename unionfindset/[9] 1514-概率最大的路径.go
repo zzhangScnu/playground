@@ -79,11 +79,12 @@ func maxProbability(n int, edges [][]int, succProb []float64, startNode int, end
 		graph[w] = append(graph[w], []float64{float64(v), probability})
 	}
 	probabilities := make([]float64, n)
+	probabilities[startNode] = 1
 	maxHeap := &MaxHeap{}
 	heap.Init(maxHeap)
 	maxHeap.Push(&Vertex{
 		node:        startNode,
-		probability: 0,
+		probability: 1,
 	})
 	for maxHeap.Len() > 0 {
 		cur := maxHeap.Pop().(*Vertex)
@@ -94,8 +95,8 @@ func maxProbability(n int, edges [][]int, succProb []float64, startNode int, end
 			continue
 		}
 		for _, to := range graph[cur.node] {
-			if cur.probability+to[1] > probabilities[int(to[0])] {
-				probabilities[int(to[0])] = cur.probability + to[1]
+			if cur.probability*to[1] > probabilities[int(to[0])] {
+				probabilities[int(to[0])] = cur.probability * to[1]
 				maxHeap.Push(&Vertex{
 					node:        int(to[0]),
 					probability: probabilities[int(to[0])],
