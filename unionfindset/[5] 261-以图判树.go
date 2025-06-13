@@ -9,10 +9,10 @@ package unionfindset
 func validTree(n int, edges [][]int) bool {
 	unionFindSet := NewUnionFindSet(n)
 	for _, edge := range edges {
-		if unionFindSet.isConnected(edge[0], edge[1]) {
+		if unionFindSet.IsConnected(edge[0], edge[1]) {
 			return false
 		}
-		unionFindSet.union(edge[0], edge[1])
+		unionFindSet.Union(edge[0], edge[1])
 	}
-	return unionFindSet.size() == 1
+	return unionFindSet.Size() == 1
 }

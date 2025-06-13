@@ -1,6 +1,7 @@
-package unionfindset
+package kruskal
 
 import (
+	"code.byted.org/zhanglihua.river/playground/unionfindset"
 	"math"
 	"sort"
 )
@@ -57,12 +58,12 @@ func minCostConnectPoints(points [][]int) int {
 		return connections[i][2] < connections[j][2]
 	})
 	var cost int
-	unionFindSet := NewUnionFindSet(len(points))
+	unionFindSet := unionfindset.NewUnionFindSet(len(points))
 	for _, connection := range connections {
-		if unionFindSet.isConnected(connection[0], connection[1]) {
+		if unionFindSet.IsConnected(connection[0], connection[1]) {
 			continue
 		}
-		unionFindSet.union(connection[0], connection[1])
+		unionFindSet.Union(connection[0], connection[1])
 		cost += connection[2]
 	}
 	return cost

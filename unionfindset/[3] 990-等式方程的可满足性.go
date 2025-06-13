@@ -44,12 +44,12 @@ func equationsPossible(equations []string) bool {
 	for _, equation := range equations {
 		left, right, operator := int(equation[0]-'a'), int(equation[3]-'a'), equation[1]
 		if operator == '=' {
-			unionFindSet.union(left, right)
+			unionFindSet.Union(left, right)
 		}
 	}
 	for _, equation := range equations {
 		left, right, operator := int(equation[0]-'a'), int(equation[3]-'a'), equation[1]
-		if operator == '!' && unionFindSet.isConnected(left, right) {
+		if operator == '!' && unionFindSet.IsConnected(left, right) {
 			return false
 		}
 	}

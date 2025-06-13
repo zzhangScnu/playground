@@ -30,7 +30,7 @@ func minSwapsCouples(row []int) int {
 	n := len(row) / 2
 	unionFindSet := NewUnionFindSet(n)
 	for i := 0; i < len(row); i += 2 {
-		unionFindSet.union(row[i]/2, row[i+1]/2)
+		unionFindSet.Union(row[i]/2, row[i+1]/2)
 	}
-	return n - unionFindSet.size()
+	return n - unionFindSet.Size()
 }
