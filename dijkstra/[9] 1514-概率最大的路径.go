@@ -1,4 +1,4 @@
-package unionfindset
+package dijkstra
 
 import "container/heap"
 

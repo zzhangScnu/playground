@@ -1,6 +1,9 @@
-package unionfindset
+package kruskal
 
-import "sort"
+import (
+	"code.byted.org/zhanglihua.river/playground/unionfindset"
+	"sort"
+)
 
 /**
 想象一下你是个城市基建规划者,地图上有N座城市,它们按以1到N的次序编号。
@@ -15,19 +18,19 @@ import "sort"
 */
 
 func minimumCost(n int, connections [][]int) int {
-	unionFindSet := NewUnionFindSet(n + 1)
+	unionFindSet := unionfindset.NewUnionFindSet(n + 1)
 	sort.Slice(connections, func(i, j int) bool {
 		return connections[i][2] < connections[j][2]
 	})
 	var cost int
 	for _, connection := range connections {
-		if unionFindSet.isConnected(connection[0], connection[1]) {
+		if unionFindSet.IsConnected(connection[0], connection[1]) {
 			continue
 		}
-		unionFindSet.union(connection[0], connection[1])
+		unionFindSet.Union(connection[0], connection[1])
 		cost += connection[2]
 	}
-	if unionFindSet.size() == 2 {
+	if unionFindSet.Size() == 2 {
 		return cost
 	}
 	return -1

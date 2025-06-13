@@ -37,18 +37,18 @@ func solve(board [][]byte) {
 	unionFindSet := NewUnionFindSet(m*n + 1)
 	for j := 0; j < n; j++ {
 		if board[0][j] == 'O' {
-			unionFindSet.union(j, dummyNode)
+			unionFindSet.Union(j, dummyNode)
 		}
 		if board[m-1][j] == 'O' {
-			unionFindSet.union((m-1)*n+j, dummyNode)
+			unionFindSet.Union((m-1)*n+j, dummyNode)
 		}
 	}
 	for i := 0; i < m; i++ {
 		if board[i][0] == 'O' {
-			unionFindSet.union(i*n, dummyNode)
+			unionFindSet.Union(i*n, dummyNode)
 		}
 		if board[i][n-1] == 'O' {
-			unionFindSet.union(i*n+n-1, dummyNode)
+			unionFindSet.Union(i*n+n-1, dummyNode)
 		}
 	}
 	movements := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
@@ -62,13 +62,13 @@ func solve(board [][]byte) {
 				if board[newI][newJ] != 'O' {
 					continue
 				}
-				unionFindSet.union(newI*n+newJ, i*n+j)
+				unionFindSet.Union(newI*n+newJ, i*n+j)
 			}
 		}
 	}
 	for i := 1; i < m-1; i++ {
 		for j := 1; j < n-1; j++ {
-			if !unionFindSet.isConnected(i*n+j, dummyNode) {
+			if !unionFindSet.IsConnected(i*n+j, dummyNode) {
 				board[i][j] = 'X'
 			}
 		}

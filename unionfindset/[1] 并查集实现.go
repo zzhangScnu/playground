@@ -16,7 +16,7 @@ func NewUnionFindSet(n int) *UnionFindSet {
 	}
 }
 
-func (u *UnionFindSet) union(x, y int) {
+func (u *UnionFindSet) Union(x, y int) {
 	rootX, rootY := u.find(x), u.find(y)
 	if rootX == rootY {
 		return
@@ -25,7 +25,7 @@ func (u *UnionFindSet) union(x, y int) {
 	u.count--
 }
 
-func (u *UnionFindSet) isConnected(x, y int) bool {
+func (u *UnionFindSet) IsConnected(x, y int) bool {
 	rootX, rootY := u.find(x), u.find(y)
 	return rootX == rootY
 }
@@ -45,6 +45,6 @@ func (u *UnionFindSet) findIteratively(x int) int {
 	return x
 }
 
-func (u *UnionFindSet) size() int {
+func (u *UnionFindSet) Size() int {
 	return u.count
 }
