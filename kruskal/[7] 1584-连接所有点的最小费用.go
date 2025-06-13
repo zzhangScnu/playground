@@ -73,3 +73,12 @@ func calculateCost(points [][]int, i, j int) int {
 	a, b := points[i], points[j]
 	return int(math.Abs(float64(a[0]-b[0])) + math.Abs(float64(a[1]-b[1])))
 }
+
+/**
+套用最小生成树算法即可。
+注意：
+1. Kruskal原始算法维护的是一维形式的顶点坐标，而本题需通过二维坐标唯一确定一个顶点。
+   所以通过points的索引下标i -> 顶点，做了一层映射转换，忽略了顶点的二维坐标信息；
+2. 边的权重没有直接给出，需要通过节点提前进行计算并维护到图的存储信息中；
+3. 并查集的初始化大小应为图中顶点的个数。最开始做的时候错误地初始化为len(connections)，实际应为len(points)。
+*/
