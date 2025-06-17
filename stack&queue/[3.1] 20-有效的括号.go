@@ -36,7 +36,8 @@ package stack_queue
 //
 // 1 <= s.length <= 10⁴
 // s 仅由括号 '()[]{}' 组成
-func isValid(s string) bool {
+
+func IsValid(s string) bool {
 	stack := Stack{}
 	mapping := map[int]int{
 		')': '(',
