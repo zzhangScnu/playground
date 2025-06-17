@@ -67,4 +67,34 @@ func doLetterCombinations(digitIdx int, digits string) {
 
 /**
 用digitIdx控制树深，用i控制树宽。
+每次递归自动递增digitIdx。
 */
+
+/*
+写法2：
+通过增加一个外层for循环，显式指定digitIdx。
+*/
+func letterCombinationsII(digits string) []string {
+	letterPath = []string{}
+	letterCombinationRes = []string{}
+	if digits == "" {
+		return letterCombinationRes
+	}
+	backtrack(0, digits)
+	return letterCombinationRes
+}
+
+func backtrack(digitIdx int, digits string) {
+	if len(letterPath) == len(digits) {
+		letterCombinationRes = append(letterCombinationRes, strings.Join(letterPath, ""))
+		return
+	}
+	for i := digitIdx; i < len(digits); i++ {
+		digit := digits[i]
+		for _, c := range mapping[digit] {
+			letterPath = append(letterPath, c)
+			backtrack(i+1, digits)
+			letterPath = letterPath[:len(letterPath)-1]
+		}
+	}
+}
