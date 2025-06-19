@@ -23,7 +23,7 @@ func generateParenthesis(n int) []string {
 	var path, res []string
 	var doGenerateParenthesis func(leftRemain, rightRemain int)
 	doGenerateParenthesis = func(leftRemain, rightRemain int) {
-		if leftRemain < rightRemain {
+		if leftRemain > rightRemain {
 			return
 		}
 		if leftRemain < 0 || rightRemain < 0 {
