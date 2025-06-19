@@ -68,7 +68,14 @@ func findTargetSumWays(nums []int, target int) int {
 }
 
 /**
-用等式处理一下要求的值，转换为组合总和题目。
+用等式处理一下要求的值，转换为组合总和题目：
++sum(A) - sum(B) = target
+sum(A) = target + sum(B)
+sum(A) + sum(A) = target + sum(B) + sum(A)
+2 * sum(A) = target + sum(nums)
++sum(A) = (target + sum(nums)) / 2
+即求解有多少个+使得总和为(target + sum(nums)) / 2。
+
 有重复元素，但不能重复选同一个。
 需要注意的是，一开始写的base case是：
 if start == len(nums) {
