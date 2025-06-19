@@ -95,3 +95,8 @@ if nextX < 0 || nextX >= m || nextY < 0 || nextY >= n {
 	return
 }
 */
+
+/**
+也可以用淹没已访问岛屿的方式，加上统计岛屿时遇到海水就跳过的判断，优化掉visited辅助数组。
+这种实现方式叫FloodFill。
+*/
