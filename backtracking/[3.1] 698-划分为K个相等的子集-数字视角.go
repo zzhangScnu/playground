@@ -62,9 +62,3 @@ func canPartitionKSubsets(nums []int, k int) bool {
 	}
 	return traverse(nums, 0)
 }
-
-//todo：1905
-//并查集
-//floodfill
-//
-//694
