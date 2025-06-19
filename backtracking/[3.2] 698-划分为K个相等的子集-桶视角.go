@@ -34,8 +34,8 @@ func canPartitionKSubsetsII(nums []int, k int) bool {
 	target := sum / k
 	used := make([]bool, len(nums))
 	memo := make(map[string]bool)
-	var traverse func(nums []int, remainBucketNum int, remainTarget int) bool
-	traverse = func(nums []int, remainBucketNum int, remainTarget int) bool {
+	var traverse func(nums []int, start int, remainBucketNum int, remainTarget int) bool
+	traverse = func(nums []int, start int, remainBucketNum int, remainTarget int) bool {
 		if remainBucketNum == 0 {
 			return true
 		}
@@ -43,24 +43,24 @@ func canPartitionKSubsetsII(nums []int, k int) bool {
 			return false
 		}
 		if remainTarget == 0 {
-			flag := traverse(nums, remainBucketNum-1, target)
+			flag := traverse(nums, 0, remainBucketNum-1, target)
 			memo[strings.Join(used, "")] = flag
 			return flag
 		}
 		if flag, ok := memo[strings.Join(used)]; ok {
 			return flag
 		}
-		for i := 0; i < len(nums); i++ {
+		for i := start; i < len(nums); i++ {
 			if used[i] {
 				continue
 			}
 			used[i] = true
-			if traverse(nums, remainBucketNum, remainTarget-nums[i]) {
+			if traverse(nums, i+1, remainBucketNum, remainTarget-nums[i]) {
 				return true
 			}
 			used[i] = false
 		}
 		return false
 	}
-	return traverse(nums, k, target)
+	return traverse(nums, 0, k, target)
 }
