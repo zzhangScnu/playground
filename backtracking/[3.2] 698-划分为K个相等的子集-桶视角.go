@@ -1,5 +1,7 @@
 package backtracking
 
+import "strings"
+
 // 给定一个整数数组 nums 和一个正整数 k，找出是否有可能把这个数组分成 k 个非空子集，其总和都相等。
 //
 // 示例 1：
@@ -31,6 +33,7 @@ func canPartitionKSubsetsII(nums []int, k int) bool {
 	}
 	target := sum / k
 	used := make([]bool, len(nums))
+	memo := make(map[string]bool)
 	var traverse func(nums []int, remainBucketNum int, remainTarget int) bool
 	traverse = func(nums []int, remainBucketNum int, remainTarget int) bool {
 		if remainBucketNum == 0 {
@@ -40,7 +43,12 @@ func canPartitionKSubsetsII(nums []int, k int) bool {
 			return false
 		}
 		if remainTarget == 0 {
-			return traverse(nums, remainBucketNum-1, target)
+			flag := traverse(nums, remainBucketNum-1, target)
+			memo[strings.Join(used, "")] = flag
+			return flag
+		}
+		if flag, ok := memo[strings.Join(used)]; ok {
+			return flag
 		}
 		for i := 0; i < len(nums); i++ {
 			if used[i] {
