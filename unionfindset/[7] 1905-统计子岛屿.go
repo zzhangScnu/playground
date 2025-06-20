@@ -29,22 +29,39 @@ package unionfindset
 // 1 <= m, n <= 500
 // grid1[i][j] 和 grid2[i][j] 都要么是 0 要么是 1 。
 func countSubIslands(grid1 [][]int, grid2 [][]int) int {
+	movements := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 	m, n := len(grid1), len(grid1[0])
 	unionFindSet := NewUnionFindSet(m*n + 1)
-	dummyNode := m * n
-	for i := 0; i < m; i++ {
-		for j := 0; j < n; j++ {
-			if grid1[i][j] == 1 {
-				unionFindSet.Union(dummyNode, i*m+j)
-			}
-		}
-	}
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			if grid2[i][j] == 1 {
-				if
+				for _, movement := range movements {
+					x, y := i+movement[0], j+movement[1]
+					if grid2[x][y] == 1 {
+						unionFindSet.Union(i*m+j, x*m+y)
+					}
+				}
 			}
 		}
 	}
-
+	var count int
+	visited := make(map[int]bool)
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			root := unionFindSet.find(i*m + j)
+			if visited[root] {
+				continue
+			}
+			visited[root] = true
+			for x := 0; x < m; x++ {
+				for y := 0; y < n; y++ {
+					if unionFindSet.IsConnected(root, x*m+y) && grid2[x][y] == 1 && grid1[x][y] == 0 {
+						break
+					}
+				}
+			}
+			count++
+		}
+	}
+	return count
 }
