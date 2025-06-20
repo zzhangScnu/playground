@@ -47,8 +47,8 @@ func countSubIslands(grid1 [][]int, grid2 [][]int) int {
 	var count int
 	visited := make(map[int]bool)
 	isSub := true
-	for i := 0; i < m && isSub; i++ {
-		for j := 0; j < n && isSub; j++ {
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
 			if grid2[i][j] == 0 {
 				continue
 			}
@@ -72,3 +72,5 @@ func countSubIslands(grid1 [][]int, grid2 [][]int) int {
 	}
 	return count
 }
+
+// 超时
