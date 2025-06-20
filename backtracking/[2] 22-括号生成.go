@@ -43,3 +43,17 @@ func generateParenthesis(n int) []string {
 	doGenerateParenthesis(n, n)
 	return res
 }
+
+/**
+思路：回溯法
+在生成括号&回溯过程中，分别维护左括号和右括号的剩余额度。
+- base case1：
+  因为是以从左到右的顺序生成括号，所以合法情况下任一时刻的左括号数量 >= 右括号数量，
+  即左括号剩余额度 <= 右括号剩余额度；
+- base case2：
+  超出题目给的n的数量限制；
+- base case3：
+  若当前左右括号的剩余额度都到达了0，且没有命中上述不合法的base case，则表示生成了一个合法括号串。
+
+回溯时，分别对左括号和右括号进行生成和回溯。
+*/
