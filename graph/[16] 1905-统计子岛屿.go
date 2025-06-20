@@ -62,3 +62,12 @@ func countSubIslands(grid1 [][]int, grid2 [][]int) int {
 	}
 	return count
 }
+
+/**
+如果b是a的子岛屿，则b陆地是a陆地的子集，能被a陆地完全覆盖，
+即b中的每一块陆地在a中必然是陆地。
+
+所以先将b中为陆地、a中为海水的区域用flood-fill算法淹没，
+剩下的岛屿即为a的子岛屿。
+此时再进行统计即可。
+*/
