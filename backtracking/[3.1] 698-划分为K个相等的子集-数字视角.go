@@ -62,3 +62,22 @@ func canPartitionKSubsets(nums []int, k int) bool {
 	}
 	return traverse(nums, 0)
 }
+
+/**
+思路：数字视角
+设有K个桶，每个桶的容量为target。
+对于数组中的每一个数字，可以有K个选择，放入[0, K-1]区间的桶中。
+
+if traverse(nums, numIndex+1) {
+	return true
+}
+分支搜索，找到回溯树中任一符合条件路径即终止搜索，向上层层返回。
+
+时间复杂度：
+设 N = len(nums)，K = 桶的数量
+每个数字有K个选择，则N个数字：
+O(N^K)
+
+跟桶视角相比可知，要尽量收缩可选择范围，因为每多一个选项都是指数级别增长；
+相比之下只增加候选集个数如桶的数量，只是常数级别增长。
+*/
