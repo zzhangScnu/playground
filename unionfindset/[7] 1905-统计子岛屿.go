@@ -47,8 +47,8 @@ func countSubIslands(grid1 [][]int, grid2 [][]int) int {
 	var count int
 	visited := make(map[int]bool)
 	isSub := true
-	for i := 0; i < m; i++ {
-		for j := 0; j < n; j++ {
+	for i := 0; i < m && isSub; i++ {
+		for j := 0; j < n && isSub; j++ {
 			if grid2[i][j] == 0 {
 				continue
 			}
@@ -57,18 +57,15 @@ func countSubIslands(grid1 [][]int, grid2 [][]int) int {
 				continue
 			}
 			visited[root] = true
-			for x := 0; x < m; x++ {
-				for y := 0; y < n; y++ {
-					if unionFindSet.IsConnected(root, x*m+y) && grid2[x][y] == 1 && grid1[x][y] == 0 {
+			isSub = true
+			for x := 0; x < m && isSub; x++ {
+				for y := 0; y < n && isSub; y++ {
+					if unionFindSet.IsConnected(root, x*n+y) && grid2[x][y] == 1 && grid1[x][y] == 0 {
 						isSub = false
-						break
 					}
 				}
 			}
 			if isSub {
-				break
-			}
-			if !isSub {
 				count++
 			}
 		}
