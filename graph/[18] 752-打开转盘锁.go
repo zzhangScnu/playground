@@ -1,4 +1,6 @@
-package bfs
+package graph
+
+import "container/list"
 
 // 你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： '0', '1', '2', '3', '4', '5', '6', '7', '8', '9
 // ' 。每个拨轮可以自由旋转：例如把 '9' 变为 '0'，'0' 变为 '9' 。每次旋转都只能旋转一个拨轮的一位数字。
@@ -39,5 +41,55 @@ package bfs
 // target 不在 deadends 之中
 // target 和 deadends[i] 仅由若干位数字组成
 func openLock(deadends []string, target string) int {
+	visited := make(map[string]struct{})
+	for _, dead := range deadends {
+		visited[dead] = struct{}{}
+	}
+	start := "0000"
+	if _, ok := visited[start]; ok {
+		return -1
+	}
+	if start == target {
+		return 0
+	}
+	queue := list.New()
+	queue.PushBack(start)
+	visited[start] = struct{}{}
+	depth := 0
+	for queue.Len() > 0 {
+		size := queue.Len()
+		for i := 0; i < size; i++ {
+			cur := queue.Front().Value.(string)
+			queue.Remove(queue.Front())
+			if cur == target {
+				return depth
+			}
+			for i := 0; i < len(cur); i++ {
+				up := turn(cur, i, -1)
+				if _, ok := visited[up]; !ok {
+					queue.PushBack(up)
+					visited[up] = struct{}{}
+				}
+				down := turn(cur, i, 1)
+				if _, ok := visited[down]; !ok {
+					queue.PushBack(down)
+					visited[down] = struct{}{}
+				}
+			}
+		}
+		depth++
+	}
+	return -1
+}
 
+func turn(str string, index int, direct int) string {
+	bytes := []byte(str)
+	if bytes[index] == '0' && direct == -1 {
+		bytes[index] = '9'
+	} else if bytes[index] == '9' && direct == 1 {
+		bytes[index] = '0'
+	} else {
+		bytes[index] += byte(direct)
+	}
+	return string(bytes)
 }
