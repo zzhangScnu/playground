@@ -102,3 +102,5 @@ func serialize(board [][]int) string {
 	}
 	return sb.String()
 }
+
+// todo：基于-1，1，-n，n的坐标计算解法
