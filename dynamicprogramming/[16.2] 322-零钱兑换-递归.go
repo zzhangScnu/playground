@@ -59,3 +59,25 @@ func coinChangeII(coins []int, amount int) int {
 	}
 	return traverse(coins, amount)
 }
+
+/**
+递归版本的动态规划，实际上更像带有备忘录能力的暴力穷举解法。
+
+for _, coin := range coins {
+    // result初始化为math.MaxInt，且在递归结束回到本层后，进行择优操作
+	ways := traverse(coins, remainAmount-coin)
+	if ways == -1 {
+		continue
+	}
+	// 如果无法凑到目标金额，ways == -1的情况下，不会走到这里，即result仍为最大值
+	result = min(result, ways+1)
+}
+// 所以如果result未被更新过，则忘备忘录中写入-1，这样在最终返回的memo[remainAmount]中，
+// 才能实现如果没有任何一种硬币组合能组成总金额，返回-1
+if result == math.MaxInt {
+	memo[remainAmount] = -1
+} else {
+	memo[remainAmount] = result
+}
+return memo[remainAmount]
+*/
