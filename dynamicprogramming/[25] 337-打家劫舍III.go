@@ -70,3 +70,31 @@ res2 := max(dpL0, dpL1) + max(dpL1, dpR1)
 遍历方向：
 由【本层的计算依赖于子树即下层的结果】可知，需要使用后序遍历。
 */
+
+/**
+如果不用后序遍历的话，就存在大量的重叠子问题，需要维护备忘录来消除冗余：
+
+var memo map[*TreeNode]int
+
+func rob(node *TreeNode) int {
+	if node == nil {
+		return 0
+	}
+	if res, ok := memo[node]; ok {
+		return res
+	}
+	// 如果抢当前节点，则跳过孩子节点去抢孙子节点
+	rob := node.Val
+	if node.Left != nil {
+		rob += rob(node.Left.Left) + rob(node.Left.Right)
+	}
+	if node.Right != nil {
+		rob += rob(node.Right.Left) + rob(node.Right.Right)
+	}
+	// 如果不抢当前节点，则去抢孩子节点
+	notRob := rob(node.Left) + rob(node.Right)
+	res := max(rob, notRob)
+	memo[node] = res
+	return res
+}
+*/

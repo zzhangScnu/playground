@@ -40,9 +40,22 @@ func maxSubArray(nums []int) int {
 	return res
 }
 
-// todo：计算顺序的关键在于保证子数组长度≥1：
-//
-//1. 时间维度 ：
-//
-//   - prefixSum[i] - minPrefixSum 表示从 j+1 到 i 的子数组和
-//   - 必须保证 j < i → minPrefixSum 必须来自 prefixSum[0..i-1]
+/**
+前缀和数组做法
+
+思路：
+先将每个位置组成子数组的和计算出来，即prefixSum[i]表示索引在[1, i]范围内的元素之和。
+prefixSum从1开始，prefixSum[0] = 0为base case，为了计算前缀和数组时更方便，无需额外考虑数组越界的情况。
+从索引1开始遍历前缀和数组，一边维护最小的前缀和，一边与当前位置的前缀和相减。
+假设最小前缀和为prefixSum[i]，当前指针指向prefixSum[j]，则prefixSum[j]-prefixSum[i]表示索引在[i+1,...j]范围内的元素之和。
+对这些差值取最大值，即为最大子数组和。
+
+注意：
+需先计算res，再计算minPrefixSum，因为需保证子数组长度 >= 1。
+prefixSum[i] - minPrefixSum 表示索引范围为 [j, i] 的子数组和，必须保证 j < i。所以minPrefixSum 必须来自 prefixSum[0..i-1]，即在每轮计算完res后再进行更新。
+否则如果当前位置的前缀和即为最小，在先计算minPrefixSum再计算res的情况下，计算出来的res为0，无法正确更新。
+
+同时，因为数组中有负数，不能用滑动窗口解法；
+且minPrefixSum应初始化为prefixSum[0]即0；
+res应初始化为nums[0]，因子数组最少长度为1，即元素本身。
+*/
