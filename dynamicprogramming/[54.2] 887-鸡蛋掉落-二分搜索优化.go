@@ -55,18 +55,37 @@ func superEggDropII(k int, n int) int {
 		low, high := 1, j
 		var mid int
 		for low <= high {
-			mid = i + (j-i)>>1
+			mid = low + (high-low)>>1
 			broken, unbroken := dp(i-1, mid-1)+1, dp(i, j-mid)+1
 			if broken > unbroken {
-				res = min(res, unbroken)
-				mid = high - 1
-			} else {
 				res = min(res, broken)
-				mid = low + 1
+				high = mid - 1
+			} else {
+				res = min(res, unbroken)
+				low = mid + 1
 			}
-			memo[[2]int{low, high}] = res
 		}
+		memo[[2]int{i, j}] = res
 		return res
 	}
 	return dp(k, n)
 }
+
+/**
+在前一种解法的基础上，引入二分搜索，代替线性查找。
+
+由dp(i-1, testFloor-1), dp(i, j-testFloor)得知函数图像：
+
+分析得出交点
+
+memo[[2]int{i, j}] = res位置
+
+时间复杂度
+
+- 线性法：O(kn²) → 需要缓存所有子问题
+- 二分法：O(kn logn) → 只需缓存最终结果
+
+需要解释的是，线性方法中的每个x迭代都会生成不同的子问题，这些子问题的状态由(i-1,x-1)和(i,j-x)组成。如果在遍历过程中不缓存这些中间结果，当这些子问题在其他地方被再次访问时，会导致重复计算，增加时间复杂度。因此，即使是在循环内部，也需要为每个子问题存储结果。
+
+而二分查找方法则不同，因为它的目标是找到最优的mid，而不是遍历所有可能的x。在二分过程中，虽然会有多个mid值被尝试，但最终结果只取决于i和j，因此只需要在循环结束后存储最终的res值即可，而不需要缓存中间步骤的mid值，因为这些mid值不会在其他地方被重复使用。
+*/
