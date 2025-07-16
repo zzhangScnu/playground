@@ -66,17 +66,28 @@ func findRotateSteps(ring string, key string) int {
 }
 
 /**
-DP数组及下标含义：
-- i：key的第i位；
-- dp[i]：旋转到key[i]的最小步数
+本题用自顶向下的方式较为合适，将原问题拆解为子问题。
+想要将ring当前指针指向的第i位，旋转到key的第j位，需考虑：
+- 目标位置：ring转盘中所有的key[j]字符及其位置；
+- 旋转方向：顺时针/逆时针旋转。
+
+DP函数及参数含义：
+- i：ring转盘当前指针指向的位置；
+- j：key当前需匹配的位置；
+- dp[i][j]：将ring[i]旋转到key[j]的最小步数。
 
 递推公式：
-dp[i] = min(
-	dp[i-1],
-)
+for ring中每一个key[j]的位置index
+	dp(i, j) = min(
+		子问题从ring[index]到key[j+1]的最小步数dp(index, j+1)
+			+ 本次从i到index的旋转步数
+			+ 本次按下按钮的次数1
+	)
 
-初始化：
+旋转步数：
+顺时针：｜index - i｜
+逆时针：len(ring) - ｜index - i｜
 
-遍历方向：
-
+base case：
+当j == n时，不在合法范围中，此时返回0。
 */

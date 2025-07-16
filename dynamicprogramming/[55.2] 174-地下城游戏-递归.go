@@ -55,4 +55,16 @@ func calculateMinimumHPRecursively(dungeon [][]int) int {
 	return dp(dungeon, 0, 0)
 }
 
-// todo: max的逻辑跟if-else取是一样的
+/**
+思路与迭代是一致的。
+- 迭代：
+	- 自底向上；
+	- DP数组承载递推结果；
+	- 边缘情况需初始化。
+- 递归：
+	- 自顶向下；
+	- 递归计算结果，备忘录消除重叠子问题带来的冗余计算；
+	- 边缘情况
+		- 定义base case，避免无限循环；
+		- 仅需根据递推公式的需要，返回最大值/最小值，使得择优中取不到即可。
+*/

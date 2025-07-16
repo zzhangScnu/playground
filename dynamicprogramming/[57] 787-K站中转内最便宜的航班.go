@@ -87,7 +87,18 @@ func buildGraph(n int, flights [][]int) [][][]int {
 	return graph
 }
 
-// todo：需从最终结果倒推，即从dp(dst, k)倒推
+/**
+解法一：
+从终点倒推起点
+src -> node[...] -> dst
+for 每个node -> dst中的node(from)
+	dp(src -> dst, k) =
+		min(dp(src -> node, k - 1) + weight[node][dst])
+
+- 从递推公式可以看出，变化的变量只有dst和k；
+- k - 1是因为子问题中的中转次数比当前问题少1次；
+- base case：当k < 0时，即中转次数使用完毕，此时返回特殊标识-1，表示不可达。
+*/
 
 func findCheapestPriceFromSrc(n int, flights [][]int, src int, dst int, k int) int {
 	graph := buildGraphFrom(n, flights)
@@ -129,3 +140,16 @@ func buildGraphFrom(n int, flights [][]int) [][][]int {
 	}
 	return graph
 }
+
+/**
+解法二：
+从起点正推终点
+src -> node[...] -> dst
+for 每个src -> node中的node(to)
+	dp(src -> dst, k) =
+		min(dp(node -> dst, k - 1) + weight[src][node])
+
+- 从递推公式可以看出，变化的变量只有src和k；
+- k - 1是因为子问题中的中转次数比当前问题少1次；
+- base case：当k < 0时，即中转次数使用完毕，此时返回特殊标识-1，表示不可达。
+*/
