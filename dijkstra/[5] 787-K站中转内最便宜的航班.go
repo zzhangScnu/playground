@@ -53,10 +53,11 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
 	k++
 	graph := buildGraph(n, flights)
 	distance, nodeVisitedNum := make([]int, n), make([]int, n)
-	for i := 1; i < n; i++ {
+	for i := 0; i < n; i++ {
 		distance[i] = math.MaxInt
 		nodeVisitedNum[i] = math.MaxInt
 	}
+	distance[src], nodeVisitedNum[src] = 0, 0
 	minHeap := &LimitedMinHeap{}
 	heap.Init(minHeap)
 	srcNode := &LimitedNode{
