@@ -70,3 +70,21 @@ func isRectangleCover(rectangles [][]int) bool {
 	}
 	return true
 }
+
+/**
+完美矩形判定：
+1. 所有小矩形的面积加总 == 大矩形面积
+2. 所有小矩形组成的图形顶点 == 4
+3. 所有小矩形组成的图形的顶点 == 大矩形的顶点
+*/
+
+/**
+注意：
+1. 获取大矩形的左下/右上顶点 -> 所有小矩形的最远左下/右上顶点：
+x1, y1, x2, y2 := rectangle[0], rectangle[1], rectangle[2], rectangle[3] // 左下x，左下y，右上x，右上y
+X1, Y1 = min(X1, x1), min(Y1, y1) // 对于x&y二维坐标轴，最远左下顶点在靠近x轴/y轴处，故取min
+X2, Y2 = max(X2, x2), max(Y2, y2) // 对于x&y二维坐标轴，最远右上顶点在远离x轴/y轴处，故取max
+
+2. 获取小矩形组成的图形的顶点 ->
+	-
+*/
