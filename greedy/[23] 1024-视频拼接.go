@@ -68,3 +68,31 @@ func videoStitching(clips [][]int, time int) int {
 	}
 	return -1
 }
+
+/**
+思路：
+遇到区间问题，第一反应就是先排序。
+一般是先根据起点排序，起点相同的再根据终点排序。
+
+本题需要寻找几个片段，可以完整覆盖从起点到终点即[0, time]区间。
+所以使用贪心思路：
+1. 先锚定一个区间终点curEnd，寻找所有起点 < curEnd的片段。目的是为了无缝衔接，连成更长的片段；
+2. 在这些符合条件的片段中，使用贪心思想，寻找终点最远的片段，使得覆盖长度尽可能延伸，从而达到片段数量尽可能少的目标；
+3. 在寻找完成之后，相当于选择了衔接的片段，此时count++且curEnd = nextEnd；如果此时已经到达终点，则返回片段数量。
+*/
+
+/**
+sort.Slice(clips, func(i, j int) bool {
+	if clips[i][0] == clips[j][0] {
+		return clips[i][1] > clips[j][1]
+	}
+	return clips[i][0] < clips[j][0]
+})
+
+sort.Slice(clips, func(i, j int) bool {
+	return clips[i][0] == clips[j][0] && clips[i][1] > clips[j][1] ||
+		clips[i][0] < clips[j][0]
+})
+
+代码逻辑等价。
+*/
