@@ -28,11 +28,11 @@ func productExceptSelf(nums []int) []int {
 	prefix, suffix := make([]int, n), make([]int, n)
 	prefix[0] = 1
 	for i := 1; i < n; i++ {
-		prefix[i] = prefix[i-1] * nums[i]
+		prefix[i] = prefix[i-1] * nums[i-1]
 	}
 	suffix[n-1] = 1
-	for i := n - 2; i > 0; i-- {
-		suffix[i] = suffix[i+1] * nums[i]
+	for i := n - 2; i >= 0; i-- {
+		suffix[i] = suffix[i+1] * nums[i+1]
 	}
 	res := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -73,12 +73,12 @@ func productExceptSelfII(nums []int) []int {
 	res := make([]int, n)
 	res[0] = 1
 	for i := 1; i < n; i++ {
-		res[i] = res[i-1] * nums[i]
+		res[i] = res[i-1] * nums[i-1]
 	}
 	suffix := 1
-	for i := n - 1; i > 0; i-- {
+	for i := n - 1; i >= 0; i-- {
 		res[i] *= suffix
-		suffix *= nums[i-1]
+		suffix *= nums[i]
 	}
 	return res
 }
