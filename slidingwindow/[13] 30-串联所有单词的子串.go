@@ -42,26 +42,30 @@ package slidingwindow
 // 1 <= words[i].length <= 30
 // words[i] 和 s 由小写英文字母组成
 func findSubstring(s string, words []string) []int {
-	subLen := len(words) * len(words[0])
-	if len(s) < subLen {
-		return []int{}
-	}
-	subStrs := make(map[string]interface{})
-	for i := 0; i < len(words); i++ {
-		for j := 0; j < len(words); j++ {
-			if i == j {
-				continue
-			}
-			subStrs[words[i]+words[j]] = struct{}{}
-		}
+	seq := make(map[string]int)
+	for _, word := range words {
+		seq[word]++
 	}
 	var res []int
-	slow, fast := 0, subLen
-	for fast < len(s) {
-		if _, ok := subStrs[s[slow:fast]]; ok {
-			res = append(res, slow)
+	wordsCount, wordLen := len(words), len(words[0])
+	subWordLen := wordsCount * wordLen
+	curSeq := make(map[string]int)
+	remain := wordsCount
+	for i := 0; i < len(s); i++ {
+		for j := i; j < i+subWordLen; j++ {
+			word := s[j : j+wordLen]
+			if _, ok := seq[word]; ok {
+				curSeq[word]++
+				if curSeq[word] == seq[word] {
+					remain--
+				}
+			}
 		}
-		slow, fast = slow+1, fast+1
+		if remain == 0 {
+			res = append(res, i)
+		}
+		remain = wordsCount
+		curSeq = make(map[string]int)
 	}
 	return res
 }
