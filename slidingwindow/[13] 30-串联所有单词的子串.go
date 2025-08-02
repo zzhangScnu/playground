@@ -42,30 +42,33 @@ package slidingwindow
 // 1 <= words[i].length <= 30
 // words[i] 和 s 由小写英文字母组成
 func findSubstring(s string, words []string) []int {
-	freq := make(map[string]int)
+	targetFreq := make(map[string]int)
 	for _, word := range words {
-		freq[word]++
+		targetFreq[word]++
 	}
 	var res []int
 	wordsCount, wordLen := len(words), len(words[0])
 	subWordLen := wordsCount * wordLen
-	curFreq := make(map[string]int)
-	remain := wordsCount
-	for i := 0; i < len(s); i++ {
-		for j := i; j < i+subWordLen; j++ {
-			word := s[j : j+wordLen]
-			if _, ok := freq[word]; ok {
+	for i := 0; i <= len(s)-subWordLen; i++ {
+		curFreq := make(map[string]int)
+		remain := wordsCount
+		for j := 0; j < wordsCount; j++ {
+			start := i + j*wordLen
+			word := s[start : start+wordLen]
+			if targetCount, ok := targetFreq[word]; ok {
 				curFreq[word]++
-				if curFreq[word] == freq[word] {
+				if curFreq[word] <= targetCount {
 					remain--
+				} else {
+					break
 				}
+			} else {
+				break
 			}
 		}
 		if remain == 0 {
 			res = append(res, i)
 		}
-		remain = wordsCount
-		curFreq = make(map[string]int)
 	}
 	return res
 }
