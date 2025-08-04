@@ -72,3 +72,15 @@ func findSubstring(s string, words []string) []int {
 	}
 	return res
 }
+
+/**
+思路：
+令 wordsCount = len(words)，wordLen = len(words[0])
+目标：需要输出子串(长度固定为wordsCount * wordLen)的每一个起始位置
+实现：滑动窗口
+- 滑动窗口步长 == 子串长度；对每个位置开始的窗口范围子串，做逐个单词的匹配和计数；
+- 维护2个HashMap：
+	- 目标的【单词 -> 出现次数】映射；
+	- 步长范围中遍历至今，现状的【单词 -> 出现次数】映射。
+- 维护一个计数值：还需要凑多少个单词，才能完全覆盖当前子串；当该值 == 0时，说明从该起始位置开始的长度为wordsCount * wordLen的子串能串联所有单词，符合要求，需收割结果。
+*/

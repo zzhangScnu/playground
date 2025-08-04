@@ -47,3 +47,9 @@ func wordPattern(pattern string, s string) bool {
 	}
 	return true
 }
+
+/**
+思路：
+需做双向映射，如果在遍历过程中一一双向匹配成功，则表示模式和单词遵循相同规律。
+注意需做双向映射，否则会导致[a, b, b, c] -> [cat, dog, dog, cat]也被误判为同一规律。
+*/
