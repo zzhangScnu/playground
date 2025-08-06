@@ -24,29 +24,19 @@ package hashmap
 //
 // 0 <= nums.length <= 10⁵
 // -10⁹ <= nums[i] <= 10⁹
-func longestConsecutive(nums []int) int {
-	mapping := make(map[int]interface{})
-	for _, num := range nums {
-		mapping[num] = struct{}{}
-	}
+func longestConsecutiveII(nums []int) int {
+	mapping := make(map[int]int)
 	var res int
-	for num := range mapping {
-		if _, ok := mapping[num-1]; ok {
+	for _, num := range nums {
+		if _, exist := mapping[num]; exist {
 			continue
 		}
-		curNum, maxLen, flag := num, 1, false
-		for {
-			if _, flag = mapping[curNum+1]; flag {
-				maxLen += 1
-				curNum += 1
-			}
-			if !flag {
-				break
-			}
-		}
-		res = max(res, maxLen)
+		left, right := mapping[num-1], mapping[num+1]
+		curLen := left + right + 1
+		res = max(res, curLen)
+		mapping[num] = 1
+		mapping[num-left] = curLen
+		mapping[num+right] = curLen
 	}
 	return res
 }
-
-// 并查集？？
