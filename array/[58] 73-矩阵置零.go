@@ -26,19 +26,35 @@ package array
 // 你能想出一个仅使用常量空间的解决方案吗？
 func setZeroes(matrix [][]int) {
 	m, n := len(matrix), len(matrix[0])
-	rows, cols := make([]bool, m), make([]bool, n)
+	row0, col0 := false, false
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			if matrix[i][j] == 0 {
-				rows[i], cols[j] = true, true
+				if i == 0 {
+					row0 = true
+				}
+				if j == 0 {
+					col0 = true
+				}
+				matrix[i][0], matrix[0][j] = 0, 0
 			}
 		}
 	}
-	for i := 0; i < m; i++ {
-		for j := 0; j < n; j++ {
-			if rows[i] || cols[j] {
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if matrix[i][0] == 0 || matrix[0][j] == 0 {
 				matrix[i][j] = 0
 			}
+		}
+	}
+	if row0 {
+		for col := 0; col < n; col++ {
+			matrix[0][col] = 0
+		}
+	}
+	if col0 {
+		for row := 0; row < m; row++ {
+			matrix[row][0] = 0
 		}
 	}
 }
