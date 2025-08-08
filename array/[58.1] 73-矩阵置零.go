@@ -26,35 +26,31 @@ package array
 // 你能想出一个仅使用常量空间的解决方案吗？
 func setZeroes(matrix [][]int) {
 	m, n := len(matrix), len(matrix[0])
-	row0, col0 := false, false
+	rows, cols := make([]bool, m), make([]bool, n)
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			if matrix[i][j] == 0 {
-				if i == 0 {
-					row0 = true
-				}
-				if j == 0 {
-					col0 = true
-				}
-				matrix[i][0], matrix[0][j] = 0, 0
+				rows[i], cols[j] = true, true
 			}
 		}
 	}
-	for i := 1; i < m; i++ {
-		for j := 1; j < n; j++ {
-			if matrix[i][0] == 0 || matrix[0][j] == 0 {
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if rows[i] || cols[j] {
 				matrix[i][j] = 0
 			}
 		}
 	}
-	if row0 {
-		for col := 0; col < n; col++ {
-			matrix[0][col] = 0
-		}
-	}
-	if col0 {
-		for row := 0; row < m; row++ {
-			matrix[row][0] = 0
-		}
-	}
 }
+
+/**
+思路：
+每一行/列只会被原始0影响从而修改为0，而不会再被修改后的0再次影响。
+因为想要原地修改矩阵，所以需要对初始值做快照，标记原始值为0的坐标。
+
+最直观的做法是另起一个同等大小的矩阵暂存初始值。空间复杂度为O(m * n)。
+
+可以基于矩阵优化为两个数组，分别记录横坐标和纵坐标对应的行/列是否存在0。
+如果行或列有任一存在0值，则需将整行/列置为0。
+空间复杂度为O(m + n)。
+*/
