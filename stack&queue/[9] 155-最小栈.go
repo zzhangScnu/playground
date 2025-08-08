@@ -55,9 +55,9 @@ func MinStackConstructor() MinStack {
 
 func (this *MinStack) Push(val int) {
 	this.values = append(this.values, val)
-	currentMinValue := this.currentMinValues[len(this.currentMinValues)-1]
-	if len(this.currentMinValues) == 0 || val < currentMinValue {
-		currentMinValue = val
+	currentMinValue := val
+	if len(this.currentMinValues) > 0 && val > this.currentMinValues[len(this.currentMinValues)-1] {
+		currentMinValue = this.currentMinValues[len(this.currentMinValues)-1]
 	}
 	this.currentMinValues = append(this.currentMinValues, currentMinValue)
 }
