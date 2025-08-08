@@ -43,19 +43,19 @@ func gameOfLife(board [][]int) {
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			aliveNeighbours := countAliveNeighbour(board, i, j)
-			if board[i][j] == 1 && (aliveNeighbours == 2 || aliveNeighbours == 3) {
-				board[i][j] = 3
-			} else if board[i][j] == 0 && aliveNeighbours == 3 {
+			if board[i][j] == 1 && (aliveNeighbours < 2 || aliveNeighbours > 3) {
 				board[i][j] = 2
+			} else if board[i][j] == 0 && aliveNeighbours == 3 {
+				board[i][j] = 3
 			}
 		}
 	}
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
-			if board[i][j] == 3 || board[i][j] == 2 {
-				board[i][j] = 1
-			} else if board[i][j] == 1 {
+			if board[i][j] == 2 {
 				board[i][j] = 0
+			} else if board[i][j] == 3 {
+				board[i][j] = 1
 			}
 		}
 	}
@@ -71,7 +71,7 @@ func countAliveNeighbour(board [][]int, row, col int) int {
 				i == row && j == col {
 				continue
 			}
-			if board[i][j] == 1 || board[i][j] == 3 {
+			if board[i][j] == 1 || board[i][j] == 2 {
 				count++
 			}
 		}
@@ -81,10 +81,8 @@ func countAliveNeighbour(board [][]int, row, col int) int {
 
 /**
 before after value
-  0      0     0    // 原值
-  1      0     1    // 原值
-  0      1     2    // 特殊值
-  1      1     3    // 特殊值
-
-
+  0      0     0
+  1      1     1
+  1      0     2
+  0      1     3
 */
