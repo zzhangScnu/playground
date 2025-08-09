@@ -29,28 +29,5 @@ package stack_queue
 // 输入中不存在两个连续的操作符
 // 每个数字和运行的计算将适合于一个有符号的 32位 整数
 func calculate(s string) int {
-	var operands, operators []uint8
-	for i := len(s) - 1; i >= 0; i-- {
-		if s[i] == ' ' || s[i] == '(' || s[i] == ')' {
-			continue
-		}
-		if s[i] == '+' || s[i] == '-' {
-			operators = append(operators, s[i])
-		} else {
-			operands = append(operands, s[i])
-		}
-	}
-	var i int
-	var res int
-	for _, operator := range operators {
-		x, y := int(operands[i]-'0'), int(operands[i+1]-'0')
-		if operator == '+' {
-			res += x + y
-		}
-		if operator == '-' {
-			res += x - y
-		}
-		i += 2
-	}
-	return res
+	return 0
 }
