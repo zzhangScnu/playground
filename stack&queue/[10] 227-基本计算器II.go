@@ -33,34 +33,35 @@ import "unicode"
 // 表达式中的所有整数都是非负整数，且在范围 [0, 2³¹ - 1] 内
 // 题目数据保证答案是一个 32-bit 整数
 func calculateII(s string) int {
-	var operands []int
-	var operators []uint8
-	for i := len(s) - 1; i >= 0; i-- {
-		if s[i] == ' ' {
-			continue
-		}
-		if s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/' {
-			operators = append(operators, s[i])
-		} else {
-			var num int
+	var pre, cur, res int
+	operator := '+'
+	for i := 0; i < len(s); {
+		if unicode.IsDigit(rune(s[i])) {
 			for i < len(s) && unicode.IsDigit(rune(s[i])) {
-				num = num*10 + int(s[i]-'0')
+				cur += cur*10 + int(s[i]-'0')
 				i++
 			}
-			operands = append(operands, num)
+			i--
+			if operator == '+' {
+				res += cur
+				pre = cur
+			} else if operator == '-' {
+				res -= cur
+				pre = -cur
+			} else if operator == '*' {
+				res -= pre
+				res += pre * cur
+				pre = pre * cur
+			} else if operator == '/' {
+				res -= pre
+				res += pre / cur
+				pre = pre / cur
+			}
+			cur = 0
+		} else if s[i] != ' ' {
+			operator = int32(s[i])
+			i++
 		}
-	}
-	var i int
-	var res int
-	for _, operator := range operators {
-		x, y := operands[i], operands[i+1]
-		if operator == '+' {
-			res += x + y
-		}
-		if operator == '-' {
-			res += x - y
-		}
-		i += 2
 	}
 	return res
 }
