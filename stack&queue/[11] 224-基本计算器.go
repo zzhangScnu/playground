@@ -33,49 +33,31 @@ import "unicode"
 func calculate(s string) int {
 	cur, res, operator := 0, 0, 1
 	var stack [][]int
-	for i := 0; i < len(s); {
+	for i := 0; i < len(s); i++ {
 		ch := s[i]
 		if unicode.IsDigit(rune(ch)) {
-			for i < len(s) && unicode.IsDigit(rune(s[i])) {
-				cur = cur*10 + int(s[i]-'0')
-				i++
-			}
-			i--
-		} else if ch == '-' {
-			if operator == 1 {
-				res += cur
-			} else {
-				res -= cur
-			}
-			operator = 0
-		} else if ch == '+' {
-			if operator == 1 {
-				res += cur
-			} else if operator == 0 {
-				res -= cur
-			}
+			cur = cur*10 + int(s[i]-'0')
+		} else if ch == '+' || ch == '-' {
+			res += operator * cur
 			operator = 1
+			if ch == '-' {
+				operator = -1
+			}
+			cur = 0
 		} else if ch == '(' {
 			stack = append(stack, []int{res, operator})
 			res = 0
 			operator = 1
+			cur = 0
 		} else if ch == ')' {
-			if operator == 1 {
-				res += cur
-			} else if operator == 0 {
-				res -= cur
-			}
+			res += operator * cur
 			pre := stack[len(stack)-1]
 			preRes, preOperator := pre[0], pre[1]
 			stack = stack[:len(stack)-1]
-			if preOperator == 1 {
-				res = preRes + res
-			} else if preOperator == 0 {
-				res = preRes - res
-			}
-			operator = 1
+			res *= preOperator
+			res += preRes
+			cur = 0
 		}
-		i++
 	}
-	return res
+	return res + operator*cur
 }
