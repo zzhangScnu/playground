@@ -38,7 +38,7 @@ func calculateII(s string) int {
 	for i := 0; i < len(s); {
 		if unicode.IsDigit(rune(s[i])) {
 			for i < len(s) && unicode.IsDigit(rune(s[i])) {
-				cur += cur*10 + int(s[i]-'0')
+				cur = cur*10 + int(s[i]-'0')
 				i++
 			}
 			i--
@@ -60,8 +60,8 @@ func calculateII(s string) int {
 			cur = 0
 		} else if s[i] != ' ' {
 			operator = int32(s[i])
-			i++
 		}
+		i++
 	}
 	return res
 }
