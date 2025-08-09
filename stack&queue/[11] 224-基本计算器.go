@@ -1,5 +1,7 @@
 package stack_queue
 
+import "unicode"
+
 // 给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。
 //
 // 注意:不允许使用任何将字符串作为数学表达式计算的内置函数，比如 eval() 。
@@ -29,5 +31,33 @@ package stack_queue
 // 输入中不存在两个连续的操作符
 // 每个数字和运行的计算将适合于一个有符号的 32位 整数
 func calculate(s string) int {
-	return 0
+	cur, res, operator := 0, 0, 1
+	var stack [][]int
+	for i := 0; i < len(s); i++ {
+		ch := s[i]
+		if unicode.IsDigit(rune(ch)) {
+			cur = cur*10 + int(s[i]-'0')
+		} else if ch == '+' || ch == '-' {
+			res += operator * cur
+			operator = 1
+			if ch == '-' {
+				operator = -1
+			}
+			cur = 0
+		} else if ch == '(' {
+			stack = append(stack, []int{res, operator})
+			res = 0
+			operator = 1
+			cur = 0
+		} else if ch == ')' {
+			res += operator * cur
+			pre := stack[len(stack)-1]
+			preRes, preOperator := pre[0], pre[1]
+			stack = stack[:len(stack)-1]
+			res *= preOperator
+			res += preRes
+			cur = 0
+		}
+	}
+	return res + operator*cur
 }
