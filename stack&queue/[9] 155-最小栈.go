@@ -83,3 +83,21 @@ func (this *MinStack) GetMin() int {
  * param_3 := obj.Top();
  * param_4 := obj.GetMin();
  */
+
+/**
+思路：
+引入辅助栈，用于记录新元素入栈时，栈中的最小元素。
+意味着当nums[i]入栈时，values[i]存放nums[i]，而currentMinValues存放包含nums[i]在内的栈中所有元素的最小值。
+该最小值可以通过与每个元素比较，取较小值进行维护。
+这个比较操作需注意数组越界情况。
+一开始我是这么写的：
+func (this *MinStack) Push(val int) {
+	this.values = append(this.values, val)
+	// 下面这行当栈为空时会导致数组越界
+	currentMinValue := this.currentMinValues[len(this.currentMinValues)-1]
+	if len(this.currentMinValues) == 0 || val < currentMinValue {
+		currentMinValue = val
+	}
+	this.currentMinValues = append(this.currentMinValues, currentMinValue)
+}
+*/
