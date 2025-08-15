@@ -60,12 +60,12 @@ package tree
 //
 // 你可以设计一个满足下述条件的解决方案吗？next() 和 hasNext() 操作均摊时间复杂度为 O(1) ，并使用 O(h) 内存。其中 h 是树的高度。
 
-type BSTIterator struct {
+type BSTIterator1 struct {
 	data    []int
 	pointer int
 }
 
-func Constructor(root *TreeNode) BSTIterator {
+func Constructor1(root *TreeNode) BSTIterator1 {
 	var data []int
 	var traverse func(node *TreeNode)
 	traverse = func(node *TreeNode) {
@@ -77,18 +77,18 @@ func Constructor(root *TreeNode) BSTIterator {
 		traverse(node.Right)
 	}
 	traverse(root)
-	return BSTIterator{
+	return BSTIterator1{
 		data:    data,
 		pointer: 0,
 	}
 }
 
-func (this *BSTIterator) Next() int {
+func (this *BSTIterator1) Next() int {
 	val := this.data[this.pointer]
 	this.pointer++
 	return val
 }
 
-func (this *BSTIterator) HasNext() bool {
+func (this *BSTIterator1) HasNext() bool {
 	return this.pointer != len(this.data)
 }
