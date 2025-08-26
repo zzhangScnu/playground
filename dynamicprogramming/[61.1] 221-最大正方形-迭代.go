@@ -28,7 +28,7 @@ func maximalSquare(matrix [][]byte) int {
 	var res int
 	m, n := len(matrix), len(matrix[0])
 	dp := make([][]int, m+1)
-	for i := 0; i < m; i++ {
+	for i := 0; i <= m; i++ {
 		dp[i] = make([]int, n+1)
 	}
 	for i := m - 1; i >= 0; i-- {

@@ -50,7 +50,11 @@ func maximalSquareRecursively(matrix [][]byte) int {
 		dp[i][j] = 1 + min(traverse(i, j+1), traverse(i+1, j), traverse(i+1, j+1))
 		return dp[i][j]
 	}
-	traverse(m-1, n-1)
+	for i := m - 1; i >= 0; i-- {
+		for j := n - 1; j >= 0; j-- {
+			traverse(i, j)
+		}
+	}
 	var res int
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
@@ -66,4 +70,7 @@ func maximalSquareRecursively(matrix [][]byte) int {
 通过将问题拆解为规模更小的子问题来解决。所以必然存在大量的重复计算。
 需要引入备忘录模式。
 同时需要区分未计算 / 计算后结果为0的情况，故将前者通过特殊值-1进行表示。
+
+注意，需要对每一个位置做递归计算，得到以每一个位置为左上角顶点的最大正方形边长。
+最后再遍历结果集择优。
 */
