@@ -47,11 +47,9 @@ func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
 		heap.Push(minCapitals, &Pair{capital[i], profits[i]})
 	}
 	for i := 0; i < k; i++ {
-		if minCapitals.Len() > 0 {
+		for minCapitals.Len() > 0 && (*minCapitals)[0].capital <= w {
 			pair := heap.Pop(minCapitals).(*Pair)
-			if pair.capital <= w {
-				heap.Push(maxProfits, pair.profit)
-			}
+			heap.Push(maxProfits, pair.profit)
 		}
 		if maxProfits.Len() == 0 {
 			break
@@ -66,7 +64,7 @@ type Pair struct {
 	profit  int
 }
 
-type MinCapitalHeap []Pair
+type MinCapitalHeap []*Pair
 
 func (m MinCapitalHeap) Len() int {
 	return len(m)
@@ -81,7 +79,7 @@ func (m MinCapitalHeap) Swap(i, j int) {
 }
 
 func (m *MinCapitalHeap) Push(x any) {
-	*m = append(*m, x.(Pair))
+	*m = append(*m, x.(*Pair))
 }
 
 func (m *MinCapitalHeap) Pop() any {
