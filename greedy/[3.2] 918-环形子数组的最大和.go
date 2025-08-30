@@ -32,5 +32,16 @@ package greedy
 // 1 <= n <= 3 * 10⁴
 // -3 * 10⁴ <= nums[i] <= 3 * 10⁴
 func maxSubarraySumCircular(nums []int) int {
-
+	total, curMin, globalMin, curMax, globalMax := nums[0], nums[0], nums[0], nums[0], nums[0]
+	for _, num := range nums {
+		total += num
+		curMin = min(curMin+num, num)
+		globalMin = min(globalMin, curMin)
+		curMax = max(curMax+num, num)
+		globalMax = max(globalMax, curMax)
+	}
+	if globalMax < 0 {
+		return globalMax
+	}
+	return max(globalMax, total-globalMin)
 }
