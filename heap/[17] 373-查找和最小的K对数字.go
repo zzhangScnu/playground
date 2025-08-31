@@ -36,22 +36,22 @@ func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
 	n, m := len(nums1), len(nums2)
 	minHeap := &SumIndexPairHeap{}
 	heap.Init(minHeap)
-	minHeap.Push([]int{nums1[0] + nums2[0], 0, 0})
+	heap.Push(minHeap, []int{nums1[0] + nums2[0], 0, 0})
 	visited := make(map[[2]int]interface{})
 	visited[[2]int{0, 0}] = struct{}{}
 	var res [][]int
 	for minHeap.Len() > 0 && k > 0 {
-		cur := minHeap.Pop().([]int)
+		cur := heap.Pop(minHeap).([]int)
 		i, j := cur[1], cur[2]
-		res = append(res, []int{i, j})
+		res = append(res, []int{nums1[i], nums2[j]})
 		k--
 		if _, ok := visited[[2]int{i + 1, j}]; !ok && i+1 < n {
 			visited[[2]int{i + 1, j}] = struct{}{}
-			minHeap.Push([]int{nums1[i+1] + nums2[j], i + 1, j})
+			heap.Push(minHeap, []int{nums1[i+1] + nums2[j], i + 1, j})
 		}
 		if _, ok := visited[[2]int{i, j + 1}]; !ok && j+1 < m {
 			visited[[2]int{i, j + 1}] = struct{}{}
-			minHeap.Push([]int{nums1[i] + nums2[j+1], i, j + 1})
+			heap.Push(minHeap, []int{nums1[i] + nums2[j+1], i, j + 1})
 		}
 	}
 	return res
