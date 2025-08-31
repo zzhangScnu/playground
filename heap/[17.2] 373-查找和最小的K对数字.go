@@ -2,10 +2,6 @@ package heap
 
 import "container/heap"
 
-package heap
-
-import "container/heap"
-
 // 给定两个以 非递减顺序排列 的整数数组 nums1 和 nums2 , 以及一个整数 k 。
 //
 // 定义一对值 (u,v)，其中第一个元素来自 nums1，第二个元素来自 nums2 。
@@ -37,15 +33,16 @@ import "container/heap"
 // 1 <= k <= 10⁴
 // k <= nums1.length * nums2.length
 func kSmallestPairsII(nums1 []int, nums2 []int, k int) [][]int {
-	minHeap := &IndexPairHeap{}
+	minHeap := &IndexPairHeap{nums1: nums1, nums2: nums2}
 	heap.Init(minHeap)
-	for i := range nums1 {
+	for i := 0; i < min(len(nums1), k); i++ {
 		heap.Push(minHeap, []int{i, 0})
 	}
 	var res [][]int
 	for minHeap.Len() > 0 && k > 0 {
 		cur := heap.Pop(minHeap).([]int)
-		res = append(res, cur)
+		res = append(res, []int{nums1[cur[0]], nums2[cur[1]]})
+		k--
 		if cur[1]+1 < len(nums2) {
 			heap.Push(minHeap, []int{cur[0], cur[1] + 1})
 		}
