@@ -87,8 +87,11 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
 	remainWord := word[1:]
 	if c == '.' {
 		for _, child := range cur.Children {
-			return this.doSearch(remainWord, child)
+			if this.doSearch(remainWord, child) {
+				return true
+			}
 		}
+		return false
 	}
 	return this.doSearch(remainWord, cur.Children[c-'a'])
 }
@@ -99,3 +102,5 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
  * obj.AddWord(word);
  * param_2 := obj.Search(word);
  */
+
+// todo: 如果第一个非空子节点不匹配，即使其他子节点可能匹配，也会返回 false 当所有子节点都为 nil 时，循环不会执行，导致遗漏返回 false 的逻辑
