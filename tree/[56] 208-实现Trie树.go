@@ -41,9 +41,11 @@ type Trie struct {
 	root *TrieNode
 }
 
-func TrieConstructor() *Trie {
-	return &Trie{
-		root: &TrieNode{},
+func TrieConstructor() Trie {
+	return Trie{
+		root: &TrieNode{
+			Children: make([]*TrieNode, 26),
+		},
 	}
 }
 
@@ -52,7 +54,9 @@ func (this *Trie) Insert(word string) {
 	for _, c := range word {
 		index := c - 'a'
 		if cur.Children[index] == nil {
-			cur.Children[index] = &TrieNode{}
+			cur.Children[index] = &TrieNode{
+				Children: make([]*TrieNode, 26),
+			}
 		}
 		cur = cur.Children[index]
 	}
