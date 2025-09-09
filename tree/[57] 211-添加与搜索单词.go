@@ -68,28 +68,29 @@ func (this *WordDictionary) AddWord(word string) {
 			}
 		}
 		cur = cur.Children[index]
-		cur.IsEndOfWord = true
 	}
+	cur.IsEndOfWord = true
 }
 
 func (this *WordDictionary) Search(word string) bool {
 	return this.doSearch(word, this.Root)
 }
 
-func (this *WordDictionary) doSearch(word string, node *WordDictionaryNode) bool {
-	cur := this.Root
-	for index, c := range word {
-		if cur.Children[c-'a'] != nil {
-			cur = cur.Children[c-'a']
-			continue
-		}
-		if c == '.' {
-			for _, child := range cur.Children {
-				return this.doSearch(word[index+1:], child)
-			}
+func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool {
+	if cur == nil {
+		return false
+	}
+	if len(word) == 0 {
+		return cur.IsEndOfWord
+	}
+	c := word[0]
+	remainWord := word[1:]
+	if c == '.' {
+		for _, child := range cur.Children {
+			return this.doSearch(remainWord, child)
 		}
 	}
-	return cur.IsEndOfWord
+	return this.doSearch(remainWord, cur.Children[c-'a'])
 }
 
 /**
