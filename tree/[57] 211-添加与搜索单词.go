@@ -42,7 +42,8 @@ package tree
 // 最多调用 10⁴ 次 addWord 和 search
 
 type WordDictionaryNode struct {
-	Children []*WordDictionaryNode
+	Children    []*WordDictionaryNode
+	IsEndOfWord bool
 }
 
 type WordDictionary struct {
@@ -67,18 +68,28 @@ func (this *WordDictionary) AddWord(word string) {
 			}
 		}
 		cur = cur.Children[index]
+		cur.IsEndOfWord = true
 	}
 }
 
 func (this *WordDictionary) Search(word string) bool {
+	return this.doSearch(word, this.Root)
+}
+
+func (this *WordDictionary) doSearch(word string, node *WordDictionaryNode) bool {
 	cur := this.Root
-	for _, c := range word {
-		if c != '.' && cur.Children[c-'a'] == nil {
-			return false
+	for index, c := range word {
+		if cur.Children[c-'a'] != nil {
+			cur = cur.Children[c-'a']
+			continue
 		}
-		cur = cur.Children[c-'a']
+		if c == '.' {
+			for _, child := range cur.Children {
+				return this.doSearch(word[index+1:], child)
+			}
+		}
 	}
-	return true
+	return cur.IsEndOfWord
 }
 
 /**
