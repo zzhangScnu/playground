@@ -45,21 +45,33 @@ func exist(board [][]byte, word string) bool {
 	visited := initialVisited()
 	var traverse func(x, y, targetIndex int) bool
 	traverse = func(x, y, targetIndex int) bool {
-		if x < 0 || x >= m || y < 0 || y >= n {
+		if targetIndex == len(word) {
 			return true
+		}
+		if x < 0 || x >= m || y < 0 || y >= n {
+			return false
 		}
 		if visited[x][y] {
 			return false
 		}
+		if board[x][y] != word[targetIndex] {
+			return false
+		}
 		visited[x][y] = true
-		if board[x][y] == word[targetIndex] {
-			for _, movement := range movements {
-				if traverse(x+movement[0], y+movement[1], targetIndex+1) {
-					return true
-				}
+		for _, movement := range movements {
+			if traverse(x+movement[0], y+movement[1], targetIndex+1) {
+				return true
 			}
 		}
+		visited[x][y] = false
 		return false
 	}
-	return traverse(0, 0, 0)
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if traverse(i, j, 0) {
+				return true
+			}
+		}
+	}
+	return false
 }
