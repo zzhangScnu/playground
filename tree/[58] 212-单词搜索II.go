@@ -26,7 +26,6 @@ package tree
 // 1 <= words[i].length <= 10
 // words[i] 由小写英文字母组成
 // words 中的所有字符串互不相同
-
 func findWords(board [][]byte, words []string) []string {
 	movements := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 	m, n := len(board), len(board[0])
@@ -40,19 +39,20 @@ func findWords(board [][]byte, words []string) []string {
 		if x < 0 || x >= m || y < 0 || y >= n {
 			return
 		}
-		if board[x][y] == ' ' {
+		ch := board[x][y]
+		if ch == ' ' {
 			return
 		}
-		if curNode.Children[board[x][y]-'a'] == nil {
+		if curNode.Children[ch-'a'] == nil {
 			return
 		}
-		path = append(path, board[x][y])
+		path = append(path, ch)
 		board[x][y] = ' '
 		defer func() {
-			board[x][y] = path[len(path)-1]
+			board[x][y] = ch
 			path = path[:len(path)-1]
 		}()
-		curNode = curNode.Children[board[x][y]-'a']
+		curNode = curNode.Children[ch-'a']
 		if curNode.IsEndOfWord {
 			res = append(res, string(path))
 			curNode.IsEndOfWord = false
