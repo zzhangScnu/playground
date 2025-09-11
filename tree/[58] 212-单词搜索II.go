@@ -55,6 +55,7 @@ func findWords(board [][]byte, words []string) []string {
 		curNode = curNode.Children[board[x][y]-'a']
 		if curNode.IsEndOfWord {
 			res = append(res, string(path))
+			curNode.IsEndOfWord = false
 		}
 		for _, movement := range movements {
 			traverse(x+movement[0], y+movement[1], curNode, path)
@@ -67,3 +68,8 @@ func findWords(board [][]byte, words []string) []string {
 	}
 	return res
 }
+
+//1. 核心问题：结果重复添加
+//当 Trie 中存在「前缀包含关系」的单词（如 "a" 和 "aa"）时，遍历到长单词时会重复添加短单词。
+//例如：找到 "aa" 时，由于 "a" 的 IsEndOfWord 为 true，会在遍历第一个 'a' 时添加 "a"，遍历第二个 'a' 时再次添加 "a"，导致最终结果包含重复字符串（如 ["a", "a", "aa"]）。
+//解法：set收集结果 或 魔改前缀树节点
