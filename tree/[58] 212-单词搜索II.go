@@ -35,17 +35,15 @@ func findWords(board [][]byte, words []string) []string {
 		trie.Insert(word)
 	}
 	var res []string
-	var path []byte
-	var traverse func(x, y, wordIndex, charIndex int)
-	traverse = func(x, y, wordIndex, charIndex int) {
+	var traverse func(x, y int, curNode *TrieNode, path []byte)
+	traverse = func(x, y int, curNode *TrieNode, path []byte) {
 		if x < 0 || x >= m || y < 0 || y >= n {
 			return
 		}
-		if charIndex == len(words[wordIndex]) {
-			res = append(res, words[wordIndex])
+		if board[x][y] == ' ' {
 			return
 		}
-		if board[x][y] == ' ' {
+		if curNode.Children[board[x][y]-'a'] == nil {
 			return
 		}
 		path = append(path, board[x][y])
@@ -54,18 +52,17 @@ func findWords(board [][]byte, words []string) []string {
 			board[x][y] = path[len(path)-1]
 			path = path[:len(path)-1]
 		}()
-		if !trie.StartsWith(string(path)) {
-			return
+		curNode = curNode.Children[board[x][y]-'a']
+		if curNode.IsEndOfWord {
+			res = append(res, string(path))
 		}
 		for _, movement := range movements {
-			traverse(x+movement[0], y+movement[1], wordIndex, charIndex+1)
+			traverse(x+movement[0], y+movement[1], curNode, path)
 		}
 	}
-	for k := 0; k < len(words); k++ {
-		for i := 0; i < m; i++ {
-			for j := 0; j < n; j++ {
-				traverse(i, j, k, 0)
-			}
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			traverse(i, j, trie.root, []byte{})
 		}
 	}
 	return res
