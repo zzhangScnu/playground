@@ -38,7 +38,7 @@ func findWords(board [][]byte, words []string) []string {
 	var path []byte
 	var traverse func(x, y, wordIndex, charIndex int)
 	traverse = func(x, y, wordIndex, charIndex int) {
-		if x < 0 || x > m || y < 0 || y >= n {
+		if x < 0 || x >= m || y < 0 || y >= n {
 			return
 		}
 		if charIndex == len(words[wordIndex]) {
