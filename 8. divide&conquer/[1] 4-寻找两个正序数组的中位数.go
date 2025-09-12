@@ -27,55 +27,39 @@ import "math"
 // 1 <= m + n <= 2000
 // -10⁶ <= nums1[i], nums2[i] <= 10⁶
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	if len(nums1) == 0 && len(nums2) == 0 {
-		return 0
+	A, B := nums1, nums2
+	if len(A) > len(B) {
+		A, B = nums2, nums1
 	}
-	shorter, longer := nums1, nums2
-	if len(nums1) > len(nums2) {
-		shorter, longer = nums2, nums1
-	}
-	total := len(shorter) + len(longer)
-	half := (total + 1) / 2
-
-	// 处理 shorter 为空的边界条件
-	if len(shorter) == 0 {
-		if total%2 == 1 {
-			return float64(longer[half-1])
+	total := len(nums1) + len(nums2)
+	half := total / 2
+	l, r := 0, len(A)
+	for l <= r {
+		m := l + (r-l)>>1
+		Aleft := m
+		Aright := math.MaxInt
+		if m+1 < len(A) {
+			Aright = A[m+1]
 		}
-		return float64(longer[half-1]+longer[half]) / 2.0
-	}
-
-	low, high := 0, len(shorter)-1
-	for {
-		mid := low + (high-low)/2
-		shorterIdx, longerIdx := mid, half-mid-2
-
-		// 处理 shorter 越界的情况（关键修正）
-		shorterLeft, shorterRight := math.MinInt, math.MaxInt
-		if shorterIdx >= 0 && shorterIdx < len(shorter) {
-			shorterLeft = shorter[shorterIdx]
+		Bleft := math.MinInt
+		if half-(m+1)-1 >= 0 {
+			Bleft = B[half-(m+1)-1]
 		}
-		if shorterIdx+1 >= 0 && shorterIdx+1 < len(shorter) {
-			shorterRight = shorter[shorterIdx+1]
+		Bright := math.MaxInt
+		if half-(m+1) < len(B) {
+			Bright = B[half-(m+1)]
 		}
-
-		longerLeft, longerRight := math.MinInt, math.MaxInt
-		if longerIdx >= 0 {
-			longerLeft = longer[longerIdx]
-		}
-		if longerIdx+1 < len(longer) {
-			longerRight = longer[longerIdx+1]
-		}
-
-		if shorterLeft <= longerRight && longerLeft <= shorterRight {
+		if Aleft <= Bright && Bleft <= Aright {
 			if total%2 == 1 {
-				return float64(max(shorterLeft, longerLeft))
+				return float64(min(Aright, Bleft))
+			} else {
+				return float64((max(Aleft, Bleft) + min(Aright, Bright)) / 2)
 			}
-			return float64(max(shorterLeft, longerLeft)+min(shorterRight, longerRight)) / 2.0
-		} else if shorterLeft > longerRight {
-			high = mid - 1
+		} else if Aleft > Bright {
+			r = m - 1
 		} else {
-			low = mid + 1
+			l = m + 1
 		}
 	}
+	return -1
 }
