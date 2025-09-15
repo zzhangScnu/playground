@@ -36,22 +36,26 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	l, r := 0, len(A)
 	for l <= r {
 		m := l + (r-l)>>1
-		Aleft := m
+		i, j := m-1, half-m-1
+		Aleft := math.MinInt
+		if i >= 0 {
+			Aleft = A[i]
+		}
 		Aright := math.MaxInt
-		if m+1 < len(A) {
-			Aright = A[m+1]
+		if i+1 < len(A) {
+			Aright = A[i+1]
 		}
 		Bleft := math.MinInt
-		if half-(m+1)-1 >= 0 {
-			Bleft = B[half-(m+1)-1]
+		if j >= 0 {
+			Bleft = B[j]
 		}
 		Bright := math.MaxInt
-		if half-(m+1) < len(B) {
-			Bright = B[half-(m+1)]
+		if j+1 < len(B) {
+			Bright = B[j+1]
 		}
 		if Aleft <= Bright && Bleft <= Aright {
 			if total%2 == 1 {
-				return float64(min(Aright, Bleft))
+				return float64(max(Aleft, Bleft))
 			} else {
 				return float64((max(Aleft, Bleft) + min(Aright, Bright)) / 2)
 			}
