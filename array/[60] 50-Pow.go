@@ -31,6 +31,21 @@ func myPow(x float64, n int) float64 {
 		if n == 0 {
 			return 1
 		}
+		pow := traverse(x, n/2)
+		if n%2 == 0 {
+			return pow * pow
+		}
+		return pow * pow * x
+	}
+	return traverse(x, n)
+}
+
+func myPowII(x float64, n int) float64 {
+	var traverse func(x float64, n int) float64
+	traverse = func(x float64, n int) float64 {
+		if n == 0 {
+			return 1
+		}
 		return x * traverse(x, n-1)
 	}
 	return traverse(x, n)
