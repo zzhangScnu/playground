@@ -45,3 +45,32 @@ func maxSubarraySumCircular(nums []int) int {
 	}
 	return max(globalMax, total-globalMin)
 }
+
+/**
+nums = [a b c d e]
+
+
+环形子数组最大和 =
+	max(
+		中间部分子数组最大和，如 [b, c, d]
+		头尾相连部分子数组最大和，如[a, e] -> 数组总和 - 中间部分子数组最小和
+	)
+
+
+求当前子数组的最小和：
+curMin = min(curMin+num, num)
+- curMin + num：将当前元素合并进当前子数组中
+- num：从当前元素开始自成一派，重新开始建立子数组
+
+
+初始化：
+total, curMin, globalMin, curMax, globalMax := 0, 0, nums[0], 0, nums[0]
+令 globalMin = globalMax = nums[0]，否则如果是全负数的场景，globalMin和globalMax都无法更新。
+
+
+特殊处理：
+若数组中均为负数，则globalMax最终为负数，此时最大和子数组即为【最大的单个元素】，此时存储在globalMax中。
+if globalMax < 0 {
+	return globalMax
+}
+*/
