@@ -94,3 +94,10 @@ func (this *Trie) StartsWith(prefix string) bool {
  * param_2 := obj.Search(word);
  * param_3 := obj.StartsWith(prefix);
  */
+
+/**
+前缀树：
+根节点 -> 虚拟节点
+子节点 -> 以单词字符序向下生长、分岔，每层至多有26个节点
+	     标记是否为单词的结尾
+*/

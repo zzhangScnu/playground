@@ -103,5 +103,44 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
  * param_2 := obj.Search(word);
  */
 
-// todo: 如果第一个非空子节点不匹配，即使其他子节点可能匹配，也会返回 false 当所有子节点都为 nil 时，循环不会执行，导致遗漏返回 false 的逻辑
-// todo: 迭代和递归混用
+/**
+思路：
+困难点在于 . 表示一个字符，
+如何同时兼顾完全匹配(a == a)和模糊匹配(. == a)。
+
+当命中模糊匹配时，需将其所有子节点进行新一轮匹配。
+可以用递归思想实现。
+
+注意，递归和循环不可混用！
+
+两种写法对比：
+func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool {
+	if cur == nil {
+		return false
+	}
+	// ...
+	if c == '.' {
+		for _, child := range cur.Children {
+			return this.doSearch(remainWord, child)
+		}
+	}
+	// ...
+}
+上述写法，如果第一个非空子节点不匹配，即使其他子节点可能匹配，也会返回 false。
+
+func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool {
+	if cur == nil {
+		return false
+	}
+	// ...
+	if c == '.' {
+		for _, child := range cur.Children {
+			if this.doSearch(remainWord, child) {
+				return true
+			}
+		}
+		return false
+	}
+	// ...
+}
+*/

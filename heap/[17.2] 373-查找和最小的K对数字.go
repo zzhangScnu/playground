@@ -76,3 +76,12 @@ func (s *IndexPairHeap) Pop() any {
 	(*s).indexes = (*s).indexes[:s.Len()-1]
 	return res
 }
+
+/**
+思路：
+与1差不多，但是省去了 visited 数组的维护。
+因为通过先将 nums1[0...n) 与 nums2[0] 的元素组合加入最小堆，
+其中，n = min(len(nums1), k)。
+相当于维护了一条基线，预先固定了 nums1 的时序，后续仅需扩展 nums2。
+通过自然顺序扩展而非随机打乱顺序，令 nums2 被选中的新元素与 nums1中元素的组合一定是全新、未曾访问的。
+*/
