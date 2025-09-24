@@ -23,12 +23,19 @@ package dynamicprogramming
 func numTilings(n int) int {
 	mod := 1_000_000_007
 	dp := make(map[[2]int]int)
-	var combineState func(t1, t2 int) int
-	combineState = func(t1, t2 int) int {
-		return t1<<1 | t2
+	var combineState func(t1, t2 bool) int
+	combineState = func(t1, t2 bool) int {
+		s1, s2 := 0, 0
+		if t1 {
+			s1 = 1
+		}
+		if t2 {
+			s2 = 1
+		}
+		return s1<<1 | s2
 	}
-	var traverse func(i int, t1, t2 int) int
-	traverse = func(i int, t1, t2 int) int {
+	var traverse func(i int, t1, t2 bool) int
+	traverse = func(i int, t1, t2 bool) int {
 		if i == n {
 			return 1
 		}
@@ -37,20 +44,33 @@ func numTilings(n int) int {
 		}
 		var count int
 		t3, t4 := i+1 < n, i+1 < n
-		if t1 == 0 && t2 == 1 {
-			count += traverse(i+1, 0, 1) + traverse(i+1, 0, 0)
+		if t1 && t2 {
+			if t3 && t4 {
+				count += traverse(i+1, false, false)
+			}
+			if t3 {
+				count += traverse(i+1, false, true)
+			}
+			if t4 {
+				count += traverse(i+1, true, false)
+			}
 		}
-		if t1 == 1 && t2 == 0 {
-			count += traverse(i+1, 1, 0) + traverse(i+1, 1, 1)
+		if t1 && !t2 {
+			if t3 && t4 {
+				count += traverse(i+1, false, true)
+			}
+			if t3 {
+				count += traverse(i+1, false, true)
+			}
 		}
-		if t1 == 1 && t2 == 1 {
-			count += traverse(i+1, 0, 0) + traverse(i+1, 1, 0) + traverse(i+1, 0, 1) + traverse(i+1, 1, 1)
+		if !t1 && t2 {
+			count += traverse(i+1, true, false)
 		}
 		count %= mod
 		dp[[2]int{i, combineState(t1, t2)}] = count
 		return count
 	}
-	return traverse(0, 0, 0)
+	return traverse(0, true, true)
 }
 
 /**
@@ -70,11 +90,14 @@ DP数组及下标含义
 - t2：第 i 列中，纵向第 2 个方格是否可填充
 
 
-递推公式
+递推公式 // todo
 经过 i - 1 列的摆放后，对于当前列 i 的 t1 和 t2，共有 3 种可能。
 在这 3 种可能之上，结合 t3 和 t4是否可摆放（是否越界），共有 7 种不同的摆放情况：
 
 i 的已摆放情况       	  i 的可用情况(t1 & t2)      	     i & i + 1 可能的摆放情况               i + 1 可用情况(t3 & t4)   					解析
+
+0						   1							 1  1       1  0       1  1  		  0       1       0
+0						   1	                         1  1       1  1       1  0    		  0       0       1							此时可以横向/垂直摆放两个 I 形，或以不同角度摆放一个 L 形
 
 0                          1    						 1  1       0  1                 	  0       0	 								此时可以横向摆放一个 I 形，或摆放一个 L 形
 1                          0							 1  0       1  1 					  1       0
