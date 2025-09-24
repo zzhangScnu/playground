@@ -21,10 +21,11 @@ package dynamicprogramming
 //
 // 1 <= n <= 1000
 func numTilings(n int) int {
+	mod := 1_000_000_007
 	dp := make(map[[2]int]int)
 	var combineState func(t1, t2 int) int
 	combineState = func(t1, t2 int) int {
-		return t1 << 1 & t2
+		return t1 << 1 | t2
 	}
 	var traverse func(i int, t1, t2 int) int
 	traverse = func(i int, t1, t2 int) int {
@@ -47,6 +48,7 @@ func numTilings(n int) int {
 		if t1 == 1 && t2 == 1 {
 			count += traverse(i+1, 0, 0) + traverse(i+1, 1, 0) + traverse(i+1, 0, 1) + traverse(i+1, 1, 1)
 		}
+		count %= mod
 		dp[[2]int{i, combineState(t1, t2)}] = count
 		return count
 	}
