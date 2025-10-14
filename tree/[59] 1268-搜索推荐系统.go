@@ -85,3 +85,18 @@ func suggestedProducts(products []string, searchWord string) [][]string {
 	}
 	return res
 }
+
+/**
+思路：
+1. 用产品列表构建前缀树；
+2. 将输入拆成不同长度的前缀，模拟逐个字符输入的情况；
+3. 使用各前缀进行匹配。
+   如果前缀匹配成功，意味着当前游标在前缀末尾的叶子节点上。此时需通过DFS遍历子树并收集结果。
+   方法的参数中：
+   node *TrieNode：当前搜索的前缀树节点，用于判断是否到达产品名称末尾；
+   currentStr string：当前收集的产品名称路径，最终需加入结果集。
+   因为前缀树的组织形式是alphabet的，因此输出结果是天然有序的。
+
+注意，因为golang中'a'形式的rune可以直接隐式转换为uint8，因此node.Children[ch]可以通过编译；
+但由前缀树的构建规则可知，node.Children[ch-'a']才是真正的[0, 25]区间范围的合法索引。
+*/
