@@ -30,3 +30,9 @@ func tribonacci(n int) int {
 	}
 	return a
 }
+
+/**
+思路：
+类似斐波那契数列。
+使用3个变量轮换，从而兼容n < 3的情况。
+*/

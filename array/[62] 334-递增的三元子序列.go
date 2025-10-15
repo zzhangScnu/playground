@@ -48,3 +48,13 @@ func increasingTriplet(nums []int) bool {
 	}
 	return false
 }
+
+/**
+思路：
+维护2个变量，分别表示第一个数和第二个数。
+寻找合适的数进行赋值，同时寻找第三个数。
+当所有数都满足条件时，直接返回。
+否则均为找到，返回false。
+
+注意 first 和 second 的初始化值。
+*/
