@@ -66,3 +66,12 @@ func mergeAlternatelyII(word1 string, word2 string) string {
 	}
 	return string(res)
 }
+
+/**
+思路：
+类似于合并两个有序链表的操作，使用双指针的方式进行合并。
+
+方法II比起原始方法的改进有：
+- 预分配结果数组，避免append时多次分配内存；
+- 使用或条件代替与，使得在for循环中能够完成所有合并操作。
+*/

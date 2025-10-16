@@ -50,3 +50,8 @@ func kidsWithCandies(candies []int, extraCandies int) []bool {
 	}
 	return res
 }
+
+/**
+思路：
+计算一个阈值，可以使得原本拥有 >= 该阈值数目的糖果的孩子，在获取额外糖果后，成为糖果最多的孩子。
+*/

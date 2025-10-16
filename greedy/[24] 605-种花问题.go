@@ -33,3 +33,10 @@ func canPlaceFlowers(flowerbed []int, n int) bool {
 	}
 	return n == 0
 }
+
+/**
+思路：
+贪心思想。
+需要判断一个空闲的地块，左边和右边的地块是否空闲。注意左右越界情况兼容。
+需要在判断可种的同时，给地块种上花，并将n--。
+*/

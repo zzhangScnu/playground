@@ -61,3 +61,12 @@ func successfulPairs(spells []int, potions []int, success int64) []int {
 	}
 	return res
 }
+
+/**
+思路：
+先对potions进行排序，再在其上进行二分搜索。
+本质上是找到potions的左边界，令其后面的potions与当前spell相乘均 >= success。
+
+注意，这里涉及int和int64的运算和比较，需要先将操作数转换为int64，再进行相乘，
+而不是相乘后再转为int64，这样会有计算结果溢出的风险。
+*/

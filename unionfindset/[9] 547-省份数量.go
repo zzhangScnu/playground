@@ -40,3 +40,8 @@ func findCircleNum(isConnected [][]int) int {
 	}
 	return set.Size()
 }
+
+/**
+思路：
+使用并查集的思路，将相连的节点加入并查集中，最终统计联通分量的大小。
+*/

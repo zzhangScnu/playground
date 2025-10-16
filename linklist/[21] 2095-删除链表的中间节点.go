@@ -46,3 +46,12 @@ func deleteMiddle(head *ListNode) *ListNode {
 	slow.Next = slow.Next.Next
 	return dummyHead.Next
 }
+
+/**
+思路：
+使用快慢指针的思路。
+- slow 初始时指向虚拟头节点，每次走一步；
+- fast 初始时指向头节点，每次走两步。
+当 fast 到达链表末尾时，slow 指向中间节点的前一个节点。
+此时操作 slow 的 Next 指针，跳过中间节点即可。
+*/

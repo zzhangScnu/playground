@@ -61,3 +61,18 @@ func compress(chars []byte) int {
 	}
 	return slow
 }
+
+/**
+思路：
+双指针。
+slow 指向当前写入位置，fast 指向当前统计位置。
+每次固定一个字符curChar，对这个字符的重复出现次数进行统计，将统计结果拼接在curChar之后。
+slow 在写入后自增，fast 在统计后自增。
+
+最终 slow 会多自增一次，使得 slow == len(压缩字符串)，此时直接返回即可。
+
+将数字转为字符串：
+strconv.Itoa(count)
+将数字转为字节数组，数组中的每个元素是字符串中的一个字符：
+digits := []byte(strconv.Itoa(count))
+*/
