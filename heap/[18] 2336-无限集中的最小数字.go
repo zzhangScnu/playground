@@ -75,7 +75,7 @@ func (this *SmallestInfiniteSet) PopSmallest() int {
 }
 
 func (this *SmallestInfiniteSet) AddBack(num int) {
-	if !this.deleted[num] {
+	if num < this.smallest && !this.deleted[num] {
 		return
 	}
 	delete(this.deleted, num)
