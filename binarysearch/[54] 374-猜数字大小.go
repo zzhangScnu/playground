@@ -74,3 +74,8 @@ func guessNumber(n int) int {
 	}
 	return -1
 }
+
+/**
+本质就是二分查找的变体，对 mid 元素的大小判断不是通过相等，而是灵活的函数。
+类似于爱吃香蕉的coco。
+*/
