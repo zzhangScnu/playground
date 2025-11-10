@@ -48,3 +48,12 @@ func findThePrefixCommonArray(A []int, B []int) []int {
 	}
 	return res
 }
+
+/**
+思路：
+维护一个表示"到目前为止，A 和 B 中公共字符的长度"的整型变量 commonPrefixCount。
+维护一个表示"到目前为止，A 和 B 中各字符出现次数"的数组变量 prefix。
+如果某一步中，令 prefix[字符] == 2，则将 commonPrefixCount++，并赋值 res[i] = commonPrefixCount，
+表示迄今为止，A 和 B 中公共字符的长度增加。
+最终 res 即为结果。
+*/

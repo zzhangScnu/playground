@@ -51,3 +51,11 @@ func findDifference(nums1 []int, nums2 []int) [][]int {
 	}
 	return res
 }
+
+/**
+思路：
+使用哈希表进行统计操作 & 差集运算
+
+注意，在差集运算时需针对哈希表进行，而不是原始数组。
+否则会有重复结果出现。
+*/

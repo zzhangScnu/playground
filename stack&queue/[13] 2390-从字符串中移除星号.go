@@ -51,3 +51,10 @@ func removeStars(s string) string {
 	}
 	return string(res)
 }
+
+/**
+思路：
+模拟栈操作：
+- 遇到 * 时回退上一个字符，否则入栈（注意栈空的情况）；
+- 最终从栈中弹出字符时，从后往前赋值。
+*/

@@ -70,3 +70,13 @@ func closeStrings(word1 string, word2 string) bool {
 	}
 	return true
 }
+
+/**
+以下条件表示两个字符串接近：
+1. 两个字符可交换
+2. 一个字符可映射为另一个字符
+
+可转化为：
+1. 每个字符在两个字符串中均有出现
+2. 字符出现的频率两两相同
+*/

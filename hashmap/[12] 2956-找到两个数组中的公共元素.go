@@ -64,3 +64,11 @@ func findIntersectionValues(nums1 []int, nums2 []int) []int {
 	}
 	return res
 }
+
+/**
+思路：
+使用哈希表进行统计操作 & 交集运算
+
+注意，在交集运算时需针对原始数组进行，而不是哈希表。
+否则无法统计真实出现的元素次数。
+*/

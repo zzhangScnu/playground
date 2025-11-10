@@ -30,3 +30,10 @@ func largestAltitude(gain []int) int {
 	}
 	return res
 }
+
+/**
+思路：
+由前缀数据推导出原值，并全局择优。
+
+注意，res 需初始化为0，而不是最小值，避免全负数的情况下，无法计算出正确的高度。
+*/
