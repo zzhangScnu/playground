@@ -80,3 +80,15 @@ func isExit(m, n int, entrance []int, x, y int) bool {
 	return (x == 0 || y == 0 || x == m-1 || y == n-1) &&
 		!(x == entrance[0] && y == entrance[1])
 }
+
+/**
+思路：
+典型的广度优先搜索。
+注意事项：
+- 从当前位置向四个方向移动后，合法性判断优先级：数组越界 -> 墙 / 空格 -> 重复访问
+- 从queue中取队口元素后，切记移除
+- 下一个位置入队前，切记标为已访问，并累加步数
+- visited 形态
+	- map[[2]int]bool：仅需通过 make 初始化一次
+	- [][]bool：行列均需初始化，但O(1)检索时间复杂度
+*/
