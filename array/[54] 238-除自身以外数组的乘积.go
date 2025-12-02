@@ -23,7 +23,7 @@ package array
 // 输入 保证 数组 answer[i] 在 32 位 整数范围内
 //
 // 进阶：你可以在 O(1) 的额外空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组 不被视为 额外空间。）
-func productExceptSelf(nums []int) []int {
+func productExceptSelf(nums []int) []int { // prefix[i] = nums[0] × nums[1] × ... × nums[i-1]（即nums[i]左侧所有元素的乘积，不包括nums[i]）
 	n := len(nums)
 	prefix, suffix := make([]int, n), make([]int, n)
 	prefix[0] = 1
@@ -39,6 +39,25 @@ func productExceptSelf(nums []int) []int {
 		res[i] = prefix[i] * suffix[i]
 	}
 	return res
+}
+
+// ⬆️⬇️两个方法的区别主要在于：前后缀数组定义的不同，及其带来的索引取数的不同。
+
+func productExceptSelf3(nums []int) []int { // prefix[i] = nums[0] × nums[1] × ... × nums[i]（即nums[i]左侧所有元素的乘积，包括nums[i]）
+	n := len(nums)
+	pre, suf := make([]int, n+1), make([]int, n+1)
+	pre[0], suf[n] = 1, 1
+	for i := 1; i < n; i++ {
+		pre[i] = pre[i-1] * nums[i-1]
+	}
+	for i := n - 1; i >= 0; i-- {
+		suf[i] = suf[i+1] * nums[i]
+	}
+	answer := make([]int, n)
+	for i := 0; i < n; i++ {
+		answer[i] = pre[i] * suf[i+1]
+	}
+	return answer
 }
 
 func productExceptSelfII(nums []int) []int {

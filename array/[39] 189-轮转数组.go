@@ -1,7 +1,5 @@
 package array
 
-import "slices"
-
 // 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
 //
 // 示例 1:
@@ -51,24 +49,34 @@ func rotateII(nums []int, k int) {
 
 func rotateIII(nums []int, k int) {
 	n := len(nums)
+	if k%n == 0 {
+		return
+	}
 	k = k % n
-	slices.Reverse(nums)
-	slices.Reverse(nums[:k])
-	slices.Reverse(nums[k:])
+	reverse(nums, 0, n-1)
+	reverse(nums, 0, k-1)
+	reverse(nums, k, n-1)
+}
+
+func reverse(nums []int, i, j int) {
+	for ; i < j; i, j = i+1, j-1 {
+		nums[i], nums[j] = nums[j], nums[i]
+	}
 }
 
 /**
 思路一：
 将后半截数组拼接到前半截数组前面。
+为什么用n-k？
+本质上是数据移动方向。
+截断&拼接的方式，是将后k个元素移动到左侧，将前n-k个元素移动到右侧。
 
 思路二：
 转换为多次反转数组。
+注意base case：
+若k%n == 0则不处理。这种情况即使操作轮转，结果跟原始数组也是一样的。
+
 
 为什么方法一rotate不行？
 有些case会导致在几个数字之间循环跳跃，无法处理其他元素。
-
-rotateII和III为什么一个用n-k，一个用k？
-本质上是数据移动方向的不同。
-截断&拼接的方式，是将后k个元素移动到左侧，将前n-k个元素移动到右侧；
-多次反转的方式，是分别反转k两侧的元素。
 */
