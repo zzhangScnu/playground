@@ -27,7 +27,7 @@ func longestCommonPrefix(strs []string) string {
 	var ch byte
 	for i := 0; i < len(strs[0]); i++ {
 		ch = strs[0][i]
-		for _, str := range strs[1:] {
+		for _, str := range strs[1:] { // todo：循环条件
 			if i >= len(str) || str[i] != ch {
 				return sb.String()
 			}
@@ -36,3 +36,8 @@ func longestCommonPrefix(strs []string) string {
 	}
 	return sb.String()
 }
+
+/**
+以第一个字符串为基准，在所有的字符串中寻找最长公共前缀。
+注意，for 循环的 range 范围可以这么写：strs[1:]
+*/

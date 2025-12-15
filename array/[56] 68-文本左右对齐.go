@@ -123,7 +123,7 @@ func fullJustify(words []string, maxWidth int) []string {
 			// 需要补齐的空格长度
 			spaceLength := maxWidth - length
 			// 均匀分配到每个单词间的空格长度
-			// max(1, len(line)-1)，简洁兼容了每行中单词长度为1导致余数为0异常的场景
+			// max(1, len(line)-1)，简洁兼容了每行中单词长度为1导致余数为0异常的场景。另一种做法是写两个分支，单独处理行内只有一个单词-空格需全部加在后面的情况。那么行内多于一个单词的场景，就全部都用 len(line) - 1 来控制即可
 			spaces := spaceLength / max(1, len(line)-1)
 			// 多出来的、需要从左到右分配到单词间的空格长度
 			extraSpaces := spaceLength % max(1, len(line)-1)
@@ -141,11 +141,13 @@ func fullJustify(words []string, maxWidth int) []string {
 			line = make([]string, 0)
 			length = 0
 		}
-		// 贪心思想，如果本行能纳入下一个单词，则纳入
+		// 贪心思想，如果本行能纳入下一个单词，则纳入；
+		// 如果不能，即不满足上方 if 分支要求，此时因为 line 已经被清零了，所以相当于加入到了下一行的暂存区
+		// 总之，无论是否能命中 if 条件，都需要执行下面两行代码：
 		line = append(line, words[i])
 		length += len(words[i])
 	}
-	// 特殊处理最后一行
+	// 特殊处理最后一行：此时 line 中有最后一行的内容
 	// 先在单词间插入空格
 	lastLine := strings.Join(line, " ")
 	// 再在最后填充空格

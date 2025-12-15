@@ -74,7 +74,7 @@ func removeExtraSpace(s string) string {
 2. 反转整个字符串；
 3. 反转每个单词；
 	var beginIdx int
-	for i := 0; i <= len(s); i++ { // i == len(s)时也要执行，否则最后一个单词无法反转
+	for i := 0; i <= len(s); i++ { // i == len(s)时也要执行，否则最后一个单词无法反转，这里很容易漏掉
 		if i == len(s) || s[i] == ' ' { // i == len(s)要放在前面，否则会导致数组越界
 			s = reverse(s, beginIdx, i-1) // i此时是空格，反转区间应结束于i-1
 			beginIdx = i + 1 // i此时是空格，应从i+1开始下一轮反转

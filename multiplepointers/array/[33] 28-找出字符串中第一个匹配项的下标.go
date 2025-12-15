@@ -31,4 +31,5 @@ func strStr(haystack string, needle string) int {
 }
 
 // a & a
+// 注意 for 的判断条件应该是 i <= len(haystack)-length，别漏了 == 的情况
 // 这种跟两个for循环实现的暴力解法区别不大，最优解应该用KMP

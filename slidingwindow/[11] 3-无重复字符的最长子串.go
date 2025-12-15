@@ -48,3 +48,17 @@ func lengthOfLongestSubstring(s string) int {
 所以这道题是在左侧窗口收缩完毕，【没有重复字符】的时候再更新，即在for循环以后。
 跟前面的滑动窗口题相比，表现不同，但本质一致。
 */
+
+func lengthOfLongestSubstringII(s string) int {
+	l, r, res := 0, 0, 0
+	counter := make(map[byte]interface{})
+	for ; r < len(s); r++ {
+		for _, ok := counter[s[r]]; ok; _, ok = counter[s[r]] { // 基于本字符进入窗口，收缩左边界以至无重复字符
+			delete(counter, s[l])
+			l++
+		}
+		res = max(res, r-l+1) // 满足窗口中无重复元素的条件，收割结果
+		counter[s[r]] = struct{}{}
+	}
+	return res
+}

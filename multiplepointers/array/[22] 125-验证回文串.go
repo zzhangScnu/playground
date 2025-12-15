@@ -65,8 +65,24 @@ func isNumOrCharByASCII(char byte) bool {
 	return false
 }
 
+// 以下针对 ASCII 字符的转换性能更高
+// 判断 ASCII 字符是否为字母/数字
+func isAsciiLetterOrDigit(c byte) bool {
+	return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+}
+
+// ASCII 字符转小写
+func toLowerASCII(c byte) byte {
+	if c >= 'A' && c <= 'Z' {
+		return c + 32
+	}
+	return c
+}
+
 /**
 - byte -> rune：当是ASCII字符时，可直接强转。内置unicode包中有一系列判断和转换的方法，开箱即用，不用记忆ASCII编码；
-- 边界条件控制：for left < right && !isNumOrChar(s[left])。一开始写漏了【left < right】这个条件，会导致找不到结果的场景下数组越界。
+- 边界条件控制：for left < right && !isNumOrChar(s[left])。
+	1. 一开始写漏了【left < right】这个条件，会导致找不到结果的场景下数组越界。
+	2. 这里不是 <= ，因为当left < right时才是指向一对需要比较的字符，且循环内不会越界。
 还是不够细心啊～
 */

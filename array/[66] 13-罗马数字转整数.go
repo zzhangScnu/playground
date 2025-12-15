@@ -79,3 +79,10 @@ func romanToInt(s string) int {
 	}
 	return res
 }
+
+/**
+思路：
+从左到右遍历。根据题意，if 当前位置的罗马数字 a < 下一位的罗马数字 b，则为 IV(4)、IX(9)、XL(40)等值，
+这种情况等价于 res = res + (b - a) = res - a + b。
+所以如果是这种场景，需要减去当前位数字；否则加上当前位数字。
+*/
