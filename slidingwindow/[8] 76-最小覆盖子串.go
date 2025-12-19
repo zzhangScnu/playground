@@ -50,7 +50,7 @@ func minWindow(s string, t string) string {
 				validNum++
 			}
 			for validNum == len(targetCnt) {
-				if j-i+1 < rl {
+				if j-i+1 < rl { // 需在缩窗时持续更新，而不是首次满足包含条件时就更新
 					ri = i
 					rl = j - i + 1
 				}
@@ -120,3 +120,34 @@ func minWindow(s string, t string) string {
 - 结果收集应在扩大窗口时还是缩小窗口时？
   在收缩窗口阶段更新最小覆盖子串，因为此时滑动窗口内的字符串是可行解，可以从中选取最优解。
 */
+
+func minWindowII(s string, t string) string {
+	requiredCounter := make(map[rune]int)
+	for _, ch := range []rune(t) { // range 后面的数据范围可以自定义，这样定义的话拿到的便是 rune 格式的字符
+		requiredCounter[ch]++
+	}
+	required := len(requiredCounter)
+	curCounter := make(map[rune]int)
+	l, resL, resR := 0, 0, len(s)+1
+	for r, ch := range []rune(s) {
+		curCounter[ch]++
+		if curCounter[ch] == requiredCounter[ch] {
+			required--
+		}
+		for required == 0 { // 这里需要是 for，持续缩小左边界直到窗口不再满足条件
+			if resR-resL+1 > r-l+1 {
+				resL, resR = l, r
+			}
+			leftCh := rune(s[l])
+			curCounter[leftCh]--
+			if curCounter[leftCh] < requiredCounter[leftCh] {
+				required++ // 这里会破坏 for 循环条件，导致跳出
+			}
+			l++
+		}
+	}
+	if resR == len(s)+1 {
+		return ""
+	}
+	return s[resL : resR+1]
+}

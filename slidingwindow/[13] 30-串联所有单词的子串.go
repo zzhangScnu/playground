@@ -55,16 +55,15 @@ func findSubstring(s string, words []string) []int {
 		for j := 0; j < wordsCount; j++ {
 			start := i + j*wordLen
 			word := s[start : start+wordLen]
-			if targetCount, ok := targetFreq[word]; ok {
-				curFreq[word]++
-				if curFreq[word] <= targetCount {
-					remain--
-				} else {
-					break
-				}
-			} else {
+			targetCount, ok := targetFreq[word]
+			if !ok { // 如果不在要求列表中
 				break
 			}
+			curFreq[word]++
+			if curFreq[word] > targetCount { // 如果超出要求数量
+				break
+			}
+			remain--
 		}
 		if remain == 0 {
 			res = append(res, i)
@@ -83,4 +82,12 @@ func findSubstring(s string, words []string) []int {
 	- 目标的【单词 -> 出现次数】映射；
 	- 步长范围中遍历至今，现状的【单词 -> 出现次数】映射。
 - 维护一个计数值：还需要凑多少个单词，才能完全覆盖当前子串；当该值 == 0时，说明从该起始位置开始的长度为wordsCount * wordLen的子串能串联所有单词，符合要求，需收割结果。
+*/
+
+/**
+优化：
+复用哈希表。
+目前是针对每个可能子串的起点都初始化一个新的计数器。
+但可以复用同一个计数器，在第一轮时完成初始化。
+在后续的轮次中，仅将左边界的单词移除，且加入右边界的新单词。
 */
