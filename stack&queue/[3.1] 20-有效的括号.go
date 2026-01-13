@@ -59,6 +59,30 @@ func IsValid(s string) bool {
 	return rightCnt == 0 && stack.IsEmpty()
 }
 
+func isValid(s string) bool {
+	mapping := map[rune]rune{
+		')': '(',
+		']': '[',
+		'}': '{',
+	}
+	var stack []rune
+	for _, ch := range []rune(s) {
+		if len(stack) == 0 {
+			stack = append(stack, ch)
+			continue
+		}
+		if left, ok := mapping[ch]; ok {
+			if stack[len(stack)-1] != left {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		} else {
+			stack = append(stack, ch)
+		}
+	}
+	return len(stack) == 0
+}
+
 /*
 *
 在遇到左括号时，将对应的有括号入栈；
