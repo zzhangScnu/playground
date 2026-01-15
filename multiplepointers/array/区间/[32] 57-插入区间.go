@@ -20,7 +20,7 @@ package 区间
 //
 // 输入：intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
 // 输出：[[1,2],[3,10],[12,16]]
-// 解释：这是因为新的区间 [4,8] 与 [3,5],[6,7],[8,10] 重叠。
+// 解释：这是因为新的区间 [4,8] 与 [3,5],[6,7],[8,10]重叠。
 //
 // 提示：
 //
@@ -37,13 +37,20 @@ func insert(intervals [][]int, newInterval []int) [][]int {
 	for ; i < n && intervals[i][1] < newInterval[0]; i++ {
 		res = append(res, intervals[i])
 	}
-	for ; i < n && intervals[i][1] >= newInterval[0] && newInterval[1] <= intervals[i][1]; i++ {
+	for ; i < n && intervals[i][0] <= newInterval[1]; i++ {
 		newInterval[0] = min(intervals[i][0], newInterval[0])
 		newInterval[1] = max(intervals[i][1], newInterval[1])
 	}
 	res = append(res, newInterval)
-	for ; i < n && intervals[i][0] > newInterval[1]; i++ {
+	for ; i < n; i++ {
 		res = append(res, intervals[i])
 	}
 	return res
 }
+
+/**
+思路：
+区间列表已按左边界升序排列。则处理分为三种情况：
+1. 与待插入区间 newInterval 无重叠的区间(包括前、后两部分)：直接纳入结果集；
+2. 与待插入区间 newInterval 有重叠的区间(中间部分)：执行区间合并后纳入结果集。
+*/

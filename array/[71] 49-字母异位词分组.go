@@ -55,3 +55,11 @@ func sortStr(str string) string {
 	})
 	return string(arr)
 }
+
+/**
+func sortStr(str string) string {
+    arr := strings.Split(str, "")
+    sort.Strings(arr)
+    return strings.Join(arr, "")
+}
+*/

@@ -53,4 +53,5 @@ func isAnagramII(s string, t string) bool {
 
 /**
 【ab, a】不互为字母异位词！
+如果字符串中包含unicode字符，则放弃固定长度的 26 位数组（仅适配小写英文字母），改用哈希表（map[rune]int）来统计字符频次。因为 Unicode 字符范围极广，无法用固定数组覆盖，而哈希表可以灵活存储任意 rune 类型字符的计数。
 */

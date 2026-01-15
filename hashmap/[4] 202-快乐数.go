@@ -54,6 +54,30 @@ func cal(n int) int {
 }
 
 /**
-解法1-哈希：当计算结果不为1时，用哈希记录。当重复出现结果时，即表示陷入无限循环，不是快乐数；
-解法2-快慢指针：快指针走两步，慢指针走一步。若不为快乐数，则表示结果集有环，快慢指针一定会相遇（计算结果相同且不为1）。
+解法1-快慢指针：快指针走两步，慢指针走一步。若不为快乐数，则表示结果集有环，快慢指针一定会相遇（计算结果相同且不为1）。
+解法2-哈希：当计算结果不为1时，用哈希记录。当重复出现结果时，即表示陷入无限循环，不是快乐数。
 */
+
+func isHappyII(n int) bool {
+	var cal func(num int) int
+	cal = func(num int) int {
+		var res int
+		for ; num > 0; num /= 10 {
+			cur := num % 10
+			res += cur * cur
+		}
+		return res
+	}
+	mapping := make(map[int]interface{})
+	res := n
+	for {
+		res = cal(res)
+		if res == 1 {
+			return true
+		}
+		if _, ok := mapping[res]; ok {
+			return false
+		}
+		mapping[res] = struct{}{}
+	}
+}

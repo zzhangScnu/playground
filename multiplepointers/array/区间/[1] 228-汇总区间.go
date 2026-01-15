@@ -46,13 +46,15 @@ func summaryRanges(nums []int) []string {
 	}
 	start := nums[0]
 	for i := 1; i <= len(nums); i++ {
+		// i == len(nums) 是为了兼容最后一个数字独自组成一个区间的情况
+		// 只有当 nums[i] != nums[i-1]+1 即区间中断时才处理，否则将这些数字都收在当前区间内(跳过不处理即可)
 		if i == len(nums) || nums[i] != nums[i-1]+1 {
-			if nums[i-1] == start {
+			if nums[i-1] == start { // 区间只有一个数字，起始值 == 结束值
 				groups = append(groups, strconv.Itoa(start))
 			} else {
 				groups = append(groups, strconv.Itoa(start)+"->"+strconv.Itoa(nums[i-1]))
 			}
-			if i < len(nums) {
+			if i < len(nums) { // 如果游标 i 尚未遍历到数组末尾且区间中断了(即进入了 if 的条件)，则更新区间起始值
 				start = nums[i]
 			}
 		}

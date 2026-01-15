@@ -26,10 +26,10 @@ func rotateMatrix(matrix [][]int) {
 	for l < r {
 		for i := 0; i < r-l; i++ {
 			temp = matrix[t][l+i]
-			matrix[t][l+i] = matrix[b-i][l]
-			matrix[b-i][l] = matrix[b][r-i]
-			matrix[b][r-i] = matrix[t+i][r]
-			matrix[t+i][r] = temp
+			matrix[t][l+i] = matrix[b-i][l] // 上 <- 左
+			matrix[b-i][l] = matrix[b][r-i] // 左 <- 下
+			matrix[b][r-i] = matrix[t+i][r] // 下 <- 右
+			matrix[t+i][r] = temp           // 右 <- 暂存
 		}
 		l, r, t, b = l+1, r-1, t+1, b-1
 	}
@@ -37,7 +37,7 @@ func rotateMatrix(matrix [][]int) {
 
 /**
 思路：
-类似于从最外围开始逐个元素旋转，一圈处理完成后，向内收紧一圈。
+类似于从最外围开始逐个元素旋转，一圈处理完成后，向内收紧一圈，即分层 + 四元素循环交换。
 - 锚定四个顶点：l，r，t，b -> 左，右，上，下。用四个顶点值来控制处理哪一圈。
   每次处理一圈数字，如第一轮处理最外层，第n轮处理最内层；
 - 旋转矩阵 -> 每个顶点旋转90度 -> 用i来控制旋转的步长；

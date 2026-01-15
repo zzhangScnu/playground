@@ -1,4 +1,4 @@
-package greedy
+package 区间
 
 import "sort"
 
@@ -60,5 +60,21 @@ x = 可以被一箭射爆的一系列气球[0, i-1]的右边界的最小值；
 y = 下一个气球i的左边界的值。
 当x >= y时，意味着[0, i]区间内的所有气球都是有重叠的，可以被一箭带走；否则，所需箭数需要累加。
 
-其实如果将区间气球的右边界最小值更新为i-1个气球的右边界太tricky，可以用一个变量来维护也许会更直观。
+其实将区间气球的右边界最小值更新为i-1个气球的右边界太tricky，可以用一个变量来维护会更直观。
+func findMinArrowShots(points [][]int) int {
+    sort.Slice(points, func(i, j int) bool {
+        return points[i][0] < points[j][0]
+    })
+    res := 1
+    right := points[0][1]
+    for _, point := range points[1:] {
+        if point[0] > right {
+            res++
+            right = point[1]
+        } else {
+            right = min(right, point[1])
+        }
+    }
+    return res
+}
 */

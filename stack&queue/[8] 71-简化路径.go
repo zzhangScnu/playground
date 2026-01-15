@@ -79,7 +79,7 @@ import (
 // path 是一个有效的 Unix 风格绝对路径。
 func simplifyPath(path string) string {
 	paths := strings.Split(path, "/")
-	var stack []string
+	stack := make([]string, 0, len(paths)) // 预分配空间，避免切片追加元素时的频繁扩容
 	for _, str := range paths {
 		switch str {
 		case ".", "":

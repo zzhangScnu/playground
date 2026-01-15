@@ -37,8 +37,29 @@ func merge(intervals [][]int) [][]int {
 	return res
 }
 
+func mergeImproved(intervals [][]int) [][]int {
+	if len(intervals) <= 1 {
+		return intervals
+	}
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+	res := [][]int{intervals[0]}
+	for _, cur := range intervals[1:] {
+		pre := res[len(res)-1]
+		if cur[0] <= pre[1] {
+			res[len(res)-1][1] = max(pre[1], cur[1])
+		} else {
+			res = append(res, cur)
+		}
+	}
+	return res
+}
+
 /**
 贪心体现在：按左边界升序排列，在重叠区间中取右边界最大值作为合并后区间的右边界。仅可能多地覆盖。
+
+重要：必须要先按左边界排序！
 
 一个处理的技巧：
 先将最左的区间放入结果集，此时有两种选择：

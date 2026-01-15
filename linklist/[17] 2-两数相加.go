@@ -57,6 +57,9 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
 用p != nil || q != nil || carry > 0作为循环条件且在其中分别判断p != nil和q != nil，再进行对应的加总和指针移动，
 是比较简洁的做法。
+
+注意carry > 0 完美兼容最后还有进位需要处理的情况；
+在每次循环中另sum = carry，一举两得，既处理了进位，又无需额外清空上一轮的结果值。
 */
 
 /**

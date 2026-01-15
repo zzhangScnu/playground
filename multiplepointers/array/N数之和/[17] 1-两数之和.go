@@ -50,3 +50,14 @@ func twoSum(nums []int, target int) []int {
 
 注意要先判断是否有和等于target的情况，再将本次循环到的数塞进map，否则会导致我等于我自己-。-
 */
+
+func twoSumGood(nums []int, target int) []int {
+	mapping := make(map[int]int)
+	for i, num := range nums {
+		if j, ok := mapping[target-num]; ok {
+			return []int{i, j}
+		}
+		mapping[num] = i
+	}
+	return []int{}
+}

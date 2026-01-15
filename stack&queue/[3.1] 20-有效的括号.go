@@ -67,25 +67,23 @@ func isValid(s string) bool {
 	}
 	var stack []rune
 	for _, ch := range []rune(s) {
-		if len(stack) == 0 {
-			stack = append(stack, ch)
-			continue
-		}
-		if left, ok := mapping[ch]; ok {
-			if stack[len(stack)-1] != left {
+		if targetLeft, ok := mapping[ch]; ok { // 如果是右括号(即可以通过 ch 在 mapping 中检索到左括号)，则与栈顶比较看左括号是否一致
+			if len(stack) == 0 || stack[len(stack)-1] != targetLeft { // 不一致，意味着左右括号不匹配
 				return false
 			}
-			stack = stack[:len(stack)-1]
-		} else {
+			stack = stack[:len(stack)-1] // 一致，意味着配对成功，消消乐
+		} else { // 如果是左括号，直接入栈
 			stack = append(stack, ch)
 		}
 	}
 	return len(stack) == 0
 }
 
+// 若栈空时直接入栈所有字符（包括右括号），而非先判断字符类型 —— 虽然部分用例结果正确，但逻辑不够严谨，且没有提前终止无效场景（比如输入 ")" 时，本可直接返回 false，却要等到遍历结束）。
+
 /*
 *
-在遇到左括号时，将对应的有括号入栈；
+在遇到左括号时，将对应的右括号入栈；
 那么在遇到右括号时，直接跟栈顶比较是否相等即可。
 */
 func isValidII(s string) bool {

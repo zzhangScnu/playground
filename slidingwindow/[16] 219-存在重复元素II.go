@@ -27,13 +27,19 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 	left, right := 0, 0
 	window := make(map[int]interface{})
 	for ; right < len(nums); right++ {
+		if right-left > k {
+			delete(window, nums[left])
+			left++
+		}
 		if _, ok := window[nums[right]]; ok {
 			return true
 		}
 		window[nums[right]] = struct{}{}
-		if right-left > k {
-			delete(window, nums[left])
-		}
 	}
 	return false
 }
+
+/**
+当窗口非法时，需要收缩；
+当窗口合法时，需要判断重复。若重复，则直接返回；否则记录。
+*/

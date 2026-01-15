@@ -71,7 +71,7 @@ func countAliveNeighbour(board [][]int, row, col int) int {
 				i == row && j == col {
 				continue
 			}
-			if board[i][j] == 1 || board[i][j] == 2 {
+			if board[i][j] == 1 || board[i][j] == 2 { // 这里必须算上2，1 和 2 都是原本存活的细胞
 				count++
 			}
 		}
