@@ -71,3 +71,32 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
 	- 从中间开始反转：dummyHead.Next一直不变，就是链表的头节点；
 	- 从头开始反转：begin即dummyHead，且begin.Next = pre，pre变成链表的头节点。
 */
+
+/**
+for i := left; i < right; i++ {
+	// ...
+}
+
+注意这里的结束条件是【i < right】而不是 <=
+举例：要把 2->3->4 变成 2<-3<-4，此时 left = 1，right = 3
+起始时 pre 指向 2， cur 指向 3，只需要反转 2 次，即 for i := 1; i < 3; i++
+*/
+
+func reverseBetweenII(head *ListNode, left int, right int) *ListNode {
+	dummyHead := &ListNode{Next: head}
+	begin := dummyHead
+	var pre, cur, next *ListNode
+	for i := 1; i < left; i++ {
+		begin = begin.Next
+	}
+	cur = begin.Next                 // 唯一区别：cur 指向起始节点
+	for i := left; i <= right; i++ { // 这里就是 <= 了，cur 需遍历处理 right - left 个节点
+		next = cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = next
+	}
+	begin.Next.Next = cur
+	begin.Next = pre
+	return dummyHead.Next
+}
