@@ -21,16 +21,17 @@ func deleteDuplicates(head *ListNode) *ListNode {
 	dummyHead := &ListNode{Next: head}
 	var cur, next *ListNode = dummyHead, nil
 	var duplicateVal int
-	for cur != nil {
+	for cur.Next != nil { // 需要处理的 cur 都需要非 nil
 		next = cur.Next
 		if next != nil && next.Next != nil && next.Val == next.Next.Val {
 			duplicateVal = next.Val
 			for next != nil && next.Val == duplicateVal {
 				next = next.Next
 			}
-			cur.Next = next
+			cur.Next = next // 这里处理完 Next 的指向后，不需要推动 cur 向前，因为下一个节点可能也是重复节点
+		} else {
+			cur = cur.Next
 		}
-		cur = cur.Next
 	}
 	return dummyHead.Next
 }

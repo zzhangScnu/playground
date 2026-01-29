@@ -34,7 +34,7 @@ func flatten(root *TreeNode) {
 		}
 		left, right := traverse(node.Left), traverse(node.Right)
 		node.Left, node.Right = nil, left
-		cur := node
+		cur := node // 必须新起一个 cur 变量，不能污染 node，因为 node 要作为返回值
 		for cur.Right != nil {
 			cur = cur.Right
 		}

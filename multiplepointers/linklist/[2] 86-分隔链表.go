@@ -23,8 +23,8 @@ import "code.byted.org/zhanglihua.river/playground/linklist"
 // -200 <= x <= 200
 func partition(head *linklist.ListNode, x int) *linklist.ListNode {
 	smallerDummyHead, biggerDummyHead := &linklist.ListNode{Next: head}, &linklist.ListNode{Next: head}
-	s, b, cur := smallerDummyHead, biggerDummyHead, head
-	for cur != nil {
+	s, b := smallerDummyHead, biggerDummyHead
+	for cur := head; cur != nil; cur = cur.Next {
 		if cur.Val < x {
 			s.Next = cur
 			s = s.Next
@@ -32,7 +32,6 @@ func partition(head *linklist.ListNode, x int) *linklist.ListNode {
 			b.Next = cur
 			b = b.Next
 		}
-		cur = cur.Next
 	}
 	b.Next = nil
 	s.Next = biggerDummyHead.Next
@@ -48,4 +47,7 @@ func partition(head *linklist.ListNode, x int) *linklist.ListNode {
 （较小值链表不需要的原因是，它的末尾直接指向较大值链表了
 
 另一种方式是，每次for循环中将节点连接到s和b链表后，都断开next指针对原链表节点的指向。
+
+for cur := head; cur != nil; cur = cur.Next
+这样的遍历方式，不用显式在循环最后另 cur = cur.Next。
 */

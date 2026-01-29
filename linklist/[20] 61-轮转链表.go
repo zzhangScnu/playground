@@ -22,21 +22,20 @@ func rotateRight(head *ListNode, k int) *ListNode {
 		return head
 	}
 	length, tail := 1, head
-	for tail.Next != nil {
-		tail = tail.Next
+	for ; tail.Next != nil; tail = tail.Next {
 		length++
 	}
-	k %= length
+	k %= length // 将 k 对链表长度取模，避免需要循环处理轮转
 	if k == 0 {
 		return head
 	}
 	cur := head
-	for i := 0; i < length-k-1; i++ {
+	for i := 0; i < length-k-1; i++ { // length - k - 1 确保 cur 指向新头部的【前一个节点】，即新的链表尾部
 		cur = cur.Next
 	}
-	newHead := cur.Next
-	cur.Next = nil
-	tail.Next = head
+	newHead := cur.Next // cur.Next 为新的链表头部
+	cur.Next = nil      // cur 为新的链表尾部
+	tail.Next = head    // 链表尾部链接上原本的链表头部
 	return newHead
 }
 

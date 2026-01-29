@@ -94,7 +94,7 @@ func connectII(root *Node) *Node {
 	}
 	queue := []*Node{root}
 	for len(queue) > 0 {
-		var pre *Node
+		var pre *Node // 这里不可以定义在循环外，否则每次都需要在 for 开始时显式赋值为 nil
 		levelSize := len(queue)
 		for i := 0; i < levelSize; i++ {
 			cur := queue[0]

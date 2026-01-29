@@ -39,9 +39,10 @@ func doBuildTreeByPreIn(preorder []int, preStart, preEnd int, inorder []int, inS
 	}
 	val := preorder[preStart]
 	inPivot := inPos[val]
+	leftSize := inPivot - inStart
 	return &TreeNode{
 		Val:   val,
-		Left:  doBuildTreeByPreIn(preorder, preStart+1, preStart+(inPivot-inStart), inorder, inStart, inPivot-1),
-		Right: doBuildTreeByPreIn(preorder, preStart+(inPivot-inStart)+1, preEnd, inorder, inPivot+1, inEnd),
+		Left:  doBuildTreeByPreIn(preorder, preStart+1, preStart+leftSize, inorder, inStart, inPivot-1),
+		Right: doBuildTreeByPreIn(preorder, preStart+leftSize+1, preEnd, inorder, inPivot+1, inEnd),
 	}
 }

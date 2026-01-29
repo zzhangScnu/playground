@@ -38,10 +38,11 @@ func doBuildTreeByInPost(inorder []int, inStart, inEnd int, postorder []int, pos
 			break
 		}
 	}
+	rightSize := inEnd - pivot
 	return &TreeNode{
 		Val:   val,
-		Left:  doBuildTreeByInPost(inorder, inStart, pivot-1, postorder, postStart, postEnd-(inEnd-pivot)-1),
-		Right: doBuildTreeByInPost(inorder, pivot+1, inEnd, postorder, postEnd-(inEnd-pivot), postEnd-1),
+		Left:  doBuildTreeByInPost(inorder, inStart, pivot-1, postorder, postStart, postEnd-rightSize-1),
+		Right: doBuildTreeByInPost(inorder, pivot+1, inEnd, postorder, postEnd-rightSize, postEnd-1),
 	}
 }
 
