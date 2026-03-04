@@ -89,6 +89,25 @@ func sumNumbersII(root *TreeNode) int {
 	return res
 }
 
+func sumNumbersIII(root *TreeNode) int {
+	var sum int
+	var traverse func(node *TreeNode, num int)
+	traverse = func(node *TreeNode, num int) {
+		if node == nil {
+			return
+		}
+		num = num*10 + node.Val
+		if node.Left == nil && node.Right == nil {
+			sum += num
+			return
+		}
+		traverse(node.Left, num)
+		traverse(node.Right, num)
+	}
+	traverse(root, 0)
+	return sum
+}
+
 /**
 核心区别在于：
 I：
