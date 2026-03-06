@@ -1,5 +1,7 @@
 package tree
 
+import "slices"
+
 // 给你二叉树的根节点 root ，返回其节点值的 锯齿形层序遍历 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
 //
 // 示例 1：
@@ -34,17 +36,23 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 		for i := 0; i < size; i++ {
 			node := queue[0]
 			queue = queue[1:]
+			/**
 			if flag {
 				levelRes = append(levelRes, node.Val)
 			} else {
 				levelRes = append([]int{node.Val}, levelRes...)
 			}
+			**/
+			levelRes = append(levelRes, node.Val)
 			if node.Left != nil {
 				queue = append(queue, node.Left)
 			}
 			if node.Right != nil {
 				queue = append(queue, node.Right)
 			}
+		}
+		if !flag {
+			slices.Reverse(levelRes)
 		}
 		res = append(res, levelRes)
 		flag = !flag
@@ -57,4 +65,7 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 
 之前写的第一版，试图控制节点入列的顺序来实现。
 但这样会导致后续孩子节点的遍历有误。
+
+做法一：收集结果的时候控制从队头入/队尾入；
+做法二：收集结果的时候均从队尾入，但最终需要根据flag来控制是否要反转整个结果列表。
 */
