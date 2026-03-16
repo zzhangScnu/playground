@@ -31,12 +31,14 @@ func isValidBST(root *TreeNode) bool {
 			return true
 		}
 		left := doIsValidBST(node.Left)
+		if !left {
+			return false
+		}
 		if pre != nil && pre.Val >= node.Val {
 			return false
 		}
 		pre = node
-		right := doIsValidBST(node.Right)
-		return left && right
+		return doIsValidBST(node.Right)
 	}
 	return doIsValidBST(root)
 }
@@ -59,4 +61,12 @@ var pre *TreeNode
 /**
 解法1：双指针。不断记录前一个节点，与当前节点值进行比较；
 解法2：极值。不断记录最大值，与当前节点值进行比较。
+*/
+
+/**
+pre 作为全局遍量，不会被 left/right 递归绕乱的根本原因：
+执行顺序：left 递归先 “从头到尾执行完”，才会执行当前节点的 pre 校验 / 更新，最后才执行 right 递归。
+left 和 right 的递归是 “串行排队”，不是 “并行抢资源”。
+更新时机：pre 只在 “left 递归全完成、right 递归未开始” 时更新一次，不会被 left/right 的递归调用中途修改；
+变量唯一性：pre 是外层闭包变量，全程只有一个实例，没有多份副本互相覆盖。
 */

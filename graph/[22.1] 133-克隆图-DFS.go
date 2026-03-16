@@ -64,7 +64,7 @@ func cloneGraph(node *Node) *Node {
 		clone := &Node{Val: cur.Val}
 		mapping[cur] = clone
 		for _, neighbor := range cur.Neighbors {
-			clone.Neighbors = append(clone.Neighbors, traverse(neighbor))
+			clone.Neighbors = append(clone.Neighbors, traverse(neighbor)) // 递归处理邻居节点
 		}
 		return clone
 	}
@@ -82,4 +82,6 @@ type Node struct {
 通过递归+哈希去重的方式，避免重复创建节点&陷入死循环。
 注意思路是，
 每一层处理单个节点的克隆，再将邻接节点的克隆拆解为多个子问题，通过递归解决。本层接收结果即可。
+
+跟随机链表的复制很像，可互相参考。
 */

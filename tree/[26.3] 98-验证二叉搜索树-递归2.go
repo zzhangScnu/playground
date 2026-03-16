@@ -25,7 +25,7 @@ import "math"
 //
 // 树中节点数目范围在[1, 10⁴] 内
 // -2³¹ <= Node.val <= 2³¹ - 1
-func isValidBSTII(root *TreeNode) bool {
+func isValidBSTII(root *TreeNode) bool { // 后序遍历
 	var doIsValidBST func(node *TreeNode) (int, int, bool)
 	doIsValidBST = func(node *TreeNode) (int, int, bool) {
 		if node == nil {
@@ -34,7 +34,7 @@ func isValidBSTII(root *TreeNode) bool {
 		lmin, lmax, lflag := doIsValidBST(node.Left)
 		rmin, rmax, rflag := doIsValidBST(node.Right)
 		if lflag && rflag && lmax < node.Val && node.Val < rmin {
-			return min(node.Val, lmin), max(node.Val, rmax), true
+			return min(node.Val, lmin), max(node.Val, rmax), true // 这里取 min 和 max，是因为左子树 / 右子树可能为空，此时应取根节点
 		}
 		return math.MaxInt64, math.MinInt64, false
 	}
@@ -42,7 +42,7 @@ func isValidBSTII(root *TreeNode) bool {
 	return flag
 }
 
-func isValidBSTIII(root *TreeNode) bool {
+func isValidBSTIII(root *TreeNode) bool { // 先序遍历
 	var doIsValidBST func(node, min, max *TreeNode) bool
 	doIsValidBST = func(node, min, max *TreeNode) bool {
 		if node == nil {

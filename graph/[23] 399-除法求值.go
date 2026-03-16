@@ -51,19 +51,20 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
 	graph := buildGraph(equations, values)
 	var traverse func(from, to string, visited map[string]bool) float64
 	traverse = func(from, to string, visited map[string]bool) float64 {
-		if graph[from] == nil || graph[to] == nil {
+		if graph[from] == nil || graph[to] == nil { // 若 from 和 to 在等式里从未出现过，直接返回
 			return -1.0
 		}
-		if visited[from] {
+		if visited[from] { // 仅需判断当前节点是否已经访问，即只处理 from 的重复性
 			return -1.0
 		}
 		visited[from] = true
-		defer delete(visited, from)
-		if value, ok := graph[from][to]; ok {
+		defer delete(visited, from) // 当前路径遍历完成后，回退一个节点，重新探索其他方向延伸的可能性
+		if value, ok := graph[from][to]; ok { // 若当前路径可以直接得到权重结果，则直接返回
 			return value
 		}
-		for nextFrom, nextValue := range graph[from] {
-			subValue := traverse(nextFrom, to, visited)
+		// 否则需要拆分为子问题计算
+		for nextFrom, nextValue := range graph[from] { // nextValue = from / nextFrom
+			subValue := traverse(nextFrom, to, visited) // subValue = nextFrom / to
 			if subValue != -1 {
 				return nextValue * subValue
 			}
@@ -90,7 +91,7 @@ func buildGraph(equations [][]string, values []float64) map[string]map[string]fl
 		if graph[to] == nil {
 			graph[to] = make(map[string]float64)
 		}
-		graph[from][to], graph[to][from], graph[from][from], graph[to][to] = value, 1/value, 1.0, 1.0
+		graph[from][to], graph[to][from], graph[from][from], graph[to][to] = value, 1/value, 1.0, 1.0 // 注意这里是 1.0，float64
 	}
 	return graph
 }
