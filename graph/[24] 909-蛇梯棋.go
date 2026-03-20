@@ -52,7 +52,7 @@ func snakesAndLadders(board [][]int) int {
 	queue := [][]int{{1, 0}}
 	visited := make([]bool, n*n+1)
 	for len(queue) > 0 {
-		position, steps := queue[0][0], queue[0][1]
+		position, steps := queue[0][0], queue[0][1] // step 要独立存储，因为 step 是跟 position 这个状态绑定的，不能作为全局变量
 		queue = queue[1:]
 		for i := 1; i <= 6; i++ {
 			next := position + i
@@ -74,8 +74,8 @@ func snakesAndLadders(board [][]int) int {
 }
 
 func convert(position int, n int) (int, int) {
-	row, col := (position-1)/n, (position-1)%n
-	if row%2 == 1 {
+	row, col := (position-1)/n, (position-1)%n // 减 1 是为了把 “1 开头的编号” 转换成 “0 开头的索引”
+	if row%2 == 1 {                            // row 是从下到上的
 		col = n - col - 1
 	}
 	row = n - row - 1
@@ -84,6 +84,7 @@ func convert(position int, n int) (int, int) {
 
 /**
 思路：
+蛇梯棋求的是 “从起点到终点的最少步数”，而 BFS 天然就是解决 “无权图最短路径” 问题的最优算法。
 因求解最短路径，本质上还是使用广度优先搜素的解决方案。
 
 convert详解：

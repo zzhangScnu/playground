@@ -62,7 +62,7 @@ func minMutation(startGene string, endGene string, bank []string) int {
 	if _, ok := valid[endGene]; !ok {
 		return -1
 	}
-	queue := []Gene{NewGene(startGene, 0)}
+	queue := []Gene{NewGene(startGene, 0)} // 这里可以不用预定义结构体，而是用长度为 2 的 interface{} 数组来承接 gene 和 step
 	for len(queue) > 0 {
 		cur := queue[0]
 		queue = queue[1:]
@@ -73,16 +73,16 @@ func minMutation(startGene string, endGene string, bank []string) int {
 		for i := 0; i < len(gene); i++ {
 			ch := gene[i]
 			for _, newCh := range movements {
-				if newCh == ch {
+				if newCh == ch { // 自己 -> 自己 的变化可以忽略，一定不是最小变化步数
 					continue
 				}
 				gene[i] = newCh
 				if _, ok := valid[string(gene)]; ok {
 					queue = append(queue, NewGene(string(gene), cur.step+1))
-					delete(valid, string(gene))
+					delete(valid, string(gene)) // 使用 valid 哈希表，同时承载【合法性】和【重复性】的校验
 				}
 			}
-			gene[i] = ch
+			gene[i] = ch // 当前位置 i 的变化可能性遍历完后，先还原。然后再处理下一个位置
 		}
 	}
 	return -1
