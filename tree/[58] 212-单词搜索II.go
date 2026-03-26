@@ -43,24 +43,32 @@ func findWords(board [][]byte, words []string) []string {
 		if ch == ' ' {
 			return
 		}
-		if curNode.Children[ch-'a'] == nil {
+		// 复用 board 作为重复访问标记
+		if curNode.Children[ch-'a'] == nil { // 先判断，再改board，避免无效标记
 			return
 		}
+		// 如果path跟res一样放全局定义，是共享一个切片，所以需要显式回溯
+		// 但因为这里path作为参数传递，在append的时候实际上是重新初始化了一个切片，令path副本指向了这个新的切片
+		// 即这个path的作用域只在本层，传给下一层的时候也是创建新的副本，所以无需显式回溯
 		path = append(path, ch)
 		board[x][y] = ' '
-		defer func() {
-			board[x][y] = ch
-			path = path[:len(path)-1]
-		}()
+		//defer func() {
+		//	board[x][y] = ch
+		//	path = path[:len(path)-1]
+		//}()
 		curNode = curNode.Children[ch-'a']
 		if curNode.IsEndOfWord {
 			res = append(res, string(path))
-			curNode.IsEndOfWord = false
+			curNode.IsEndOfWord = false // 找到路径，但不退出，因为可能还有更长的结果
 		}
 		for _, movement := range movements {
 			traverse(x+movement[0], y+movement[1], curNode, path)
 		}
+		board[x][y] = ch
+		// path = path[:len(path)-1] // 回到没选它之前的状态，给其他选择留出正确路径。【选择 → 递归 → 撤销选择】。如果定义为全局变量就需要这么写
+		// 否则作为参数传递的话就不需要
 	}
+	// 因为有多个方向开始生长的单词，所以每个单元格的每个方向都要遍历
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			traverse(i, j, trie.root, []byte{})
@@ -70,9 +78,8 @@ func findWords(board [][]byte, words []string) []string {
 }
 
 //1. 核心问题：结果重复添加
-//当 Trie 中存在「前缀包含关系」的单词（如 "a" 和 "aa"）时，遍历到长单词时会重复添加短单词。
-//例如：找到 "aa" 时，由于 "a" 的 IsEndOfWord 为 true，会在遍历第一个 'a' 时添加 "a"，遍历第二个 'a' 时再次添加 "a"，导致最终结果包含重复字符串（如 ["a", "a", "aa"]）。
-//解法：set收集结果 或 魔改前缀树节点
+//同一个单词可以在棋盘里被多条路径找到，代码每找到一次就加一次的话，结果集会存在重复。
+//解法：set收集结果 或 魔改前缀树节点（找到单词后，把 IsEndOfWord 设为 false，让它不能被再次添加）
 
 /**
 思路：

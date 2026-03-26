@@ -46,9 +46,9 @@ func doCombine(beginNum int, n int, k int) {
 		combinations = append(combinations, res)
 		return
 	}
-	for i := beginNum; i <= n-(k-len(combination))+1; i++ {
-		combination = append(combination, i)
-		doCombine(i+1, n, k)
+	for i := beginNum; i <= n-(k-len(combination))+1; i++ { // 剪枝，n - j + 1 >= k - len(path)，+ 1 是为了把当前的 j 也纳入合法范围
+		combination = append(combination, i) // 本轮尝试所有剩余数字，所以需要放循环内
+		doCombine(i+1, n, k) // 根据本轮选的数字，再扩展出下一轮、下下轮……
 		combination = combination[:len(combination)-1]
 	}
 }

@@ -108,7 +108,7 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
 困难点在于 . 表示一个字符，
 如何同时兼顾完全匹配(a == a)和模糊匹配(. == a)。
 
-当命中模糊匹配时，需将其所有子节点进行新一轮匹配。
+当命中模糊匹配时，需将其所有子节点与下一个字符进行新一轮匹配。
 可以用递归思想实现。
 
 注意，递归和循环不可混用！
@@ -121,12 +121,11 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
 	// ...
 	if c == '.' {
 		for _, child := range cur.Children {
-			return this.doSearch(remainWord, child)
+			return this.doSearch(remainWord, child) // 如果第一个非空子节点不匹配，即使其他子节点可能匹配，也会返回 false，截断后续流程，所以是错误的。
 		}
 	}
 	// ...
 }
-上述写法，如果第一个非空子节点不匹配，即使其他子节点可能匹配，也会返回 false。
 
 func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool {
 	if cur == nil {
@@ -135,12 +134,53 @@ func (this *WordDictionary) doSearch(word string, cur *WordDictionaryNode) bool 
 	// ...
 	if c == '.' {
 		for _, child := range cur.Children {
-			if this.doSearch(remainWord, child) {
+			if this.doSearch(remainWord, child) { // 只有找到一条可行路径，才会返回
 				return true
 			}
 		}
 		return false
 	}
 	// ...
+}
+*/
+
+/*
+优化版：
+type Node struct {
+	children [26]*Node // 指定切片大小，比 []*Node 更快、更小
+	isEnd    bool
+}
+
+type WordDictionary struct {
+	root *Node
+}
+
+func Constructor() WordDictionary {
+	return WordDictionary{root: &Node{}} // 对于声明时已指定大小的切片，无需显式初始化
+}
+
+// ...
+
+func (w *WordDictionary) Search(word string) bool {
+	return dfs(w.root, word, 0)
+}
+
+func dfs(node *Node, word string, i int) bool {
+	if i == len(word) {
+		return node.isEnd
+	}
+	if word[i] == '.' {
+		for _, child := range node.children { // 直接遍历数组，而不是遍历 26 个英文字母
+			if child != nil && dfs(child, word, i+1) {
+				return true
+			}
+		}
+		return false
+	}
+	idx := word[i] - 'a'
+	if node.children[idx] == nil {
+		return false
+	}
+	return dfs(node.children[idx], word, i+1)
 }
 */

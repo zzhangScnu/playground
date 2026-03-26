@@ -98,3 +98,32 @@ func backtrack(digitIdx int, digits string) {
 		}
 	}
 }
+
+var mapping1 = map[byte][]byte{ // 定义 byte 类型
+	'2': {'a', 'b', 'c'},
+	'3': {'d', 'e', 'f'},
+	'4': {'g', 'h', 'i'},
+	'5': {'j', 'k', 'l'},
+	'6': {'m', 'n', 'o'},
+	'7': {'p', 'q', 'r', 's'},
+	'8': {'t', 'u', 'v'},
+	'9': {'w', 'x', 'y', 'z'},
+}
+
+func letterCombinations1(digits string) []string {
+	var res []string
+	var dfs func(i int, path []byte)
+	dfs = func(i int, path []byte) {
+		if i == len(digits) {
+			res = append(res, string(path))
+			return
+		}
+		for _, ch := range mapping1[digits[i]] {
+			path = append(path, ch)
+			dfs(i+1, path)
+			path = path[:len(path)-1]
+		}
+	}
+	dfs(0, nil)
+	return res
+}

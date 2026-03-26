@@ -50,9 +50,9 @@ func doCombinationSum(beginIdx int, candidates []int, remainTarget int) {
 		combinations = append(combinations, res)
 		return
 	}
-	for i := beginIdx; i < len(candidates); i++ {
+	for i := beginIdx; i < len(candidates); i++ { // 这里从 beginIdx 开始的原因是【去重，避免选中前面已经生长出来的组合】
 		combination = append(combination, candidates[i])
-		doCombinationSum(i, candidates, remainTarget-candidates[i])
+		doCombinationSum(i, candidates, remainTarget-candidates[i]) // 这里从 i 开始的原因是【树枝上可以重复选取数字】
 		combination = combination[:len(combination)-1]
 	}
 }

@@ -39,12 +39,25 @@ func totalNQueens(n int) int {
 				return false
 			}
 		}
+		/**
+		// 用步长这种方式比较好理解
+		for step := 1; x-step >= 0 && y-step >= 0; step++ { // 左斜上方
+			if board[x-step][y-step] == 'Q' {
+				return false
+			}
+		}
+		for step := 1; x-step >= 0 && y+step < len(board); step++ { // 右斜上方
+			if board[x-step][y+step] == 'Q' {
+				return false
+			}
+		}
+		*/
 		return true
 	}
 	var res int
 	var traverse func(graph [][]bool, row int)
 	traverse = func(graph [][]bool, row int) {
-		if row == n {
+		if row == n { // n 而不是 n - 1
 			res++
 			return
 		}

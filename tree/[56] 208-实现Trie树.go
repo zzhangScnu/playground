@@ -100,4 +100,6 @@ func (this *Trie) StartsWith(prefix string) bool {
 根节点 -> 虚拟节点
 子节点 -> 以单词字符序向下生长、分岔，每层至多有26个节点
 	     标记是否为单词的结尾
+
+不需要额外记录 “是否有当前字符”，因为 children 数组本身的 nil/非nil 状态，已经天然充当了这个 “存在性标记”。
 */
