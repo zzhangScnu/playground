@@ -49,7 +49,6 @@ func existII(board [][]byte, word string) bool {
 		if curNode.Children[idx] == nil {
 			return false
 		}
-
 		board[x][y] = ' '
 		curNode = curNode.Children[idx]
 
@@ -113,3 +112,15 @@ func (this *Trie) Insert(word string) {
 	}
 	cur.IsEndOfWord = true
 }
+
+/**
+用前缀树思路解决。
+
+但是需要注意的一点是，字母集合里面是【a-zA-Z】，即范围为 52。
+func getCharIndex(c byte) int {
+	if c >= 'A' && c <= 'Z' { // 大写字母，占用[0, 25]
+		return int(c - 'A')
+	}
+	return int(c - 'a' + 26) // 小写字母，占用[26, 51]
+}
+*/

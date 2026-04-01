@@ -23,7 +23,7 @@ func generateParenthesis(n int) []string {
 	var path, res []string
 	var doGenerateParenthesis func(leftRemain, rightRemain int)
 	doGenerateParenthesis = func(leftRemain, rightRemain int) {
-		if leftRemain > rightRemain {
+		if leftRemain > rightRemain { // 因为这个是剩余可用额度，正常来说在放置合法括号的过程中，一定满足【左括号的数量 > 右括号的数量】，也就是【左括号的剩余数量 < 右括号的剩余数量】
 			return
 		}
 		if leftRemain < 0 || rightRemain < 0 {
@@ -33,7 +33,7 @@ func generateParenthesis(n int) []string {
 			res = append(res, strings.Join(path, ""))
 			return
 		}
-		path = append(path, "(")
+		path = append(path, "(") // 合法括号永远先左后右，所以回溯代码先处理左，再处理右
 		doGenerateParenthesis(leftRemain-1, rightRemain)
 		path = path[:len(path)-1]
 		path = append(path, ")")
