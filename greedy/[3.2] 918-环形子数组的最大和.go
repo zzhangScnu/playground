@@ -34,9 +34,11 @@ package greedy
 func maxSubarraySumCircular(nums []int) int {
 	total, curMin, globalMin, curMax, globalMax := 0, 0, nums[0], 0, nums[0]
 	for _, num := range nums {
+		// 环形子数组
 		total += num
 		curMin = min(curMin+num, num)
 		globalMin = min(globalMin, curMin)
+		// 连续子数组
 		curMax = max(curMax+num, num)
 		globalMax = max(globalMax, curMax)
 	}
@@ -66,7 +68,7 @@ curMin = min(curMin+num, num)
 初始化：
 total, curMin, globalMin, curMax, globalMax := 0, 0, nums[0], 0, nums[0]
 令 globalMin = globalMax = nums[0]，否则如果是全负数的场景，globalMin和globalMax都无法更新。
-
+globalMax 也可以是 math.MinInt，globalMin 也可以是 math.MaxInt
 
 特殊处理：
 若数组中均为负数，则globalMax最终为负数，此时最大和子数组即为【最大的单个元素】，此时存储在globalMax中。

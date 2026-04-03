@@ -35,3 +35,7 @@ func sortedArrayToBST(nums []int) *TreeNode {
 	}
 	return traverse(nums, 0, len(nums)-1)
 }
+
+/**
+因为有序数组本身就是中序遍历结果，用分治取中点构建，天然就是中序 BST，不需要再按中序遍历的顺序去构建。
+*/

@@ -47,7 +47,7 @@ func maxSubArray(nums []int) int {
 先将每个位置组成子数组的和计算出来，即prefixSum[i]表示索引在[1, i]范围内的元素之和。
 prefixSum从1开始，prefixSum[0] = 0为base case，为了计算前缀和数组时更方便，无需额外考虑数组越界的情况。
 从索引1开始遍历前缀和数组，一边维护最小的前缀和，一边与当前位置的前缀和相减。
-假设最小前缀和为prefixSum[i]，当前指针指向prefixSum[j]，则prefixSum[j]-prefixSum[i]表示索引在[i+1,...j]范围内的元素之和。
+假设最小前缀和为prefixSum[i]，当前指针指向prefixSum[j]，则prefixSum[j] − prefixSum[i] = sum(nums[i : j])。因为虽然prefixSum基于原索引向右偏移，但 i 和 j 本身就是相对位置。
 对这些差值取最大值，即为最大子数组和。
 
 注意：

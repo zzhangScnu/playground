@@ -29,18 +29,13 @@ import "math"
 //
 // 进阶：如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的 分治法 求解。
 func maxSubArray(nums []int) int {
-	res := math.MinInt
-	var maxCnt int
+	maxVal, val := math.MinInt, 0
 	for _, num := range nums {
-		maxCnt += num
-		if maxCnt > res {
-			res = maxCnt
-		}
-		if maxCnt < 0 {
-			maxCnt = 0
-		}
+		val += num
+		maxVal = max(maxVal, val)
+		val = max(0, val)
 	}
-	return res
+	return maxVal
 }
 
 /**
@@ -60,5 +55,3 @@ if maxCnt < 0 {
 如果2放在前面，对于全负数数组来说，结果会持续被更新为0，导致res最后也会是0。
 对于全负数数组来说，实际上结果会是绝对值最小的元素值。
 */
-
-// todo：分治
