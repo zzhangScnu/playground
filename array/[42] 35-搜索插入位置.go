@@ -57,20 +57,18 @@ left最终指向的位置有3种情况：
 /**
 在这个二分里，始终维护一个不变的规则：
 
-- high 以及它左边的所有数，都 < target
-- low 以及它右边的所有数，都 > target
+- high 以及它左边的所有数，都 < target。因为当 nums[mid] >= target，right = mid - 1。即【凡是被 high 越过的位置，都是 >= target 的】
+- low 以及它右边的所有数，都 >= target。因为当 nums[mid] < target，left = mid + 1。即【凡是被 low 越过的位置，都是 < target 的】
 
 循环每走一步，都在缩小区间，但这条规则一直保持。
 
-直到最后：
-low 跑到了 high + 1 的位置
+直到最后，low 跑到了 high + 1 的位置
 
 这时候两个区间就挨在一起了：
-- high 左边：全都比 target 小
-- low 右边：全都比 target 大
+- low 是从左往右第一个 >= target 的位置
+- high 是从右往左第一个 < target 的位置
 
-那 target 该插哪儿？
-就插在这两个区间的中间，也就是 low 所在的位置。
+所以插入位置必然是：low
 
 所以直接 return low，就是插入下标。
 */

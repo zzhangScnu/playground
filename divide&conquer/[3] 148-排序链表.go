@@ -34,8 +34,8 @@ func doSortList(head, tail *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
-	if head.Next == tail {
-		head.Next = nil
+	if head.Next == tail { // 因为区间是左闭右开 [head, tail)，如果 head 和 tail 挨着，说明已将链表切分到单个节点了，可以开始 merge 操作
+		head.Next = nil // 将节点与原链表断开，避免藕断丝连
 		return head
 	}
 	mid := findMiddle(head, tail)
@@ -45,7 +45,7 @@ func doSortList(head, tail *ListNode) *ListNode {
 
 func findMiddle(head, tail *ListNode) *ListNode {
 	slow, fast := head, head
-	for fast != tail && fast.Next != tail {
+	for fast != tail && fast.Next != tail { // 注意这里的终止条件是 tail，而不是 nil
 		slow = slow.Next
 		fast = fast.Next.Next
 	}
@@ -55,4 +55,9 @@ func findMiddle(head, tail *ListNode) *ListNode {
 /**
 跟23一样，先切分直至剩余单个节点，触底回溯时再合并链表。
 注意当head.Next == tail时，需要将head.Next置为nil，否则在调用merge2Lists时会陷入无限循环。
+
+时间复杂度：
+宽度：合并次数。无论在哪一层，合并都需要处理 n 个元素，n
+深度：切分次数。每次将链表劈成两半，直到剩 1 个元素，log(n)
+时间复杂度 == O(nlog(n))
 */
