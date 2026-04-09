@@ -10,14 +10,14 @@ package tree
 // False 赋值给节点，两种值都会被判题机制 接受 。
 // isLeaf: 当这个节点是一个叶子结点时为 True，如果它有 4 个子节点则为 False 。
 //
-//	class Node {
+//	class QuadTreeNode {
 //	   public boolean val;
 //
 //   public boolean isLeaf;
-//   public Node topLeft;
-//   public Node topRight;
-//   public Node bottomLeft;
-//   public Node bottomRight;
+//   public QuadTreeNode topLeft;
+//   public QuadTreeNode topRight;
+//   public QuadTreeNode bottomLeft;
+//   public QuadTreeNode bottomRight;
 // }
 //
 // 我们可以按以下步骤为二维区域构建四叉树：
@@ -112,4 +112,46 @@ func construct(grid [][]int) *QuadTreeNode {
 
 在递归方法的入口处先调用【是否区域中所有元素均相等】的判断，
 实际上隐含了base case，即当区域中元素个数为1的情况，此时会判定为叶子节点且返回。
+
+因为它在递归分裂之前，先检查整个区域是否已经统一。
+如果统一，就不需要再分裂递归了，直接返回。
+这就把下面所有的递归分支 “剪掉” 了。
 */
+
+func constructNormally(grid [][]int) *QuadTreeNode {
+	return build(grid, 0, 0, len(grid))
+}
+
+func build(grid [][]int, x, y, size int) *QuadTreeNode {
+	// 递归到底：最小单元格 1×1，一定是叶子
+	if size == 1 {
+		return &QuadTreeNode{
+			Val:    grid[x][y] == 1,
+			IsLeaf: true,
+		}
+	}
+
+	half := size / 2
+	tl := build(grid, x, y, half)
+	tr := build(grid, x, y+half, half)
+	bl := build(grid, x+half, y, half)
+	br := build(grid, x+half, y+half, half)
+
+	// 关键：四个子节点都是叶子，且值全部相同 → 合并成一个叶子
+	if tl.IsLeaf && tr.IsLeaf && bl.IsLeaf && br.IsLeaf &&
+		tl.Val == tr.Val && tr.Val == bl.Val && bl.Val == br.Val {
+		return &QuadTreeNode{
+			Val:    tl.Val,
+			IsLeaf: true,
+		}
+	}
+
+	// 不能合并，返回非叶子节点
+	return &QuadTreeNode{
+		IsLeaf:      false,
+		TopLeft:     tl,
+		TopRight:    tr,
+		BottomLeft:  bl,
+		BottomRight: br,
+	}
+}
