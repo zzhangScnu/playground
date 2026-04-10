@@ -27,7 +27,7 @@ func searchMatrix(matrix [][]int, target int) bool {
 	rowLength, colLength := len(matrix), len(matrix[0])
 	low, high := 0, rowLength*colLength-1
 	for low <= high {
-		mid := low + (high-low)/2
+		mid := low + (high-low)/2 // low + ((high - low) >> 1)
 		row, col := mid/colLength, mid%colLength
 		if matrix[row][col] == target {
 			return true
@@ -43,6 +43,6 @@ func searchMatrix(matrix [][]int, target int) bool {
 /**
 核心思路是将二维数组打平至一维数组，在该一维数组上进行二分查找。
 其中坐标的计算都是基于列的长度：
-横坐标：mid/colLength
+横坐标：mid/colLength -> 这里之前写错成 rowLength！
 纵坐标：mid%colLength
 */
