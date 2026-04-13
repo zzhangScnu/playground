@@ -41,3 +41,50 @@ func findKthLargest(nums []int, k int) int {
 将数组中所有元素都入堆进行堆化。
 再结合计数器，不断从堆口弹出元素，获取当前最大值，直至拿到第K个最大元素。
 */
+
+func findKthLargest0413(nums []int, k int) int {
+	heap := Construct(nums)
+	for i := 1; i < k; i++ {
+		heap.Pop()
+	}
+	return heap.Pop()
+}
+
+type MaxHeap0413 struct {
+	data []int
+}
+
+func Construct(nums []int) MaxHeap0413 {
+	heap := MaxHeap0413{
+		data: nums,
+	}
+	heap.Heapify()
+	return heap
+}
+
+func (h *MaxHeap0413) shiftDown(index int) {
+	maxVal, maxIndex := h.data[index], index
+	if maxVal < h.data[2*index+1] {
+		maxIndex = 2*index + 1
+		maxVal = h.data[maxIndex]
+	}
+	if maxVal < h.data[2*index+2] {
+		maxIndex = 2*index + 2
+		maxVal = h.data[maxIndex]
+	}
+	h.data[index], h.data[maxIndex] = h.data[maxIndex], h.data[index]
+}
+
+func (h *MaxHeap0413) Heapify() {
+	for i := len(h.data) / 2; i >= 0; i-- {
+		h.shiftDown(i)
+	}
+}
+
+func (h *MaxHeap0413) Pop() int {
+	val := h.data[0]
+	h.data[0] = h.data[len(h.data)-1]
+	h.data = h.data[:len(h.data)-1]
+	h.shiftDown(0)
+	return val
+}
