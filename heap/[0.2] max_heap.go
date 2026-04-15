@@ -10,6 +10,12 @@ func NewMaxHeap() MaxHeap {
 	return MaxHeap{[]int{}}
 }
 
+// HeapifyByShiftDown
+/**
+shiftDown 堆化
+适合：已经有一整个数组，想快速变成堆
+特点：一次性处理，只动父亲节点，叶子被带着动
+*/
 func (h *MaxHeap) HeapifyByShiftDown(nums []int) {
 	h.data = make([]int, len(nums))
 	copy(h.data, nums)
@@ -18,11 +24,17 @@ func (h *MaxHeap) HeapifyByShiftDown(nums []int) {
 	因为叶子节点左右子节点都为空，和自身比较意义不大。
 	自顶向下的处理过程中，自身、父节点、兄弟节点都会参与大小比较并移动到正确的位置。
 	*/
-	for i := len(nums) / 2; i >= 0; i-- {
+	for i := len(nums)/2 - 1; i >= 0; i-- {
 		h.shiftDown(i)
 	}
 }
 
+// HeapifyByShiftUp
+/**
+shiftUp 堆化
+适合：数据是一个个来的，动态插入
+特点：只能一个个插，插一个浮一个
+*/
 func (h *MaxHeap) HeapifyByShiftUp(nums []int) {
 	/**
 	data := make([]int, len(nums))
@@ -78,7 +90,7 @@ func (h *MaxHeap) ExtractMax() int {
 
 func (h *MaxHeap) shiftDown(idx int) {
 	maxPos := idx
-	for {
+	for { // 注意这里是 for，直到最大值是自身时，才退出循环
 		if idx*2+1 < h.Size() && h.data[idx*2+1] > h.data[maxPos] {
 			maxPos = idx*2 + 1
 		}

@@ -87,3 +87,24 @@ func searchRightRange(nums []int, target int) int {
 	- 当找到目标值时，缩小左指针，向右逼近。
 	- 其他的特性，相当于左边界的镜像。
 */
+
+/**
+还有一种实现方式，不是在最后判断 left 的合法性来判断返回 - 1 / left，而是一边搜索一边判断：
+func searchLeftRange(nums []int, target int) int {
+    low, high, mid := 0, len(nums) - 1, 0
+    for low <= high {
+        mid = low + (high - low) / 2
+        if nums[mid] == target {
+            if mid == 0 || nums[mid - 1] != nums[mid] { // 如果已经到头了，或者更左边已经是更小的元素了，那么 mid 当前指向的就是元素的第一个位置
+                return mid
+            }
+            high = mid - 1
+        } else if nums[mid] < target {
+            low = mid + 1
+        } else {
+            high = mid - 1
+        }
+    }
+    return -1
+}
+*/
