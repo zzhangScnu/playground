@@ -1,4 +1,4 @@
-package array
+package binarysearch
 
 // 给你一个非负整数 x ，计算并返回 x 的 算术平方根 。
 //
@@ -34,3 +34,9 @@ func mySqrt(x int) int {
 	}
 	return high
 }
+
+/**
+思路：
+使用二分搜索，用 mid * mid 无限逼近 x。
+因为结束条件是 low > high，如果未命中 mid*mid == x 而提前返回，此时 high 才是最接近且未越过 x 的平方根。
+*/
