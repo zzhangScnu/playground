@@ -28,12 +28,11 @@ func climbStairs(n int) int {
 	if n == 1 || n == 2 {
 		return n
 	}
-	sum, dp2, dp1 := 0, 2, 1
+	a, b := 2, 1
 	for i := 3; i <= n; i++ {
-		sum = dp2 + dp1
-		dp2, dp1 = sum, dp2
+		a, b = a+b, a
 	}
-	return sum
+	return a
 }
 
 /**

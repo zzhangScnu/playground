@@ -21,7 +21,7 @@ import "strings"
 // 字符串如果不是 "0" ，就不含前导零
 func addBinary(a string, b string) string {
 	var sb strings.Builder
-	i, j, carry := len(a)-1, len(b)-1, byte(0)
+	i, j, carry := len(a)-1, len(b)-1, byte(0) //
 	for i >= 0 || j >= 0 || carry > 0 {
 		if i >= 0 {
 			carry += a[i] - '0'
@@ -31,8 +31,8 @@ func addBinary(a string, b string) string {
 			carry += b[j] - '0'
 			j--
 		}
-		sb.WriteByte(carry%2 + '0')
-		carry /= 2
+		sb.WriteByte(carry%2 + '0') // 这里需要加上'0'，从数字转换为字符
+		carry /= 2                  // 这个实际上跟十进制原理相同，十进制取末位是 %10，舍弃末位是 / 10。
 	}
 	str := sb.String()
 	bytes := []byte(str)

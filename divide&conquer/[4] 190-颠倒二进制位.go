@@ -31,7 +31,7 @@ package divide_conquer
 // 进阶: 如果多次调用这个函数，你将如何优化你的算法？
 func reverseBits(num uint32) uint32 {
 	for i := 0; i < 16; i++ {
-		left, right := num>>(31-i)&1, num>>i&1
+		left, right := num>>(31-i)&1, num>>i&1 // 分别取最高位和最低位，即将特定位挪到末位。再与1做与运算，除末位外其他位都被置为0，末位保留
 		if left == right {
 			continue
 		}
