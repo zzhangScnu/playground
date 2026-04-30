@@ -21,7 +21,7 @@ import "math"
 // -10⁴ <= xi, yi <= 10⁴
 // points 中的所有点 互不相同
 func maxPoints(points [][]int) int {
-	res := 1
+	res := 1 // 只有一点的情况
 	for i := 0; i < len(points); i++ {
 		p1 := points[i]
 		count := make(map[float64]int)
@@ -32,7 +32,7 @@ func maxPoints(points [][]int) int {
 				slope = float64(p1[1]-p2[1]) / float64(p1[0]-p2[0])
 			}
 			count[slope]++
-			res = max(res, count[slope]+1)
+			res = max(res, count[slope]+1) // 注意这里需要额外加 1，因为至今是没有将 i 点算进来的
 		}
 	}
 	return res
@@ -58,4 +58,6 @@ func maxPoints(points [][]int) int {
 
 结果为int：slope = (p1[0] - p2[0]) / (p1[1] - p2[1])
 结果为float64：slope = float64(p1[1]-p2[1]) / float64(p1[0]-p2[0])
+
+注意 map 不能共用，map 的语义是：记录「当前中心点」出发，各个斜率有多少个点
 */

@@ -71,6 +71,19 @@ type QuadTreeNode struct {
 	BottomRight *QuadTreeNode
 }
 
+/**
+思路：
+采用分治-递归的方法，每次将区域拆解为4个子区域；
+直至触底反弹，从叶子节点开始构建子树，最终得到根节点。
+
+在递归方法的入口处先调用【是否区域中所有元素均相等】的判断，
+实际上隐含了base case，即当区域中元素个数为1的情况，此时会判定为叶子节点且返回。
+
+因为它在递归分裂之前，先检查整个区域是否已经统一。
+如果统一，就不需要再分裂递归了，直接返回。
+这就把下面所有的递归分支 “剪掉” 了。
+*/
+
 func construct(grid [][]int) *QuadTreeNode {
 	n := len(grid)
 	var isUniform func(i, j int, length int) bool
@@ -105,19 +118,10 @@ func construct(grid [][]int) *QuadTreeNode {
 	return traverse(0, 0, n)
 }
 
-/**
-思路：
-采用分治-递归的方法，每次将区域拆解为4个子区域；
-直至触底反弹，从叶子节点开始构建子树，最终得到根节点。
-
-在递归方法的入口处先调用【是否区域中所有元素均相等】的判断，
-实际上隐含了base case，即当区域中元素个数为1的情况，此时会判定为叶子节点且返回。
-
-因为它在递归分裂之前，先检查整个区域是否已经统一。
-如果统一，就不需要再分裂递归了，直接返回。
-这就把下面所有的递归分支 “剪掉” 了。
+/*
+*
+不剪枝的常规版本
 */
-
 func constructNormally(grid [][]int) *QuadTreeNode {
 	return build(grid, 0, 0, len(grid))
 }
@@ -155,3 +159,10 @@ func build(grid [][]int, x, y, size int) *QuadTreeNode {
 		BottomRight: br,
 	}
 }
+
+/**
+最坏情况下，两种实现的遍历/访问总次数是一样的。
+但剪枝剪去的是递归，而非遍历。
+- 遍历格子：只是循环访问数组，轻量
+- 递归调用：函数栈、参数传递、返回、创建节点，开销大
+*/

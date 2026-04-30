@@ -30,8 +30,8 @@ import "math"
 // 1 <= coins[i] <= 2³¹ - 1
 // 0 <= amount <= 10⁴
 func coinChange(coins []int, amount int) int {
-	maxVal := math.MaxInt64 - 1
-	dp := make([]int, amount+1)
+	maxVal := math.MaxInt64 - 1 // 为了防止递推公式中的 + 1 溢出，这里需要显式对最大值 - 1
+	dp := make([]int, amount+1) // 金额为 amount，那么从 0 开始的话 dp 数组长度需要为 amount + 1
 	for i := 1; i <= amount; i++ {
 		dp[i] = maxVal
 	}
@@ -42,7 +42,7 @@ func coinChange(coins []int, amount int) int {
 			}
 		}
 	}
-	if dp[amount] == maxVal {
+	if dp[amount] == maxVal { // 凑不出任意组合，返回 -1
 		return -1
 	}
 	return dp[amount]

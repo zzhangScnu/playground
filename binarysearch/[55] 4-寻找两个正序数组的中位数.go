@@ -32,9 +32,9 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 		A, B = nums2, nums1
 	}
 	total := len(nums1) + len(nums2)
-	half := (total + 1) / 2
+	half := (total + 1) / 2 // 这里是做了 total + 1 的兼容处理
 	l, r := 0, len(A)
-	for l <= r {
+	for l <= r { // 这里的结束条件是 l > r
 		m := l + (r-l)>>1
 		i, j := m-1, half-m-1
 		Aleft := math.MinInt
@@ -70,41 +70,55 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 
 func findMedianSortedArrays0415(nums1 []int, nums2 []int) float64 {
 	A, B := nums1, nums2
-	if len(A) > len(B) {
-		B, A = nums1, nums2
+	if len(A) > len(B) { // 以较小的数组作为二分搜索的锚点，避免数组越界
+		B, A = A, B
 	}
 	total := len(A) + len(B)
-	half := total / 2
+	half := total / 2 // A + B 的长度向下取整。如果在 total 为奇数的情况下，half 会偏小
 	low, high, mid := 0, len(A)-1, 0
-	for low <= high {
-		mid = low + (high-low)/2
-		Aleft := math.MinInt
-		if mid-1 > 0 {
-			Aleft = A[mid-1]
+	for { // 一定能找到结果，所以不需要显式指定结束条件
+		sum := low + high
+		mid = sum / 2
+		// 处理负数除法，统一向下取整（默认向零取整）。避免 mid 取不到负数
+		// 为什么会有负数？当 low 或 high 超出了有效范围，即 A / B 中有一个全都不会纳入结果集
+		if sum < 0 && sum%2 != 0 {
+			mid -= 1
 		}
-		Aright := math.MaxInt
-		if mid < len(A) {
-			Aright = A[mid]
+		Aleft := math.MinInt // 兼容该场景：如果 C' 全都取自 B'，即 A 上的索引会向左收缩直到小于0。此时 Aleft 为负无穷，一定小于 Bright
+		if mid >= 0 {
+			Aleft = A[mid]
+		}
+		Aright := math.MaxInt // 兼容该场景：如果 C' 全都取自 A'，即 B 上的索引会向右收缩直到大于数组末位元素索引。此时 Aright 为负无穷，一定小于 Bright
+		if mid+1 < len(A) {
+			Aright = A[mid+1]
 		}
 		Bleft := math.MinInt
-		if half-mid-1 > 0 {
-			Bleft = B[half-mid-1]
+		if half-mid-2 >= 0 {
+			Bleft = B[half-mid-2]
 		}
 		Bright := math.MaxInt
-		if half-mid < len(B) {
-			Bright = B[half-mid]
+		if half-mid-1 < len(B) {
+			Bright = B[half-mid-1]
 		}
-		if Aright <= Bleft && Bright <= Aleft {
+		if Aleft <= Bright && Bleft <= Aright {
 			if total%2 == 1 {
-				return float64(min(Aleft, Bleft))
+				return float64(min(Aright, Bright))
 			}
 			return float64(max(Aleft, Bleft)+min(Aright, Bright)) / 2.0
 		}
-		if Aright < Bleft {
-			high = mid + 1
+		if Aleft > Bright {
+			high = mid - 1
 		} else {
-			low = mid - 1
+			low = mid + 1
 		}
 	}
-	return -1
 }
+
+/**
+思路：
+有序数组 A 和数组 B的中位数 == 排序(A + B)的中间元素 == (A 的前半段 A' + B 的前半段 B') 组成的 C' 的末尾元素
+所以用二分搜索来锚定 A' 的大小，从而计算出 B' 的大小。
+通过比较 A' 边界两边的元素与 B' 边界两边的元素，来判断 A' 和 B' 组成的【前半段】数组 C' 是否合法。
+如果合法，则在边界处取中位数；
+如果不合法，则通过二分搜索增加 / 减少 A' 的大小。
+*/

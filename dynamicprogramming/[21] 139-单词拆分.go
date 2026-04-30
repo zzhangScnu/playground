@@ -70,3 +70,22 @@ dp[0] = true
 背包和物品都是从小到大遍历；
 由于本题是求排列，顺序敏感，所以需要先遍历背包，再遍历物品。
 */
+
+func wordBreakII(s string, wordDict []string) bool {
+	mapping := make(map[string]interface{})
+	for _, word := range wordDict {
+		mapping[word] = struct{}{}
+	}
+	n := len(s)
+	dp := make([]bool, n)
+	for i := 0; i < n; i++ {
+		for j := i; j < n; j++ {
+			if _, ok := mapping[s[i:j+1]]; ok {
+				if i == 0 || dp[i-1] {
+					dp[j] = true
+				}
+			}
+		}
+	}
+	return dp[n-1]
+}

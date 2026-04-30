@@ -46,15 +46,15 @@ func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
 	for i := 0; i < n; i++ {
 		heap.Push(minCapitals, &Pair{capital[i], profits[i]})
 	}
-	for i := 0; i < k; i++ {
+	for i := 0; i < k; i++ { // 最多可以运作 k 个资本
 		for minCapitals.Len() > 0 && (*minCapitals)[0].capital <= w {
 			pair := heap.Pop(minCapitals).(*Pair)
 			heap.Push(maxProfits, pair.profit)
 		}
-		if maxProfits.Len() == 0 {
+		if maxProfits.Len() == 0 { // 如果已经没有足够 w 来支撑下一轮的 profits 选取，则结束循环
 			break
 		}
-		w += heap.Pop(maxProfits).(int)
+		w += heap.Pop(maxProfits).(int) // 注意这道题，profit 会加入 w 中，而对应的 capital 并不会从 w 中扣减
 	}
 	return w
 }
@@ -108,3 +108,139 @@ minCapital 是按【启动资本】排序的小顶堆，堆顶始终是当前未
 而由于后续资本 w 会不断增加（因为利润为正），未来的资本一定 ≥ 现在的 w，所以这个项目未来也一定能被负担。
 因此，只需将它加入 maxProfit 堆一次，就可以在后续所有轮次中被考虑，无需再放回 minCapital 堆。
 */
+
+// 手撸堆版本
+func findMaximizedCapitalII(k int, w int, profits []int, capital []int) int {
+	capitalMinHeap0, profitMaxHeap0 := NewMinHeap0(), NewMaxHeap0()
+	n := len(profits)
+	for i := 0; i < n; i++ {
+		capitalMinHeap0.Insert(capital[i], profits[i])
+	}
+	for i := 0; i < k; i++ {
+		for capitalMinHeap0.Top() != nil && w >= capitalMinHeap0.Top()[0] {
+			minCapital := capitalMinHeap0.Pop()
+			profitMaxHeap0.Insert(minCapital[0], minCapital[1])
+		}
+		if len(profitMaxHeap0.data) == 0 {
+			break
+		}
+		w += profitMaxHeap0.Pop()[1]
+	}
+	return w
+}
+
+type MinHeap0 struct {
+	data [][]int
+}
+
+func NewMinHeap0() *MinHeap0 {
+	return &MinHeap0{}
+}
+
+func (m *MinHeap0) Insert(capital int, profit int) {
+	m.data = append(m.data, []int{capital, profit})
+	m.shiftUp(len(m.data) - 1)
+}
+
+func (m *MinHeap0) shiftUp(index int) {
+	for {
+		parentIndex := (index - 1) / 2
+		if m.data[index][0] >= m.data[parentIndex][0] {
+			return
+		}
+		m.data[index], m.data[parentIndex] = m.data[parentIndex], m.data[index]
+		index = parentIndex
+	}
+}
+
+func (m *MinHeap0) Pop() []int {
+	if len(m.data) == 0 {
+		return nil
+	}
+	val := m.data[0]
+	m.data[0] = m.data[len(m.data)-1]
+	m.data = m.data[0 : len(m.data)-1]
+	if len(m.data) > 0 {
+		m.shiftDown(0)
+	}
+	return val
+}
+
+func (m *MinHeap0) Top() []int {
+	if len(m.data) == 0 {
+		return nil
+	}
+	val := m.data[0]
+	return val
+}
+
+func (m *MinHeap0) shiftDown(index int) {
+	for {
+		maxIndex, maxVal := index, m.data[index][0]
+		if index*2+1 < len(m.data) && maxVal > m.data[index*2+1][0] {
+			maxIndex, maxVal = index*2+1, m.data[index*2+1][0]
+		}
+		if index*2+2 < len(m.data) && maxVal > m.data[index*2+2][0] {
+			maxIndex, maxVal = index*2+2, m.data[index*2+2][0]
+		}
+		if maxIndex == index {
+			return
+		}
+		m.data[index], m.data[maxIndex] = m.data[maxIndex], m.data[index]
+		index = maxIndex
+	}
+}
+
+type MaxHeap0 struct {
+	data [][]int
+}
+
+func NewMaxHeap0() *MaxHeap0 {
+	return &MaxHeap0{}
+}
+
+func (m *MaxHeap0) Insert(capital int, profit int) {
+	m.data = append(m.data, []int{capital, profit})
+	m.shiftUp(len(m.data) - 1)
+}
+
+func (m *MaxHeap0) shiftUp(index int) {
+	for {
+		parentIndex := (index - 1) / 2
+		if m.data[index][1] <= m.data[parentIndex][1] {
+			return
+		}
+		m.data[index], m.data[parentIndex] = m.data[parentIndex], m.data[index]
+		index = parentIndex
+	}
+}
+
+func (m *MaxHeap0) Pop() []int {
+	if len(m.data) == 0 {
+		return nil
+	}
+	val := m.data[0]
+	m.data[0] = m.data[len(m.data)-1]
+	m.data = m.data[0 : len(m.data)-1]
+	if len(m.data) > 0 { // 注意这里的判断，需要弹出后堆内仍有元素，才触发重排
+		m.shiftDown(0)
+	}
+	return val
+}
+
+func (m *MaxHeap0) shiftDown(index int) {
+	for {
+		minIndex, minVal := index, m.data[index][1]
+		if index*2+1 < len(m.data) && minVal < m.data[index*2+1][1] {
+			minIndex, minVal = index*2+1, m.data[index*2+1][1]
+		}
+		if index*2+2 < len(m.data) && minVal < m.data[index*2+2][1] {
+			minIndex, minVal = index*2+2, m.data[index*2+2][1]
+		}
+		if minIndex == index {
+			return
+		}
+		m.data[index], m.data[minIndex] = m.data[minIndex], m.data[index]
+		index = minIndex
+	}
+}
