@@ -35,16 +35,14 @@ func lengthOfLIS(nums []int) int {
 	for i := range dp {
 		dp[i] = 1
 	}
-	res := dp[0]
+	res := dp[0] // 边界：nums 只有一个元素，不会进入循环择优
 	for i := 1; i < n; i++ {
 		for j := 0; j < i; j++ {
 			if nums[i] > nums[j] {
 				dp[i] = max(dp[i], dp[j]+1)
 			}
 		}
-		if dp[i] > res {
-			res = dp[i]
-		}
+		res = max(res, dp[i]) // 如果不在这个循环中择优，就需要在 dp 生成后遍历 dp 择优
 	}
 	return res
 }
