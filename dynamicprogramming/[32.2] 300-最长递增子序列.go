@@ -55,6 +55,28 @@ func searchFirstGE(piles []int, num int) int {
 	return low
 }
 
+/*
+*
+找第一个大于等于target的数的索引，比较不优雅的写法
+*/
+func findFirstGTEIndex(piles []int, target int) int {
+	low, high, mid := 0, len(piles)-1, 0
+	for low <= high {
+		mid = low + (high-low)/2
+		if piles[mid] == target {
+			if mid == 0 || piles[mid-1] < target { // 额外的判断，如果处于边界，则直接返回。否则仍需要调整二分查找区间
+				return mid
+			}
+			high = mid - 1
+		} else if piles[mid] < target {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+	return low
+}
+
 /**
 贪心+二分查找
 思路(从patient sort而来)：
