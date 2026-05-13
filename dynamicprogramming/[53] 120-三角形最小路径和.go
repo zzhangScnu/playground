@@ -1,5 +1,7 @@
 package dynamicprogramming
 
+import "math"
+
 // 给定一个三角形 triangle ，找出自顶向下的最小路径和。
 //
 // 每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果
@@ -88,3 +90,26 @@ for i range (len(triangle)-1, 0) //
 但每行都从上一行下降而来，也都存在数组越界的可能，如当前位置在每行的最左或最右。
 但矩形题是用DP数组的额外空间+特殊初始化来规避，而三角形题是通过由下到上反向推导来规避。
 */
+
+func minimumTotal2(triangle [][]int) int {
+	m := len(triangle)
+	dp := make([][]int, m)
+	dp[0] = []int{triangle[0][0]}
+	for i := 1; i < m; i++ {
+		n := len(triangle[i])
+		for j := 0; j < n; j++ {
+			if dp[i] == nil {
+				dp[i] = make([]int, n)
+			}
+			dp[i][j] = min(dp[i][j], dp[i-1][j]+triangle[i][j])
+			if j-1 >= 0 {
+				dp[i][j] = min(dp[i][j], dp[i-1][j-1]+triangle[i][j])
+			}
+		}
+	}
+	res := math.MaxInt
+	for _, num := range dp[m-1] {
+		res = min(res, num)
+	}
+	return res
+}
