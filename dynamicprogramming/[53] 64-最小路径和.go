@@ -60,3 +60,44 @@ i依赖于i-1推导而来，j依赖于j-1推导而来，故从左到右，从上
 i == 0时，意味着路径为第一行，每个单元格的路径和为前序加总；
 j == 0时，意味着路径为第一列，每个单元格的路径和为前序加总。
 */
+
+/*
+一维 DP 做法，针对边界条件做特化处理
+*/
+func minPathSumII(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	dp := make([]int, n) // 注意这里是列而不是行。详情可见120题
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if i == 0 && j == 0 {
+				dp[j] = grid[i][j]
+			} else if i == 0 {
+				dp[j] = dp[j-1] + grid[i][j]
+			} else if j == 0 {
+				dp[j] = dp[j] + grid[i][j]
+			} else {
+				dp[j] = min(dp[j], dp[j-1]) + grid[i][j]
+			}
+		}
+	}
+	return dp[n-1]
+}
+
+/*
+一维 DP 做法，简洁规避边界 if 分支
+*/
+func minPathSumIII(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	dp := make([]int, n)
+	dp[0] = grid[0][0]       // 出发点，只能是当前节点的权重
+	for j := 1; j < n; j++ { // 初始化第一行的 dp 值，因为第一行只能从左到右移动，不会有择优选择的过程
+		dp[j] = dp[j-1] + grid[0][j]
+	}
+	for i := 1; i < m; i++ { // 从第二行开始推导结果
+		dp[0] = dp[0] + grid[i][0] // 初始化第一列的 dp 值，因为第一列只能从上到下移动，不会有择优选择的过程
+		for j := 1; j < n; j++ {   // 从第二列开始推导结果
+			dp[j] = min(dp[j], dp[j-1]) + grid[i][j]
+		}
+	}
+	return dp[n-1] // 结果存储在最后一行的最后一列中
+}

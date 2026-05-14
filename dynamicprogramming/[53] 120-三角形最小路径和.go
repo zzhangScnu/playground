@@ -35,8 +35,22 @@ import "math"
 // 进阶：
 //
 // 你可以只使用 O(n) 的额外空间（n 为三角形的总行数）来解决这个问题吗？
+
+/*
+为什么一维 DP 必须用 j，不能用 i？
+一维 dp[j] 代表：第 i 行、第 j 列的最小路径和。
+
+自底向上一维 DP，只关心【列】，不关心【行】。
+因为行已经被滚动覆盖掉了，数组里只保留最新一行的每一列。
+每一行计算时，都是在更新这一行的【第 j 列】。
+
+二维 DP → i 行 j 列
+一维 DP → 只保留列，所以只用 j
+
+自底向上一维DP，行是过程，列是结果，下标必须用 j
+*/
 func minimumTotal(triangle [][]int) int {
-	length := len(triangle[len(triangle)-1]) + 1
+	length := len(triangle[len(triangle)-1]) + 1 // +1的原因
 	dp := make([]int, length)
 	for i := len(triangle) - 1; i >= 0; i-- {
 		for j := 0; j <= i; j++ {
@@ -91,24 +105,28 @@ for i range (len(triangle)-1, 0) //
 但矩形题是用DP数组的额外空间+特殊初始化来规避，而三角形题是通过由下到上反向推导来规避。
 */
 
+/*
+常规做法，从上至下。需要额外处理边界情况
+*/
 func minimumTotal2(triangle [][]int) int {
 	m := len(triangle)
 	dp := make([][]int, m)
 	dp[0] = []int{triangle[0][0]}
 	for i := 1; i < m; i++ {
 		n := len(triangle[i])
+		dp[i] = make([]int, n) // 因为 i 是递增的，所以直接在这里初始化 dp[i] 即可，不用额外判空
 		for j := 0; j < n; j++ {
-			if dp[i] == nil {
-				dp[i] = make([]int, n)
-			}
-			dp[i][j] = min(dp[i][j], dp[i-1][j]+triangle[i][j])
-			if j-1 >= 0 {
-				dp[i][j] = min(dp[i][j], dp[i-1][j-1]+triangle[i][j])
+			if j == 0 {
+				dp[i][j] = dp[i-1][j] + triangle[i][j] // 加上的路径值是 triangle[i][j]，即当前节点的权重
+			} else if j == n-1 {
+				dp[i][j] = dp[i-1][j-1] + triangle[i][j]
+			} else {
+				dp[i][j] = min(dp[i-1][j], dp[i-1][j-1]) + triangle[i][j]
 			}
 		}
 	}
 	res := math.MaxInt
-	for _, num := range dp[m-1] {
+	for _, num := range dp[m-1] { // 结果 res 不能在推导 dp 数组时取，因为路径必须到达最后一行才完整，所以结果一定在 dp 数组的最后一行中
 		res = min(res, num)
 	}
 	return res
