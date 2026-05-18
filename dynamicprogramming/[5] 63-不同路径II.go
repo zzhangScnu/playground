@@ -29,6 +29,10 @@ package dynamicprogramming
 // n == obstacleGrid[i].length
 // 1 <= m, n <= 100
 // obstacleGrid[i][j] 为 0 或 1
+
+/*
+这种做法是初始化边边角角后，再依次推导中间位置的值，避免特殊边界处理。
+*/
 func uniquePathsWithObstacles(obstacleGrid [][]int) int {
 	m, n := len(obstacleGrid), len(obstacleGrid[0])
 	if obstacleGrid[0][0] == 1 || obstacleGrid[m-1][n-1] == 1 {
@@ -84,24 +88,29 @@ for i := 0; i < n && obstacleGrid[0][i] == 0; i++ {
 }
 */
 
+/*
+这种做法是一维 DP，因为 DP 只依赖上一行和上一列的值推导而来，所以可以只用一维数组来存储。
+*/
 func uniquePathsWithObstaclesII(obstacleGrid [][]int) int {
 	m, n := len(obstacleGrid), len(obstacleGrid[0])
-	if obstacleGrid[0][0] == 1 || obstacleGrid[m-1][n-1] == 1 {
+	if obstacleGrid[0][0] == 1 || obstacleGrid[m-1][n-1] == 1 { // 注意这个特判，如果起点或终点本身不可达，那么没有路径可以到达终点
 		return 0
 	}
 	dp := make([]int, n)
 	dp[0] = 1
-	for j := 1; j < n; j++ {
-		dp[j] = dp[j-1]
-		if obstacleGrid[0][j] == 1 {
+	for j := 1; j < n; j++ { // 首先初始化第一行，否则后面的推导都是空中楼阁
+		dp[j] = dp[j-1]              // 一般来说第一行只有一种行进方式，就是从左到右。所以后面的值都会等于前面的值，即1（dp[0]）
+		if obstacleGrid[0][j] == 1 { // 除非遇到障碍物，此路不通时需要将不同路径的数量清零
 			dp[j] = 0
 		}
 	}
 	for i := 1; i < m; i++ {
 		for j := 0; j < n; j++ {
-			if obstacleGrid[i][j] == 1 {
+			// 以下其实有3个分支
+			if obstacleGrid[i][j] == 1 { // 遇到障碍物，此路不通时需要将不同路径的数量清零
 				dp[j] = 0
-			} else if j != 0 {
+				// 如果可以通行，但 j == 0，即处于第一列，只能有一种行进路径，即从上到下，那么dp[j]会等于上一行的dp[j]，即不变，故无需处理
+			} else if j != 0 { // 如果可以通行，但 j != 0，则可能有从上方来 + 从左边来的两种可能，此时不同路径的数量是两者相加
 				dp[j] = dp[j] + dp[j-1]
 			}
 		}
